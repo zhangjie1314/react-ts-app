@@ -1,0 +1,12 @@
+.classItem {
+    flex: 1;
+    padding: 50px;
+    text-align: center;
+    .name {
+        font-size: 20px;
+        font-weight: bold;
+    }
+    .price {
+        color: blue;
+    }
+}
