@@ -1,8 +1,11 @@
 .Infos {
     display: flex;
+    align-items: center;
+    padding: 12px 0;
     .img {
-        width: 85px;
-        height: 85px;
+        width: 88px;
+        height: 88px;
+        margin-left: 40px;
         border-radius: 50%;
         background-color: gray;
         img {
@@ -10,14 +13,32 @@
             height: 100%;
         }
     }
+    .text {
+        margin-left: 20px;
+        .hd,
+        .bd {
+            display: flex;
+            align-items: baseline;
+            margin-bottom: 10px;
+            span {
+                margin-right: 20px;
+            }
+        }
+        .divSex {
+            margin-left: 10px;
+        }
+    }
+    .flex {
+        display: flex;
+    }
     .whiteColor {
         color: #fff;
     }
     .grayColor {
         color: gray;
     }
-    .fs18 {
-        font-size: 18px;
+    .fs36 {
+        font-size: 36px;
     }
     .fs15 {
         font-size: 15px;
