@@ -1,5 +1,5 @@
 import React from 'react'
-import './index.scss'
+import ReportStyle from './index.module.scss'
 import Infos from './components/infos/infos'
 import { InfosRules } from '../../types/components/infos'
 import { withRouter } from 'react-router-dom'
@@ -84,21 +84,26 @@ class Report extends React.Component<any, any> {
     // }
     render() {
         return (
-            <div className='App'>
+            <div className={ReportStyle.App}>
                 <Infos params={this.state.infos}></Infos>
-                <div className='tabsContain'>
-                    <div className='tabs' onClick={this.changePage}>
+                <div className={ReportStyle.tabsContain}>
+                    <div className={ReportStyle.tabs} onClick={this.changePage}>
                         {this.state.tabs.map((itm: tabsTyps, idx: number) => {
                             return (
-                                <div className={`tab ${this.state.tabsIndex === idx ? 'active' : ''}`}>
+                                <div
+                                    key={idx}
+                                    className={`${ReportStyle.tab} ${
+                                        this.state.tabsIndex === idx ? ReportStyle.active : ''
+                                    }`}
+                                >
                                     <p>{itm.name}</p>
-                                    {this.state.tabsIndex === idx ? <p className='slip'></p> : null}
+                                    {this.state.tabsIndex === idx ? <p className={ReportStyle.slip}></p> : null}
                                 </div>
                             )
                         })}
                     </div>
                 </div>
-                <div className='appContent'>{selectComponents(this.state.tabsIndex)}</div>
+                <div className={ReportStyle.appContent}>{selectComponents(this.state.tabsIndex)}</div>
                 {/* <div className='classItems' onClick={this.changePage}>
                     {list.map((itm: ListType, idx: number) => {
                         return <ClassItem key={idx} name={itm.name} />
