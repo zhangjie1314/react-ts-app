@@ -4,6 +4,9 @@ import logo from '../../logo.svg'
 import './index.scss'
 
 export default class Home extends React.Component {
+    componentDidMount() {
+        console.log(navigator.serviceWorker)
+    }
     handleClick = () => {
         fetchPost('/community/cpDynamicList', {
             cpAreaId: '473f8abe917448d98d993d806bd37666',
