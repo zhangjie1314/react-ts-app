@@ -18,11 +18,11 @@ export default class Infos extends React.Component<any, any> {
                     <img src={this.props.params.img} alt='' />
                 </div>
                 <div className='text'>
-                    <div>
-                        <div className='whiteColor fs18'>{this.props.params.name}</div>
-                        <div className='grayColor fs15'>{this.props.params.sex === 0 ? '男' : 'nv'}</div>
+                    <div className='flex hd'>
+                        <div className='whiteColor fs36'>{this.props.params.name}</div>
+                        <div className='grayColor fs15 divSex'>{this.props.params.sex === 0 ? '男' : 'nv'}</div>
                     </div>
-                    <div className='grayColor fs15'>
+                    <div className='grayColor fs15 bd'>
                         <span>{this.props.params.birthday}</span>
                         <span>{this.props.params.height}</span>
                         <span>{this.props.params.weight}</span>
