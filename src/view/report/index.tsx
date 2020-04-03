@@ -1,45 +1,53 @@
 import React from 'react'
-// import { fetchPost } from '../../utils/request'
-// import logo from '../../logo.svg'
 import './index.scss'
-import ClassItem from '../components/classItem'
-// import { BrowserRouter as Router, Route, NavLink, Prompt } from 'react-router-dom'
-// import About from '../../view/about/index'
+import Infos from './components/infos/infos'
+import { InfosRules } from '../../types/components/infos'
 import { withRouter } from 'react-router-dom'
-interface ListType {
-    name?: string
-    price?: number
-}
 
-class Home extends React.Component<any, any> {
+class Report extends React.Component<any, any> {
     constructor(props: any) {
         super(props)
         this.state = {
-            list: [],
+            infos: {
+                img: '',
+                name: '----',
+                birthday: '----/--/--',
+                sex: 0,
+                height: '--cm',
+                weight: '--kg'
+            }
         }
     }
     changePage = () => {
-        let { history } = this.props
-        console.log(history)
-        history.push({ pathname: '/about' })
+        // let { history } = this.props
+        // console.log(history)
+        // history.push({ pathname: '/about' })
     }
     componentDidMount() {
-        const list: ListType[] = [
-            {
-                name: 'asdf',
-                price: 0.1,
-            },
-            {
-                name: 'asdf',
-                price: 0.1,
-            },
-            {
-                name: 'asdf',
-                price: 0.1,
-            },
-        ]
+        const infos: InfosRules = {
+            img: '',
+            name: 'wayman',
+            birthday: '1995/02/15',
+            sex: 0,
+            height: '175cm',
+            weight: '120kg'
+        }
+        // const list: ListType[] = [
+        //     {
+        //         name: 'asdf',
+        //         price: 0.1
+        //     },
+        //     {
+        //         name: 'asdf',
+        //         price: 0.1
+        //     },
+        //     {
+        //         name: 'asdf',
+        //         price: 0.1
+        //     }
+        // ]
         this.setState({
-            list: list,
+            infos
         })
     }
     // handleClick = () => {
@@ -56,14 +64,14 @@ class Home extends React.Component<any, any> {
     //         })
     // }
     render() {
-        let list = this.state.list
         return (
             <div className='App'>
-                <div className='classItems' onClick={this.changePage}>
+                <Infos params={this.state.infos}></Infos>
+                {/* <div className='classItems' onClick={this.changePage}>
                     {list.map((itm: ListType, idx: number) => {
                         return <ClassItem key={idx} name={itm.name} />
                     })}
-                </div>
+                </div> */}
                 {/* <NavLink
                     to='/about'
                     activeStyle={{
@@ -80,4 +88,4 @@ class Home extends React.Component<any, any> {
     }
 }
 
-export default withRouter(Home)
+export default withRouter(Report)
