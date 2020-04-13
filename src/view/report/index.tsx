@@ -3,6 +3,7 @@ import ReportStyle from './index.module.scss'
 import Infos from './components/infos/infos'
 import { InfosRules } from '../../types/components/infos'
 import { withRouter } from 'react-router-dom'
+import PosCharts from './components/pos_charts'
 
 interface tabsTyps {
     name?: string
@@ -40,7 +41,229 @@ class Report extends React.Component<any, any> {
                 // weight: '--kg'
             },
             tabs: [],
-            tabsIndex: 0
+            tabsIndex: 0,
+            chartData: [
+                {
+                    wdId: 'e9d5ec4160bc4880aa0f953868c935ec',
+                    day: '2019年07月24日',
+                    timeLong: 1563937272000,
+                    time: '11时01分',
+                    name: null,
+                    headPath: null,
+                    grade: 54,
+                    gender: null,
+                    type: 1,
+                    ydId: null,
+                    dtId: null,
+                    tyId: null,
+                    tnId: null,
+                    cfId: null,
+                    memberId: 'a1981a7429ed4257beaa7f8204b9a9d3',
+                    count: null,
+                    weight: null,
+                    sort: 0,
+                },
+                {
+                    wdId: 'f2c2c86cf40a4a1383c7e308eab48d5f',
+                    day: '2019年07月16日',
+                    timeLong: 1563264851000,
+                    time: '12时14分',
+                    name: null,
+                    headPath: null,
+                    grade: 22,
+                    gender: null,
+                    type: 1,
+                    ydId: null,
+                    dtId: null,
+                    tyId: null,
+                    tnId: null,
+                    cfId: null,
+                    memberId: 'a1981a7429ed4257beaa7f8204b9a9d3',
+                    count: null,
+                    weight: null,
+                    sort: 1,
+                },
+                {
+                    wdId: 'f2c2c86cf40a4a1383c7e308eab48d5f',
+                    day: '2019年07月16日',
+                    timeLong: 1563264853000,
+                    time: '13时14分',
+                    name: null,
+                    headPath: null,
+                    grade: 15,
+                    gender: null,
+                    type: 1,
+                    ydId: null,
+                    dtId: null,
+                    tyId: null,
+                    tnId: null,
+                    cfId: null,
+                    memberId: 'a1981a7429ed4257beaa7f8204b9a9d3',
+                    count: null,
+                    weight: null,
+                    sort: 2,
+                },
+                {
+                    wdId: 'f2c2c86cf40a4a1383c7e308eab48d5f',
+                    day: '2019年07月16日',
+                    timeLong: 1563264858003,
+                    time: '14时14分',
+                    name: null,
+                    headPath: null,
+                    grade: 10,
+                    gender: null,
+                    type: 1,
+                    ydId: null,
+                    dtId: null,
+                    tyId: null,
+                    tnId: null,
+                    cfId: null,
+                    memberId: 'a1981a7429ed4257beaa7f8204b9a9d3',
+                    count: null,
+                    weight: null,
+                    sort: 3,
+                },
+                {
+                    wdId: 'f2c2c86cf40a4a1383c7e308eab48d5f',
+                    day: '2019年07月16日',
+                    timeLong: 1563264858003,
+                    time: '15时14分',
+                    name: null,
+                    headPath: null,
+                    grade: 10,
+                    gender: null,
+                    type: 1,
+                    ydId: null,
+                    dtId: null,
+                    tyId: null,
+                    tnId: null,
+                    cfId: null,
+                    memberId: 'a1981a7429ed4257beaa7f8204b9a9d3',
+                    count: null,
+                    weight: null,
+                    sort: 3,
+                },
+                {
+                    wdId: 'f2c2c86cf40a4a1383c7e308eab48d5f',
+                    day: '2019年07月16日',
+                    timeLong: 1563264858003,
+                    time: '16时14分',
+                    name: null,
+                    headPath: null,
+                    grade: 10,
+                    gender: null,
+                    type: 1,
+                    ydId: null,
+                    dtId: null,
+                    tyId: null,
+                    tnId: null,
+                    cfId: null,
+                    memberId: 'a1981a7429ed4257beaa7f8204b9a9d3',
+                    count: null,
+                    weight: null,
+                    sort: 3,
+                },
+                {
+                    wdId: 'f2c2c86cf40a4a1383c7e308eab48d5f',
+                    day: '2019年07月16日',
+                    timeLong: 1563264858003,
+                    time: '17时14分',
+                    name: null,
+                    headPath: null,
+                    grade: 10,
+                    gender: null,
+                    type: 1,
+                    ydId: null,
+                    dtId: null,
+                    tyId: null,
+                    tnId: null,
+                    cfId: null,
+                    memberId: 'a1981a7429ed4257beaa7f8204b9a9d3',
+                    count: null,
+                    weight: null,
+                    sort: 3,
+                },
+                {
+                    wdId: 'f2c2c86cf40a4a1383c7e308eab48d5f',
+                    day: '2019年07月16日',
+                    timeLong: 1563264858003,
+                    time: '18时14分',
+                    name: null,
+                    headPath: null,
+                    grade: 10,
+                    gender: null,
+                    type: 1,
+                    ydId: null,
+                    dtId: null,
+                    tyId: null,
+                    tnId: null,
+                    cfId: null,
+                    memberId: 'a1981a7429ed4257beaa7f8204b9a9d3',
+                    count: null,
+                    weight: null,
+                    sort: 3,
+                },
+                {
+                    wdId: 'f2c2c86cf40a4a1383c7e308eab48d5f',
+                    day: '2019年07月16日',
+                    timeLong: 1563264858003,
+                    time: '19时14分',
+                    name: null,
+                    headPath: null,
+                    grade: 10,
+                    gender: null,
+                    type: 1,
+                    ydId: null,
+                    dtId: null,
+                    tyId: null,
+                    tnId: null,
+                    cfId: null,
+                    memberId: 'a1981a7429ed4257beaa7f8204b9a9d3',
+                    count: null,
+                    weight: null,
+                    sort: 3,
+                },
+                {
+                    wdId: 'f2c2c86cf40a4a1383c7e308eab48d5f',
+                    day: '2019年07月16日',
+                    timeLong: 1563264858003,
+                    time: '20时14分',
+                    name: null,
+                    headPath: null,
+                    grade: 10,
+                    gender: null,
+                    type: 1,
+                    ydId: null,
+                    dtId: null,
+                    tyId: null,
+                    tnId: null,
+                    cfId: null,
+                    memberId: 'a1981a7429ed4257beaa7f8204b9a9d3',
+                    count: null,
+                    weight: null,
+                    sort: 3,
+                },
+                {
+                    wdId: 'f2c2c86cf40a4a1383c7e308eab48d5f',
+                    day: '2019年07月16日',
+                    timeLong: 1563264858003,
+                    time: '21时14分',
+                    name: null,
+                    headPath: null,
+                    grade: 10,
+                    gender: null,
+                    type: 1,
+                    ydId: null,
+                    dtId: null,
+                    tyId: null,
+                    tnId: null,
+                    cfId: null,
+                    memberId: 'a1981a7429ed4257beaa7f8204b9a9d3',
+                    count: null,
+                    weight: null,
+                    sort: 3,
+                },
+            ],
         }
     }
     changePage = () => {
@@ -55,18 +278,18 @@ class Report extends React.Component<any, any> {
             birthday: '1995/02/15',
             sex: 0,
             height: '175cm',
-            weight: '120kg'
+            weight: '120kg',
         }
         const tabs: tabsTyps[] = [
             { name: '完美围度', id: 0 },
             { name: '体适能评估', id: 1 },
             { name: '静态评估', id: 2 },
             { name: '运动评估', id: 3 },
-            { name: '运动表现', id: 4 }
+            { name: '运动表现', id: 4 },
         ]
         this.setState({
             infos,
-            tabs
+            tabs,
         })
     }
     // handleClick = () => {
@@ -83,6 +306,7 @@ class Report extends React.Component<any, any> {
     //         })
     // }
     render() {
+        const { chartData } = this.state
         return (
             <div className={ReportStyle.App}>
                 <Infos params={this.state.infos}></Infos>
@@ -103,7 +327,10 @@ class Report extends React.Component<any, any> {
                         })}
                     </div>
                 </div>
-                <div className={ReportStyle.appContent}>{selectComponents(this.state.tabsIndex)}</div>
+                <div className={ReportStyle.appContent}>
+                    <PosCharts chartId='one-chart' chartData={chartData} />
+                </div>
+                {/* <div className={ReportStyle.appContent}>{selectComponents(this.state.tabsIndex)}</div> */}
                 {/* <div className='classItems' onClick={this.changePage}>
                     {list.map((itm: ListType, idx: number) => {
                         return <ClassItem key={idx} name={itm.name} />
