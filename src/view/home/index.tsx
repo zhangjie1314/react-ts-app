@@ -1,7 +1,7 @@
 import React from 'react'
 // import { fetchPost } from '../../utils/request'
 // import logo from '../../logo.svg'
-import ReportStyle from './index.module.scss'
+import HomeStyle from './index.module.scss'
 import ClassItem from '../components/classItem'
 // import { BrowserRouter as Router, Route, NavLink, Prompt } from 'react-router-dom'
 // import About from '../../view/about/index'
@@ -58,8 +58,8 @@ class Home extends React.Component<any, any> {
     render() {
         let list = this.state.list
         return (
-            <div className={ReportStyle.App}>
-                <div className={ReportStyle.ClassItems} onClick={this.changePage}>
+            <div className={HomeStyle.App}>
+                <div className={HomeStyle.ClassItems} onClick={this.changePage}>
                     {list.map((itm: ListType, idx: number) => {
                         return <ClassItem key={idx} name={itm.name} />
                     })}
