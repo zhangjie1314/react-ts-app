@@ -63,4 +63,4 @@ declare module '*.module.sass' {
     export default classes
 }
 
-declare module '@antv/f2'
+declare module '@antv/f2/lib/core'
