@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 import ReportStyle from './index.module.scss'
 import Infos from './components/infos/infos'
 import PerfectGirth from './components/perfect_girth/perfect_girth'
-
+import PosCharts from './components/pos_charts'
 import { InfosRules } from '../../types/components/infos/infos'
 
 interface tabsTyps {
@@ -21,7 +21,7 @@ class Report extends React.Component<any, any> {
                 birthday: '----/--/--',
                 sex: 0,
                 height: '--cm',
-                weight: '--kg'
+                weight: '--kg',
             },
             tabs: [],
             tabsIndex: 0,
@@ -127,30 +127,10 @@ class Report extends React.Component<any, any> {
                         })}
                     </div>
                 </div>
-<<<<<<< HEAD
-                <div className={ReportStyle.appContent}>{this.selectComponents(this.state.tabsIndex)}</div>
-=======
                 <div className={ReportStyle.appContent}>
                     <PosCharts chartId='one-chart' chartData={chartData} />
                 </div>
-                {/* <div className={ReportStyle.appContent}>{selectComponents(this.state.tabsIndex)}</div> */}
-                {/* <div className='classItems' onClick={this.changePage}>
-                    {list.map((itm: ListType, idx: number) => {
-                        return <ClassItem key={idx} name={itm.name} />
-                    })}
-                </div> */}
->>>>>>> cae16b6998eaeb9b639e42638d6686504b795ff4
-                {/* <NavLink
-                    to='/about'
-                    activeStyle={{
-                        fontWeight: 'bold',
-                        color: 'green'
-                    }}
-                ></NavLink>
-               <Prompt message='你确定要离开当前页面吗？' when={true}></Prompt>
-               <Router>
-                    <Route path='/about' component={About} />
-                </Router> */}
+                <div className={ReportStyle.appContent}>{this.selectComponents(this.state.tabsIndex)}</div>
             </div>
         )
     }
