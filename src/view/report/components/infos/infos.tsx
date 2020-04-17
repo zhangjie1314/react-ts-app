@@ -1,6 +1,7 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import './infos.scss'
-import { InfosRules } from '../../../../types/components/infos'
+// import { InfosRules } from '../../../../types/components/infos/infos'
 
 export default class Infos extends React.Component<any, any> {
     constructor(props: any) {
@@ -9,6 +10,9 @@ export default class Infos extends React.Component<any, any> {
     }
     static defaultProps = {
         params: {}
+    }
+    static propTypes = {
+        params: PropTypes.object
     }
 
     render() {

@@ -1,4 +1,4 @@
 export interface ClassItemRules {
-    name?: string
+    name?: string | null
     price?: number
 }

@@ -1,46 +1,49 @@
 import React from 'react'
+import { withRouter } from 'react-router-dom'
+
 import ReportStyle from './index.module.scss'
 import Infos from './components/infos/infos'
-import { InfosRules } from '../../types/components/infos'
-import { withRouter } from 'react-router-dom'
+import PerfectGirth from './components/perfect_girth/perfect_girth'
+
+import { InfosRules } from '../../types/components/infos/infos'
 
 interface tabsTyps {
     name?: string
     id?: number
-}
-
-function selectComponents(type: number) {
-    switch (type) {
-        // 完美围度
-        case 0:
-            return <div>0</div>
-        // 体适能评估
-        case 1:
-            return <div>1</div>
-        case 2:
-            return <div>2</div>
-        case 3:
-            return <div>3</div>
-        case 4:
-            return <div>4</div>
-        default:
-            return <div>没有这路由</div>
-    }
 }
 class Report extends React.Component<any, any> {
     constructor(props: any) {
         super(props)
         this.state = {
             infos: {
-                // img: '',
-                // name: '----',
-                // birthday: '----/--/--',
-                // sex: 0,
-                // height: '--cm',
-                // weight: '--kg'
+                img: '',
+                name: '----',
+                birthday: '----/--/--',
+                sex: 0,
+                height: '--cm',
+                weight: '--kg'
             },
             tabs: [],
             tabsIndex: 0
+        }
+    }
+    // 选择组件tab
+    selectComponents = (type: number) => {
+        switch (type) {
+            // 完美围度
+            case 0:
+                return <PerfectGirth></PerfectGirth>
+            // 体适能评估
+            case 1:
+                return <div>1</div>
+            case 2:
+                return <div>2</div>
+            case 3:
+                return <div>3</div>
+            case 4:
+                return <div>4</div>
+            default:
+                return <div>没有这路由</div>
         }
     }
     changePage = () => {
@@ -49,6 +52,7 @@ class Report extends React.Component<any, any> {
         // history.push({ pathname: '/about' })
     }
     componentDidMount() {
+        // 赋值用户信息
         const infos: InfosRules = {
             img: '',
             name: 'wayman',
@@ -69,19 +73,6 @@ class Report extends React.Component<any, any> {
             tabs
         })
     }
-    // handleClick = () => {
-    //     fetchPost('/community/cpDynamicList', {
-    //         cpAreaId: '473f8abe917448d98d993d806bd37666',
-    //         pageSize: 10
-    //     })
-    //         .then(res => {
-    //             this.setState()
-    //             console.log(res)
-    //         })
-    //         .catch(res => {
-    //             console.log(res)
-    //         })
-    // }
     render() {
         return (
             <div className={ReportStyle.App}>
@@ -103,12 +94,7 @@ class Report extends React.Component<any, any> {
                         })}
                     </div>
                 </div>
-                <div className={ReportStyle.appContent}>{selectComponents(this.state.tabsIndex)}</div>
-                {/* <div className='classItems' onClick={this.changePage}>
-                    {list.map((itm: ListType, idx: number) => {
-                        return <ClassItem key={idx} name={itm.name} />
-                    })}
-                </div> */}
+                <div className={ReportStyle.appContent}>{this.selectComponents(this.state.tabsIndex)}</div>
                 {/* <NavLink
                     to='/about'
                     activeStyle={{
