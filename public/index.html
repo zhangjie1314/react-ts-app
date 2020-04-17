@@ -8,12 +8,17 @@
             name="viewport"
             content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"
         />
+    </head>
+    <body>
+        <noscript>You need to enable JavaScript to run this app.</noscript>
+        <div id="root"></div>
+        <script src="https://gw.alipayobjects.com/os/antv/assets/f2/3.4.2/f2-all.min.js"></script>
         <script src="https://as.alipayobjects.com/g/component/fastclick/1.0.6/fastclick.js"></script>
         <script>
             if ('addEventListener' in document) {
                 document.addEventListener(
                     'DOMContentLoaded',
-                    function() {
+                    function () {
                         FastClick.attach(document.body)
                     },
                     false,
@@ -29,9 +34,5 @@
                 )
             }
         </script>
-    </head>
-    <body>
-        <noscript>You need to enable JavaScript to run this app.</noscript>
-        <div id="root"></div>
     </body>
 </html>

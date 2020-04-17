@@ -149,6 +149,9 @@ module.exports = function (webpackEnv) {
             // initialization, it doesn't blow up the WebpackDevServer client, and
             // changing JS code would still trigger a refresh.
         ].filter(Boolean),
+        externals: {
+            F2: 'F2'
+        },
         output: {
             // The build folder.
             path: isEnvProduction ? paths.appBuild : undefined,

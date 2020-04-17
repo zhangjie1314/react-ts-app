@@ -24,7 +24,39 @@ class Report extends React.Component<any, any> {
                 weight: '--kg'
             },
             tabs: [],
-            tabsIndex: 0
+            tabsIndex: 0,
+            chartData: [
+                {
+                    time: '04.14\n08:01',
+                    grade: 40,
+                    sort: 0,
+                    type: 2,
+                },
+                {
+                    time: '04.14\n08:02',
+                    grade: 56,
+                    sort: 1,
+                    type: 2,
+                },
+                {
+                    time: '04.14\n08:03',
+                    grade: 43,
+                    sort: 2,
+                    type: 2,
+                },
+                {
+                    time: '04.14\n08:04',
+                    grade: 60,
+                    sort: 3,
+                    type: 2,
+                },
+                {
+                    time: '04.14\n08:05',
+                    grade: 58,
+                    sort: 4,
+                    type: 2,
+                },
+            ],
         }
     }
     // 选择组件tab
@@ -59,21 +91,22 @@ class Report extends React.Component<any, any> {
             birthday: '1995/02/15',
             sex: 0,
             height: '175cm',
-            weight: '120kg'
+            weight: '120kg',
         }
         const tabs: tabsTyps[] = [
             { name: '完美围度', id: 0 },
             { name: '体适能评估', id: 1 },
             { name: '静态评估', id: 2 },
             { name: '运动评估', id: 3 },
-            { name: '运动表现', id: 4 }
+            { name: '运动表现', id: 4 },
         ]
         this.setState({
             infos,
-            tabs
+            tabs,
         })
     }
     render() {
+        const { chartData } = this.state
         return (
             <div className={ReportStyle.App}>
                 <Infos params={this.state.infos}></Infos>
@@ -94,7 +127,19 @@ class Report extends React.Component<any, any> {
                         })}
                     </div>
                 </div>
+<<<<<<< HEAD
                 <div className={ReportStyle.appContent}>{this.selectComponents(this.state.tabsIndex)}</div>
+=======
+                <div className={ReportStyle.appContent}>
+                    <PosCharts chartId='one-chart' chartData={chartData} />
+                </div>
+                {/* <div className={ReportStyle.appContent}>{selectComponents(this.state.tabsIndex)}</div> */}
+                {/* <div className='classItems' onClick={this.changePage}>
+                    {list.map((itm: ListType, idx: number) => {
+                        return <ClassItem key={idx} name={itm.name} />
+                    })}
+                </div> */}
+>>>>>>> cae16b6998eaeb9b639e42638d6686504b795ff4
                 {/* <NavLink
                     to='/about'
                     activeStyle={{
