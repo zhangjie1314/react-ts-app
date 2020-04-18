@@ -1,0 +1,22 @@
+@import '../../../../assets/fonts/index.css';
+.circle-chart-number-box {
+    font-size: 26px;
+    color: #747582;
+    width: 130px;
+    height: 100px;
+    text-align: center;
+    .number {
+        color: #fff;
+        font-size: 72px;
+        font-family: DINCond-Black;
+        vertical-align: middle;
+    }
+    .util {
+        padding-left: 5px;
+        vertical-align: middle;
+    }
+}
+.circle-chart-time-box {
+    font-size: 26px;
+    color: #747582;
+}

@@ -5,6 +5,7 @@ import ReportStyle from './index.module.scss'
 import Infos from './components/infos/infos'
 import PerfectGirth from './components/perfect_girth/perfect_girth'
 import PosCharts from './components/pos_charts'
+import PosCircleCharts from './components/pos_circle_charts'
 import { InfosRules } from '../../types/components/infos/infos'
 
 interface tabsTyps {
@@ -56,6 +57,29 @@ class Report extends React.Component<any, any> {
                     sort: 4,
                     type: 2,
                 },
+                {
+                    time: '04.14\n08:06',
+                    grade: 50,
+                    sort: 5,
+                    type: 2,
+                },
+                {
+                    time: '04.14\n08:07',
+                    grade: 59,
+                    sort: 6,
+                    type: 2,
+                },
+                {
+                    time: '04.14\n08:08',
+                    grade: 80,
+                    sort: 7,
+                    type: 2,
+                },
+            ],
+            circleData: [
+                { name: '平衡', val: 100, index: 0, bgColor: '#242630', color: '#21b8c5' },
+                { name: '敏捷', val: 100, index: 1, bgColor: '#242630', color: '#eab807' },
+                { name: '力量', val: 50, index: 2, bgColor: '#242630', color: '#fe5d47' },
             ],
         }
     }
@@ -106,7 +130,7 @@ class Report extends React.Component<any, any> {
         })
     }
     render() {
-        const { chartData } = this.state
+        const { chartData, circleData } = this.state
         return (
             <div className={ReportStyle.App}>
                 <Infos params={this.state.infos}></Infos>
@@ -131,6 +155,7 @@ class Report extends React.Component<any, any> {
                     <PosCharts chartId='one-chart' chartData={chartData} />
                 </div>
                 <div className={ReportStyle.appContent}>{this.selectComponents(this.state.tabsIndex)}</div>
+                <PosCircleCharts chartData={circleData} chartId='cirle-chart' />
             </div>
         )
     }

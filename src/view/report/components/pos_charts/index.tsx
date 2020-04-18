@@ -83,18 +83,11 @@ export default class PosCharts extends React.Component<any, any> {
         lineChart.source(chartData, {
             sort: {
                 min: 0,
-                max: 5,
+                max: 6,
             },
         })
         // 设置折线样式
         lineChart.line({ sortable: false }).position('sort*grade').shape('smooth').color('#5CDC75')
-        // 设置折线上点的样式
-        // lineChart.point().position('sort*grade').shape('smooth').color('#fff').style({ stroke: '#fff', lineWidth: 1 })
-        // 设置渐变区域显示样式
-        // lineChart.area().position('sort*grade').shape('smooth').style({
-        //     fillStyle: 'l(90) 0:#ffffff 1:#1f2122',
-        //     fillOpacity: 0.2,
-        // })
         // 设置分数轴的样式
         lineChart.axis('grade', {
             grid: {
@@ -204,7 +197,7 @@ export default class PosCharts extends React.Component<any, any> {
     render() {
         let { chartId } = this.props
         return (
-            <div ref={chartId} className={PosChartStyle['charts-wrapper']}>
+            <div className={PosChartStyle['charts-wrapper']}>
                 <canvas id={chartId} style={{ width: '100%' }}></canvas>
             </div>
         )
