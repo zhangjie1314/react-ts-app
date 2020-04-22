@@ -29,4 +29,9 @@
             }
         }
     }
+    .appContent {
+        height: calc(100vh - 80px - 176px);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
 }

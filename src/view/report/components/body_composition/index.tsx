@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PosCharts from '../../../components/pos_charts'
 import FiancoContrast from '../../../components/fianco_contrast'
-import PerfectCircumferenceStyle from './index.module.scss'
+import BodyCompositionStyle from './index.module.scss'
 import { FiancoRules } from '../../../../types/components/fianco_contrast'
 
 export default class BodyComposition extends Component<any, any> {
@@ -60,6 +60,9 @@ export default class BodyComposition extends Component<any, any> {
             ],
             fiancoData: [],
         }
+    }
+    componentDidMount() {
+        this.getFiancoContrastData()
     }
     // 获取体侧数据
     getFiancoContrastData = () => {
@@ -124,31 +127,91 @@ export default class BodyComposition extends Component<any, any> {
     render() {
         const { chartData } = this.state
         return (
-            <div className={PerfectCircumferenceStyle['wrapper']}>
+            <div className={BodyCompositionStyle['wrapper']} ref='bodyComposition'>
                 {/* 图表 */}
                 <PosCharts chartId='body-composition-chart' chartData={chartData} />
                 {/* 对比 */}
                 <FiancoContrast fiancoArr={this.state.fiancoData} />
-                {/* 完美围度数据 */}
-                <div className={PerfectCircumferenceStyle['fraction-box']}>
-                    <div className={PerfectCircumferenceStyle['fb-left']}>
-                        <div className={PerfectCircumferenceStyle['fbl-num-box']}>
-                            <span className={PerfectCircumferenceStyle['num']}>80</span>
-                            <span className={PerfectCircumferenceStyle['util']}>分</span>
+                {/* 人体成分数据 */}
+                <div className={BodyCompositionStyle['content-box']}>
+                    <div className={BodyCompositionStyle['title']}>数据</div>
+                    <div className={BodyCompositionStyle['data-box']}>
+                        <div className={BodyCompositionStyle['item']}>
+                            <div className={BodyCompositionStyle['num']}>25%</div>
+                            <div className={BodyCompositionStyle['txt']}>体脂率</div>
                         </div>
-                        <div className={PerfectCircumferenceStyle['fbl-txt']}>测试得分</div>
+                        <div className={BodyCompositionStyle['line']}></div>
+                        <div className={BodyCompositionStyle['item']}>
+                            <div className={BodyCompositionStyle['num']}>25kg</div>
+                            <div className={BodyCompositionStyle['txt']}>体重</div>
+                        </div>
+                        <div className={BodyCompositionStyle['line']}></div>
+                        <div className={BodyCompositionStyle['item']}>
+                            <div className={BodyCompositionStyle['num']}>25.25</div>
+                            <div className={BodyCompositionStyle['txt']}>BMI</div>
+                        </div>
                     </div>
-                    <div className={PerfectCircumferenceStyle['fb-right']}>
-                        <p>较好</p>
-                        <p>BMI：22正常</p>
-                        <p>击败了90%的地球人</p>
+                    <div className={BodyCompositionStyle['data-box']}>
+                        <div className={BodyCompositionStyle['txt-item']}>
+                            <div className={BodyCompositionStyle['num']}>25.25kg</div>
+                            <div className={BodyCompositionStyle['txt']}>肌肉量</div>
+                        </div>
+                        <div className={BodyCompositionStyle['txt-item']}>
+                            <div className={BodyCompositionStyle['num']}>25.25kg</div>
+                            <div className={BodyCompositionStyle['txt']}>去脂体重</div>
+                        </div>
+                        <div className={BodyCompositionStyle['txt-item']}>
+                            <div className={BodyCompositionStyle['num']}>25.25kg</div>
+                            <div className={BodyCompositionStyle['txt']}>体脂量</div>
+                        </div>
+                    </div>
+                    <div className={BodyCompositionStyle['data-box']}>
+                        <div className={BodyCompositionStyle['txt-item']}>
+                            <div className={BodyCompositionStyle['num']}>25.25</div>
+                            <div className={BodyCompositionStyle['txt']}>内脏脂肪</div>
+                        </div>
+                        <div className={BodyCompositionStyle['txt-item']}>
+                            <div className={BodyCompositionStyle['num']}>25.25</div>
+                            <div className={BodyCompositionStyle['txt']}>腰臀比</div>
+                        </div>
+                        <div className={BodyCompositionStyle['txt-item']}>
+                            <div className={BodyCompositionStyle['num']}>25.25kcal</div>
+                            <div className={BodyCompositionStyle['txt']}>基础代谢值</div>
+                        </div>
                     </div>
                 </div>
-                <div className={PerfectCircumferenceStyle['photo']}></div>
+                {/* 照片展示 */}
+                <div className={BodyCompositionStyle['photo']}>
+                    <div className={BodyCompositionStyle['title']}>照片展示</div>
+                    <div className={BodyCompositionStyle['content-box']}>
+                        <div className={BodyCompositionStyle['img-box']}>
+                            <div className={BodyCompositionStyle['zm-img']}>
+                                <div className={BodyCompositionStyle['img']}>
+                                    <img src='' alt='' />
+                                </div>
+                                <div className={BodyCompositionStyle['txt']}>正面照</div>
+                            </div>
+                        </div>
+                        <div className={BodyCompositionStyle['img-box']}>
+                            <div className={BodyCompositionStyle['zm-img']}>
+                                <div className={BodyCompositionStyle['img']}>
+                                    <img src='' alt='' />
+                                </div>
+                                <div className={BodyCompositionStyle['txt']}>侧面照</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {/* 报告图片 */}
+                <div className={BodyCompositionStyle['report-img-box']}>
+                    <div className={BodyCompositionStyle['title']}>人体成分报告</div>
+                    <div className={BodyCompositionStyle['content-box']}>
+                        <div className={BodyCompositionStyle['img-box']}>
+                            <img src='' alt='' />
+                        </div>
+                    </div>
+                </div>
             </div>
         )
-    }
-    componentDidMount() {
-        this.getFiancoContrastData()
     }
 }
