@@ -61,9 +61,10 @@ export default class PosCharts extends React.Component<any, any> {
             const wVal = document.body.offsetWidth
             chart = new F2.Chart({
                 id: chartId,
-                height: (207 / 375) * wVal,
+                height: (220 / 375) * wVal,
                 pixelRatio: window.devicePixelRatio,
                 plugins: [ScrollBar, Tooltip, Gesture, Guide],
+                padding: ['auto', 30, 'auto', 30],
             })
         }
         this.setState(
