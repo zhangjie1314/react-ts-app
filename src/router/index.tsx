@@ -10,8 +10,8 @@ export default class Routes extends React.Component {
         return (
             <HashRouter>
                 <Switch>
-                    <Route path='/contrast' component={Contrast} />
-                    <Route path='/report' component={Report} />
+                    <Route path='/contrast/:type' component={Contrast} />
+                    <Route path='/report/:type' component={Report} />
                     <Route component={Nothing} />
                 </Switch>
             </HashRouter>

@@ -28,11 +28,6 @@ export default class UserInfo extends React.Component<any, any> {
                             {this.props.params.sex === 0 ? '男' : 'nv'}
                         </div>
                     </div>
-                    <div className={`${InfoStyle.grayColor} ${InfoStyle.fs15} ${InfoStyle.bd}`}>
-                        <span>{this.props.params.birthday}</span>
-                        <span>{this.props.params.height}</span>
-                        <span>{this.props.params.weight}</span>
-                    </div>
                 </div>
             </div>
         )

@@ -1,11 +1,11 @@
 .Infos {
     display: flex;
     align-items: center;
-    padding: 12px 0;
+    padding: 64px 0 0;
     .img {
-        width: 88px;
-        height: 88px;
-        margin-left: 40px;
+        width: 112px;
+        height: 112px;
+        margin-left: 54px;
         border-radius: 50%;
         background-color: gray;
         img {
@@ -15,8 +15,7 @@
     }
     .text {
         margin-left: 20px;
-        .hd,
-        .bd {
+        .hd {
             display: flex;
             align-items: baseline;
             margin-bottom: 10px;
