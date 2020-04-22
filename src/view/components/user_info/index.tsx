@@ -2,6 +2,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import InfoStyle from './index.module.scss'
+import normel from '../../../assets/img/normal.png'
 import male from '../../../assets/img/male.png'
 import female from '../../../assets/img/female.png'
 
@@ -21,7 +22,7 @@ export default class UserInfo extends React.Component<any, any> {
         return (
             <div className={InfoStyle.Infos}>
                 <div className={InfoStyle.img}>
-                    <img src={this.props.params.img} alt='' />
+                    <img src={this.props.params.img ? this.props.params.img : normel} alt='' />
                 </div>
                 <div className={InfoStyle.text}>
                     <div className={InfoStyle.hd}>

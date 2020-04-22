@@ -1,27 +1,27 @@
 .App {
+    background-color: #121212;
     .head {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 10px 0 20px;
+        padding: 36px 0;
     }
     .text {
-        font-size: 24px;
-        color: hsla(0, 0%, 100%, 0.3);
-        margin-left: 20px;
+        font-size: 20px;
+        color: #838383;
+        margin-left: 96px;
     }
     .btn {
         width: 136px;
         height: 56px;
         line-height: 56px;
-        border: 2px solid #21b8c5;
+        border: 2px solid #fff;
         outline: none;
         text-align: center;
-        border-radius: 8px;
+        border-radius: 28px;
         font-size: 24px;
-        color: #21b8c5;
-        margin-right: 20px;
-        background: #1f2122;
+        color: #fff;
+        margin-right: 46px;
     }
     .dialogMask {
         display: none;
