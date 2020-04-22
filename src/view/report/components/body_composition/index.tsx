@@ -3,11 +3,61 @@ import PosCharts from '../../../components/pos_charts'
 import FiancoContrast from '../../../components/fianco_contrast'
 import PerfectCircumferenceStyle from './index.module.scss'
 import { FiancoRules } from '../../../../types/components/fianco_contrast'
-export default class PerfectCircumference extends Component<any, any> {
+
+export default class BodyComposition extends Component<any, any> {
     constructor(props: any) {
         super(props)
         this.state = {
-            chartData: [],
+            chartData: [
+                {
+                    time: '04.14\n08:01',
+                    grade: 40,
+                    sort: 0,
+                    type: 2,
+                },
+                {
+                    time: '04.14\n08:02',
+                    grade: 56,
+                    sort: 1,
+                    type: 2,
+                },
+                {
+                    time: '04.14\n08:03',
+                    grade: 43,
+                    sort: 2,
+                    type: 2,
+                },
+                {
+                    time: '04.14\n08:04',
+                    grade: 60,
+                    sort: 3,
+                    type: 2,
+                },
+                {
+                    time: '04.14\n08:05',
+                    grade: 58,
+                    sort: 4,
+                    type: 2,
+                },
+                {
+                    time: '04.14\n08:06',
+                    grade: 50,
+                    sort: 5,
+                    type: 2,
+                },
+                {
+                    time: '04.14\n08:07',
+                    grade: 59,
+                    sort: 6,
+                    type: 2,
+                },
+                {
+                    time: '04.14\n08:08',
+                    grade: 80,
+                    sort: 7,
+                    type: 2,
+                },
+            ],
             fiancoData: [],
         }
     }
@@ -69,68 +119,7 @@ export default class PerfectCircumference extends Component<any, any> {
                 selected: 0,
             },
         ]
-        const chartData = [
-            {
-                time: '04.14\n08:01',
-                grade: 40,
-                sort: 0,
-                type: 2,
-            },
-            {
-                time: '04.14\n08:02',
-                grade: 56,
-                sort: 1,
-                type: 2,
-            },
-            {
-                time: '04.14\n08:03',
-                grade: 43,
-                sort: 2,
-                type: 2,
-            },
-            {
-                time: '04.14\n08:04',
-                grade: 60,
-                sort: 3,
-                type: 2,
-            },
-            {
-                time: '04.14\n08:05',
-                grade: 58,
-                sort: 4,
-                type: 2,
-            },
-            {
-                time: '04.14\n08:06',
-                grade: 50,
-                sort: 5,
-                type: 2,
-            },
-            {
-                time: '04.14\n08:07',
-                grade: 59,
-                sort: 6,
-                type: 2,
-            },
-            {
-                time: '04.14\n08:08',
-                grade: 80,
-                sort: 7,
-                type: 2,
-            },
-        ]
-        this.setState({ fiancoData, chartData })
-        // fetchPost('/community/cpDynamicList', {
-        //     cpAreaId: '473f8abe917448d98d993d806bd37666',
-        //     pageSize: 10
-        // })
-        //     .then(res => {
-        //         this.setState()
-        //         console.log(res)
-        //     })
-        //     .catch(res => {
-        //         console.log(res)
-        //     })
+        this.setState({ fiancoData })
     }
     render() {
         const { chartData } = this.state
