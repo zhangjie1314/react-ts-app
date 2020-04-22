@@ -61,7 +61,10 @@ export default class FiancoContrast extends React.Component<any, any> {
         return (
             <div className={FCStyle.App}>
                 <div className={FCStyle.head}>
-                    <div className={FCStyle.text}>{`共${lg}次体测；最近体测时间：${times}`}</div>
+                    <div className={FCStyle.text}>
+                        <p>{`最近体测时间：${times}；`}</p>
+                        <p>{`共${lg}次体测`}</p>
+                    </div>
                     <div className={FCStyle.btn} onClick={this.handleDialogFn}>
                         体测对比
                     </div>
