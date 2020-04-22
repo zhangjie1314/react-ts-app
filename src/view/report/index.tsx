@@ -20,15 +20,15 @@ export default class Report extends Component<any, any> {
                 birthday: '----/--/--',
                 sex: 0,
                 height: '--cm',
-                weight: '--kg',
+                weight: '--kg'
             },
             tabs: [],
             tabsId: 0,
             circleData: [
                 { name: '平衡', val: 100, index: 0, bgColor: '#242630', color: '#21b8c5' },
                 { name: '敏捷', val: 100, index: 1, bgColor: '#242630', color: '#eab807' },
-                { name: '力量', val: 50, index: 2, bgColor: '#242630', color: '#fe5d47' },
-            ],
+                { name: '力量', val: 50, index: 2, bgColor: '#242630', color: '#fe5d47' }
+            ]
         }
     }
     /**
@@ -39,7 +39,7 @@ export default class Report extends Component<any, any> {
         this.setState({ tabsId: id })
     }
     componentDidMount() {
-        disableBodyScroll(this.refs.reportContentBox)
+        disableBodyScroll(this.refs.reportContentBox) // 禁止body滚动
         // 获取路由参数
         const tabsId = Number(this.props.match.params.type) === 99 ? 6 : Number(this.props.match.params.type)
         // 赋值用户信息
@@ -49,7 +49,7 @@ export default class Report extends Component<any, any> {
             birthday: '1995/02/15',
             sex: 0,
             height: '175cm',
-            weight: '120kg',
+            weight: '120kg'
         }
         const tabs: tabsTyps[] = [
             { name: '人体成分', id: 6 },
@@ -57,12 +57,12 @@ export default class Report extends Component<any, any> {
             { name: '体适能评估', id: 1 },
             { name: '静态评估', id: 2 },
             { name: '运动评估', id: 3 },
-            { name: '运动表现', id: 4 },
+            { name: '运动表现', id: 4 }
         ]
         this.setState({
             infos,
             tabs,
-            tabsId,
+            tabsId
         })
     }
     /**
@@ -85,7 +85,7 @@ export default class Report extends Component<any, any> {
         }
     }
     componentWillUnmount() {
-        clearAllBodyScrollLocks()
+        clearAllBodyScrollLocks() //释放body滚动
     }
     render() {
         const { tabsId } = this.state
