@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import ReportStyle from './index.module.scss'
-import Infos from '../components/user_info'
+import UserInfos from '../components/user_info'
 import PerfectCircumference from './components/perfect_circumference'
 import { InfosRules } from '../../types/components/infos'
 import BodyComposition from './components/body_composition'
@@ -91,7 +91,7 @@ export default class Report extends Component<any, any> {
         const { tabsId } = this.state
         return (
             <div className={ReportStyle.App}>
-                <Infos params={this.state.infos}></Infos>
+                <UserInfos params={this.state.UserInfos} />
                 <div className={ReportStyle.tabsContain}>
                     <div className={ReportStyle.tabs}>
                         {this.state.tabs.map((itm: tabsTyps, idx: number) => {
