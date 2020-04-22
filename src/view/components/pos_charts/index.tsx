@@ -1,7 +1,8 @@
+// 曲线图组件
 import React from 'react'
 import PropTypes from 'prop-types'
 import F2 from '@antv/f2/lib/core'
-import ChartItemObj from '../../../../types/components/pos_charts'
+import ChartItemObj from '../../../types/components/pos_charts'
 import PosChartStyle from './index.module.scss'
 
 require('@antv/f2/lib/geom/line') // 只加载折线图
@@ -23,16 +24,16 @@ export default class PosCharts extends React.Component<any, any> {
             lineChartXTicks: [],
             lineChartYTicks: [],
             chartTooltipText: '',
-            pointsObj: null,
+            pointsObj: null
         }
     }
     static defaultProps = {
         chartData: [],
-        chartId: '',
+        chartId: ''
     }
     static propTypes = {
         chartData: PropTypes.array,
-        chartId: PropTypes.string,
+        chartId: PropTypes.string
     }
 
     componentWillReceiveProps(nextProps: any) {
@@ -61,7 +62,7 @@ export default class PosCharts extends React.Component<any, any> {
                 id: chartId,
                 height: (207 / 375) * wVal,
                 pixelRatio: window.devicePixelRatio,
-                plugins: [ScrollBar, Tooltip, Gesture, Guide],
+                plugins: [ScrollBar, Tooltip, Gesture, Guide]
             })
         }
         this.setState(
@@ -69,11 +70,11 @@ export default class PosCharts extends React.Component<any, any> {
                 lineChartXTicks: lcxt,
                 lineChartYTicks: lcyt,
                 lineChart: chart ? chart : this.state.lineChart,
-                curPointArr: data[0],
+                curPointArr: data[0]
             },
             () => {
                 this.changeMainChart()
-            },
+            }
         )
     }
 
@@ -83,8 +84,8 @@ export default class PosCharts extends React.Component<any, any> {
         lineChart.source(chartData, {
             sort: {
                 min: 0,
-                max: 6,
-            },
+                max: 6
+            }
         })
         // 设置折线样式
         lineChart.line({ sortable: false }).position('sort*grade').shape('smooth').color('#5CDC75')
@@ -93,25 +94,25 @@ export default class PosCharts extends React.Component<any, any> {
             grid: {
                 stroke: '#48494c',
                 lineDash: [2, 2],
-                lineWidth: 1,
+                lineWidth: 1
             },
-            line: null,
+            line: null
         })
         // 设置时间轴的样式
         lineChart.axis('sort', {
             line: {
                 lineWidth: 1,
                 stroke: '#292929',
-                top: true,
+                top: true
             },
             grid: null,
             label(text: string, index: number, total: any) {
                 return {
                     fontSize: 12,
                     // 在这里将横坐标显示为 time
-                    text: chartData[index] ? chartData[index].time : '',
+                    text: chartData[index] ? chartData[index].time : ''
                 }
-            },
+            }
         })
         // 创建显示点
         const pointsObj = this.createrShowPointHtml()
@@ -120,10 +121,10 @@ export default class PosCharts extends React.Component<any, any> {
             gesture: {
                 tap: (data: any) => {
                     this.setState({
-                        curPointArr: data[0],
+                        curPointArr: data[0]
                     })
-                },
-            },
+                }
+            }
         })
         // 图表平移
         lineChart.interaction('pan')
@@ -131,14 +132,14 @@ export default class PosCharts extends React.Component<any, any> {
         lineChart.scrollBar({
             mode: 'x',
             xStyle: {
-                offsetY: -5,
-            },
+                offsetY: -5
+            }
         })
         // 渲染
         lineChart.render()
         // 设置数据
         this.setState({
-            pointsObj,
+            pointsObj
         })
     }
     /**
@@ -155,18 +156,18 @@ export default class PosCharts extends React.Component<any, any> {
                 fill: '#fff',
                 lineWidth: 10,
                 strokeStyle: '#fff',
-                strokeOpacity: 0.2,
-            },
+                strokeOpacity: 0.2
+            }
         })
         // 创建当前显示的提示框
         const lineTips = lineChart.guide().html({
             position: [curPointArr.sort, curPointArr.grade],
             html: this.creatPointHtml(curPointArr),
-            limitInPlot: true,
+            limitInPlot: true
         })
         return {
             linePoint,
-            lineTips,
+            lineTips
         }
     }
     /**

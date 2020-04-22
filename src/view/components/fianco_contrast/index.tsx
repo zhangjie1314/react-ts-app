@@ -1,9 +1,9 @@
 // 体测对比
 import React from 'react'
-import FCStyle from './fianco_contrast.module.scss'
+import FCStyle from './index.module.scss'
 // import PropTypes from 'prop-types'
 
-import { FiancoRules } from '../../../../types/components/fianco_contrast/fianco_contrast'
+import { FiancoRules } from '../../../types/components/fianco_contrast'
 
 export default class FiancoContrast extends React.Component<any, any> {
     constructor(props: any) {

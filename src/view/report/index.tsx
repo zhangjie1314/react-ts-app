@@ -2,9 +2,9 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 
 import ReportStyle from './index.module.scss'
-import Infos from './components/infos/infos'
-import PerfectCircumference from './perfect_circumference'
-import { InfosRules } from '../../types/components/infos/infos'
+import Infos from '../components/user_info'
+import PerfectCircumference from './components/perfect_circumference'
+import { InfosRules } from '../../types/components/infos'
 
 interface tabsTyps {
     name?: string
@@ -20,15 +20,15 @@ class Report extends React.Component<any, any> {
                 birthday: '----/--/--',
                 sex: 0,
                 height: '--cm',
-                weight: '--kg',
+                weight: '--kg'
             },
             tabs: [],
             tabsIndex: 0,
             circleData: [
                 { name: '平衡', val: 100, index: 0, bgColor: '#242630', color: '#21b8c5' },
                 { name: '敏捷', val: 100, index: 1, bgColor: '#242630', color: '#eab807' },
-                { name: '力量', val: 50, index: 2, bgColor: '#242630', color: '#fe5d47' },
-            ],
+                { name: '力量', val: 50, index: 2, bgColor: '#242630', color: '#fe5d47' }
+            ]
         }
     }
     /**
@@ -45,18 +45,18 @@ class Report extends React.Component<any, any> {
             birthday: '1995/02/15',
             sex: 0,
             height: '175cm',
-            weight: '120kg',
+            weight: '120kg'
         }
         const tabs: tabsTyps[] = [
             { name: '完美围度', id: 0 },
             { name: '体适能评估', id: 1 },
             { name: '静态评估', id: 2 },
             { name: '运动评估', id: 3 },
-            { name: '运动表现', id: 4 },
+            { name: '运动表现', id: 4 }
         ]
         this.setState({
             infos,
-            tabs,
+            tabs
         })
     }
     /**
