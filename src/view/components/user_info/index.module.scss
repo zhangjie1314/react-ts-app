@@ -19,16 +19,14 @@
             display: flex;
             align-items: baseline;
             margin-bottom: 10px;
-            span {
-                margin-right: 20px;
-            }
         }
         .divSex {
-            margin-left: 10px;
+            margin: 0px 0 0 18px;
+            img {
+                width: 28px;
+                height: 28px;
+            }
         }
-    }
-    .flex {
-        display: flex;
     }
     .whiteColor {
         color: #fff;

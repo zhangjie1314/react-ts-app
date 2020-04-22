@@ -2,6 +2,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import InfoStyle from './index.module.scss'
+import male from '../../../assets/img/male.png'
+import female from '../../../assets/img/female.png'
 
 export default class UserInfo extends React.Component<any, any> {
     constructor(props: any) {
@@ -22,10 +24,10 @@ export default class UserInfo extends React.Component<any, any> {
                     <img src={this.props.params.img} alt='' />
                 </div>
                 <div className={InfoStyle.text}>
-                    <div className={`${InfoStyle.flex} ${InfoStyle.hd}`}>
+                    <div className={InfoStyle.hd}>
                         <div className={`${InfoStyle.whiteColor} ${InfoStyle.fs36}`}>{this.props.params.name}</div>
-                        <div className={`${InfoStyle.grayColor} ${InfoStyle.fs15} ${InfoStyle.divSex}`}>
-                            {this.props.params.sex === 0 ? '男' : 'nv'}
+                        <div className={`${InfoStyle.divSex}`}>
+                            <img src={this.props.params.sex === 0 ? male : female} alt='' />
                         </div>
                     </div>
                 </div>
