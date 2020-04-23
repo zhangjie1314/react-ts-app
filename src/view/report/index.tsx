@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
+import { observer, inject } from 'mobx-react'
+import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
 import ReportStyle from './index.module.scss'
 import UserInfos from '../components/user_info'
 import PerfectCircumference from './components/perfect_circumference'
 import { InfosRules } from '../../types/components/infos'
 import BodyComposition from './components/body_composition'
-import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
-import { observer, inject } from 'mobx-react'
+import FitnessAssessment from './components/fitness_assessment'
 
 interface tabsTyps {
     name?: string
@@ -98,7 +99,7 @@ export default class Report extends Component<any, any> {
             case 3:
                 return <div>3</div>
             case 4:
-                return <div>4</div>
+                return <FitnessAssessment />
             case 6:
                 return <BodyComposition />
             default:

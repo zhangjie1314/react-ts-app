@@ -55,3 +55,23 @@ export const callAppMenthd: (code: string, params: object) => void = (funcName, 
         }
     }
 }
+/**
+ * 调用app分享报告图片方法
+ */
+export const callAppShareImgMenthd: (img: string, type: any) => void = (img, type) => {
+    const phoneType = getPhoneType()
+    console.log('传递给APP的参数：', img, type)
+    if (phoneType === 1) {
+        try {
+            window.webkit.messageHandlers.shareResultImg.postMessage(JSON.stringify({ img, type }))
+        } catch (e) {
+            console.log('调用IOS方法出错：', e)
+        }
+    } else if (phoneType === 0) {
+        try {
+            window.posTestShare.shareResultImg(img, type)
+        } catch (e) {
+            console.log('调用Android方法出错：', e)
+        }
+    }
+}

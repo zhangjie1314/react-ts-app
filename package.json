@@ -64,6 +64,7 @@
         "postcss-px2rem": "^0.3.0",
         "postcss-px2rem-exclude": "^0.0.6",
         "postcss-safe-parser": "4.0.1",
+        "qrcode.react": "^1.0.0",
         "react": "^16.13.0",
         "react-app-polyfill": "^1.0.6",
         "react-dev-utils": "^10.2.0",
