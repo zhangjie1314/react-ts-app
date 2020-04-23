@@ -43,15 +43,23 @@ export default class Report extends Component<any, any> {
         this.setState({ tabsId: id })
     }
     componentDidMount() {
-        // 获取url query 参数
-        const queryParams = new URLSearchParams(this.props.location.search)
         // 禁止body滚动
         disableBodyScroll(this.refs.reportContentBox)
+        // 获取url query 参数
+        const queryParams = new URLSearchParams(this.props.location.search)
         // 获取菜单ID
         const tabsId = Number(this.props.match.params.type) === 99 ? 6 : Number(this.props.match.params.type)
         this.props.reportStore.setTabsId(tabsId)
         // 获取会员ID
         this.props.reportStore.setMemberId(queryParams.get('memberId'))
+        // 获取是否为独立教练
+        this.props.reportStore.setIsDlCoach(queryParams.get('isDlCoach'))
+        // 获取教练ID
+        this.props.reportStore.setCoachId(queryParams.get('coachId'))
+        // 获取当前是否为分享打开的页面
+        this.props.reportStore.setIsShare(queryParams.get('isshare'))
+        // 获取当前是否为工作室
+        this.props.reportStore.setIsFromStudio(queryParams.get('fromstudio'))
         // 赋值用户信息
         const infos: InfosRules = {
             img: '',
