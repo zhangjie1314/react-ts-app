@@ -31,4 +31,9 @@ export default class ReportStore {
     @action setIsFromStudio(res: number) {
         this.isFromStudio = res
     }
+    // 用户信息
+    @observable userInfos: object = {}
+    @action setUserInfos(res: any) {
+        this.userInfos = res
+    }
 }
