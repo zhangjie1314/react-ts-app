@@ -63,7 +63,7 @@ export default class PosCharts extends React.Component<any, any> {
                 height: (220 / 375) * wVal,
                 pixelRatio: window.devicePixelRatio,
                 plugins: [ScrollBar, Tooltip, Gesture, Guide],
-                padding: [30, 30, 'auto', 30],
+                padding: [40, 30, 'auto', 30],
             })
         }
         this.setState(

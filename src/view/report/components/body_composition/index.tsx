@@ -2,12 +2,16 @@ import React, { Component } from 'react'
 import { PhotoProvider, PhotoConsumer } from 'react-photo-view'
 import 'react-photo-view/dist/index.css'
 import Html2canvas from 'html2canvas'
+import { observer, inject } from 'mobx-react'
+import { callAppMenthd } from '../../../../utils'
 import PosCharts from '../../../components/pos_charts'
 import FiancoContrast from '../../../components/fianco_contrast'
 import BodyCompositionStyle from './index.module.scss'
 import { FiancoRules } from '../../../../types/components/fianco_contrast'
 import NoImg from '../../../../assets/img/no-img.png'
 
+@inject('reportStore')
+@observer
 export default class BodyComposition extends Component<any, any> {
     constructor(props: any) {
         super(props)
@@ -136,6 +140,20 @@ export default class BodyComposition extends Component<any, any> {
             console.log(data)
         })
     }
+    // 去体测
+    private gotoTcFun = () => {
+        const { userInfo } = this.props.reportStore
+        callAppMenthd('gotoTestTool', {
+            age: userInfo.age,
+            birthday: userInfo.birthday,
+            gender: userInfo.gender,
+            height: userInfo.height,
+            memberId: userInfo.memberId,
+            name: userInfo.name,
+            weight: userInfo.weight,
+            headPath: userInfo.headPath,
+        })
+    }
     render() {
         const { chartData } = this.state
         return (
@@ -231,7 +249,9 @@ export default class BodyComposition extends Component<any, any> {
                 </div>
                 {/* 底部按钮 */}
                 <div className={BodyCompositionStyle['bottom-btn-box']}>
-                    <div className={BodyCompositionStyle['qtc-btn']}>去体测</div>
+                    <div className={BodyCompositionStyle['qtc-btn']} onClick={this.gotoTcFun}>
+                        去体测
+                    </div>
                     <div className={BodyCompositionStyle['share-report-btn']} onClick={this.toImg}>
                         分享报告图片
                     </div>
