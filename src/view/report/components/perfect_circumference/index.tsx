@@ -17,7 +17,7 @@ export default class PerfectCircumference extends Component<any, any> {
         this.state = {
             chartData: [],
             fiancoData: [],
-            fblObj: {}
+            fblObj: {},
         }
     }
     // 获取体侧数据
@@ -27,113 +27,113 @@ export default class PerfectCircumference extends Component<any, any> {
                 id: '1',
                 times: '2020年04月08日',
                 score: '54',
-                selected: 0
+                selected: 0,
             },
             {
                 id: '2',
                 times: '2021年04月08日',
                 score: '54',
-                selected: 0
+                selected: 0,
             },
             {
                 id: '3',
                 times: '2020年04月08日',
                 score: '54',
-                selected: 0
+                selected: 0,
             },
             {
                 id: '4',
                 times: '2020年04月08日',
                 score: '54',
-                selected: 0
+                selected: 0,
             },
             {
                 id: '5',
                 times: '2020年04月08日',
                 score: '54',
-                selected: 0
+                selected: 0,
             },
             {
                 id: '6',
                 times: '2020年04月08日',
                 score: '54',
-                selected: 0
+                selected: 0,
             },
             {
                 id: '7',
                 times: '2020年04月08日',
                 score: '54',
-                selected: 0
+                selected: 0,
             },
             {
                 id: '8',
                 times: '2020年04月08日',
                 score: '54',
-                selected: 0
+                selected: 0,
             },
             {
                 id: '9',
                 times: '2020年04月08日',
                 score: '54',
-                selected: 0
-            }
+                selected: 0,
+            },
         ]
         const chartData = [
             {
                 time: '04.14\n08:01',
                 grade: 40,
                 sort: 0,
-                type: 2
+                type: 2,
             },
             {
                 time: '04.14\n08:02',
                 grade: 56,
                 sort: 1,
-                type: 2
+                type: 2,
             },
             {
                 time: '04.14\n08:03',
                 grade: 43,
                 sort: 2,
-                type: 2
+                type: 2,
             },
             {
                 time: '04.14\n08:04',
                 grade: 60,
                 sort: 3,
-                type: 2
+                type: 2,
             },
             {
                 time: '04.14\n08:05',
                 grade: 58,
                 sort: 4,
-                type: 2
+                type: 2,
             },
             {
                 time: '04.14\n08:06',
                 grade: 50,
                 sort: 5,
-                type: 2
+                type: 2,
             },
             {
                 time: '04.14\n08:07',
                 grade: 59,
                 sort: 6,
-                type: 2
+                type: 2,
             },
             {
                 time: '04.14\n08:08',
                 grade: 80,
                 sort: 7,
-                type: 2
-            }
+                type: 2,
+            },
         ]
         const fblObj: fblObjType = {
             num: 80,
             pj: '较好',
             bmi: '22正常',
             jb: 90,
-            photo: ''
+            photo: '',
         }
         this.setState({ fiancoData, chartData, fblObj })
         // fetchPost('/community/cpDynamicList', {
@@ -153,7 +153,7 @@ export default class PerfectCircumference extends Component<any, any> {
         return (
             <div className={PcStyle['wrapper']}>
                 {/* 图表 */}
-                <PosCharts chartId='body-composition-chart' chartData={chartData} />
+                <PosCharts chartId='perfect-circumference-chart' chartData={chartData} />
                 {/* 体测对比 */}
                 <FiancoContrast fiancoArr={this.state.fiancoData} />
                 {/* 完美围度数据 */}

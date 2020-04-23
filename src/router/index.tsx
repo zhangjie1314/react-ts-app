@@ -1,6 +1,5 @@
 import React from 'react'
-import { HashRouter, Route, Switch } from 'react-router-dom'
-
+import { Route, Switch, HashRouter } from 'react-router-dom'
 import Nothing from '../view/nothing/index'
 import Contrast from '../view/contrast/index'
 import Report from '../view/report/index'
@@ -10,9 +9,9 @@ export default class Routes extends React.Component {
         return (
             <HashRouter>
                 <Switch>
-                    <Route path='/contrast/:type' component={Contrast} />
-                    <Route path='/report/:type' component={Report} />
-                    <Route component={Nothing} />
+                    <Route exact path='/contrast/:type' component={Contrast} />
+                    <Route exact path='/report/:type' component={Report} />
+                    <Route exact component={Nothing} />
                 </Switch>
             </HashRouter>
         )

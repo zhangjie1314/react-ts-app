@@ -37,7 +37,6 @@ export default class PosCharts extends React.Component<any, any> {
     }
 
     componentWillReceiveProps(nextProps: any) {
-        console.log(nextProps)
         // 处理数据
         this.handleChartData(nextProps.chartData)
     }
@@ -52,7 +51,7 @@ export default class PosCharts extends React.Component<any, any> {
         let lcyt: any[] = []
         let { chartId } = this.props
         let chart = null
-        data.map((el, idx) => {
+        data.forEach((el, idx) => {
             lcxt.push(el.time)
             lcyt.push(el.grade)
         })
@@ -64,7 +63,7 @@ export default class PosCharts extends React.Component<any, any> {
                 height: (220 / 375) * wVal,
                 pixelRatio: window.devicePixelRatio,
                 plugins: [ScrollBar, Tooltip, Gesture, Guide],
-                padding: ['auto', 30, 'auto', 30],
+                padding: [30, 30, 'auto', 30],
             })
         }
         this.setState(
@@ -194,7 +193,6 @@ export default class PosCharts extends React.Component<any, any> {
         </div>`
     }
     componentWillUnmount() {
-        console.log(this.state.lineChart)
         if (this.state.lineChart) {
             this.state.lineChart.clear()
         }
