@@ -39,7 +39,8 @@ export default class Report extends Component<any, any> {
      * 切换tab
      */
     changePage = (id: number) => {
-        console.log(id)
+        this.props.history.replace({ pathname: `/report/${id}`, search: this.props.history.location.search })
+        this.props.reportStore.setTabsId(id)
         this.setState({ tabsId: id })
     }
     componentDidMount() {
@@ -48,7 +49,7 @@ export default class Report extends Component<any, any> {
         // 获取url query 参数
         const queryParams = new URLSearchParams(this.props.location.search)
         // 获取菜单ID
-        const tabsId = Number(this.props.match.params.type) === 99 ? 6 : Number(this.props.match.params.type)
+        const tabsId = Number(this.props.match.params.type) === 99 ? 5 : Number(this.props.match.params.type)
         this.props.reportStore.setTabsId(tabsId)
         // 获取会员ID
         this.props.reportStore.setMemberId(queryParams.get('memberId'))
@@ -70,12 +71,12 @@ export default class Report extends Component<any, any> {
             weight: '120kg',
         }
         const tabs: tabsTyps[] = [
-            { name: '人体成分', id: 6 },
+            { name: '人体成分', id: 5 },
             { name: '完美围度', id: 0 },
-            { name: '体适能评估', id: 1 },
+            { name: '体适能评估', id: 4 },
             { name: '静态评估', id: 2 },
             { name: '运动评估', id: 3 },
-            { name: '运动表现', id: 4 },
+            { name: '运动表现', id: 1 },
         ]
         this.setState({
             infos,
@@ -99,6 +100,8 @@ export default class Report extends Component<any, any> {
             case 4:
                 return <div>4</div>
             case 6:
+                return <BodyComposition />
+            default:
                 return <BodyComposition />
         }
     }
