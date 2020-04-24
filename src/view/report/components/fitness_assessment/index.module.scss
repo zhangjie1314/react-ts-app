@@ -1,0 +1,307 @@
+.wrapper {
+    color: #fff;
+    font-size: 28px;
+    padding-bottom: 70px;
+    .score-box {
+        padding: 80px 0;
+        text-align: center;
+        .score {
+            font-size: 60px;
+            color: #23cfe2;
+            .num {
+                font-size: 100px;
+                line-height: 1;
+            }
+            span {
+                vertical-align: bottom;
+            }
+        }
+    }
+    .content-box {
+        padding: 0 32px 80px;
+        .title {
+            font-size: 32px;
+            padding-bottom: 20px;
+        }
+        .content {
+            .data-item {
+                background: #fff;
+                border-radius: 8px;
+                margin-bottom: 24px;
+                color: #000;
+                padding: 20px 30px;
+                .top-box {
+                    text-align: left;
+                    padding-bottom: 20px;
+                    .pb-title {
+                        font-size: 32px;
+                        font-weight: 500;
+                        margin-bottom: 5px;
+                    }
+                    .pb-tips {
+                        font-size: 24px;
+                        background-size: 24px;
+                    }
+                }
+                .bottom-box {
+                    border-bottom: 1px solid #4b4c60;
+                    &:last-child {
+                        border-bottom: 0;
+                    }
+                    .level-title {
+                        padding: 5px 0 30px;
+                        text-align: left;
+                        font-size: 24px;
+                    }
+                    .progress-block {
+                        display: flex;
+                        flex-direction: row;
+                        padding-top: 30px;
+                        .progress-item {
+                            flex: 1;
+                            width: 100%;
+                            height: 52px;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: space-between;
+                            .headbar {
+                                height: 6px;
+                                background-color: #505455;
+                                border-right: 2px solid white;
+                                &.share-style {
+                                    position: relative;
+                                    &::after {
+                                        position: absolute;
+                                        top: 0;
+                                        right: 0;
+                                        bottom: 0;
+                                        content: '';
+                                        display: block;
+                                        width: 2px;
+                                        background: #fff;
+                                    }
+                                }
+                            }
+                            &:last-child {
+                                .headbar {
+                                    border-right: 0;
+                                    &.share-style {
+                                        &::after {
+                                            width: 0;
+                                        }
+                                    }
+                                }
+                            }
+                            .headbar-color-1 {
+                                background-color: #ffc701;
+                            }
+                            .headbar-color-2 {
+                                background-color: #21b8c5;
+                            }
+                            .headbar-color-3 {
+                                background-color: #f75944;
+                            }
+                            .text {
+                                position: relative;
+                                font-size: 24px;
+                                text-align: center;
+                                &.text-seleced-1 {
+                                    color: #ffc701;
+                                }
+                                &.text-seleced-2 {
+                                    color: #21b8c5;
+                                    .rang-start,
+                                    .rang-end {
+                                        color: #646577;
+                                    }
+                                }
+                                &.text-seleced-3 {
+                                    color: #f75944;
+                                }
+                                .rang-start,
+                                .rang-end {
+                                    position: absolute;
+                                    right: 0;
+                                    top: 0;
+                                    transform: translateX(50%);
+                                    font-family: DINCond-Black;
+                                    font-size: 26px;
+                                }
+                                .rang-start {
+                                    right: auto;
+                                    left: 0;
+                                    transform: translateX(-50%);
+                                }
+                                .share-style {
+                                    top: 8px;
+                                }
+                                .cur-value {
+                                    position: absolute;
+                                    top: -70px;
+                                    left: 50%;
+                                    transform: translateX(-50%);
+                                    font-family: DINCond-Black;
+                                    font-size: 36px;
+                                    &::after {
+                                        content: '';
+                                        position: absolute;
+                                        bottom: -10px;
+                                        left: 50%;
+                                        transform: translateX(-50%);
+                                        display: block;
+                                        width: 15px;
+                                        height: 15px;
+                                        border-radius: 50%;
+                                    }
+                                    &-1::after {
+                                        background: #ffc701;
+                                    }
+                                    &-2::after {
+                                        background: #21b8c5;
+                                    }
+                                    &-3::after {
+                                        background: #f75944;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .level-dec {
+                        margin-top: 30px;
+                        font-size: 32px;
+                        padding-bottom: 20px;
+                        text-align: center;
+                    }
+                }
+            }
+        }
+    }
+    .bottom-btn-box {
+        position: fixed;
+        bottom: 20px;
+        bottom: calc(env(safe-area-inset-bottom) + 20px);
+        left: 0;
+        right: 0;
+        font-size: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 48px;
+        .qtc-btn {
+            width: 200px;
+            height: 96px;
+            line-height: 96px;
+            text-align: center;
+            border-radius: 96px;
+            background: #fff;
+            margin-right: 30px;
+            color: #0c0c0c;
+        }
+        .share-report-btn {
+            flex: 1 0 0%;
+            height: 96px;
+            line-height: 96px;
+            border-radius: 96px;
+            text-align: center;
+            color: #fff;
+            background: #23cfe2;
+        }
+    }
+    .share-box {
+        position: fixed;
+        // bottom: -5000px;
+        bottom: 50px;
+        left: 0;
+        right: 0;
+        z-index: 999;
+        background: #18191d;
+        .share-title {
+            font-size: 42px;
+            padding: 50px 0 30px;
+            text-align: center;
+            color: #fff;
+            font-weight: bold;
+        }
+        .user-info-box {
+            text-align: center;
+            .uib-avatar {
+                width: 90px;
+                height: 90px;
+                border-radius: 50%;
+                margin-bottom: 20px;
+            }
+            .uib-name {
+                font-size: 28px;
+                color: #fff;
+            }
+        }
+        .coach-warp-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #262833;
+            color: #fff;
+            padding: 30px;
+            .coach-img-box {
+                width: 112px;
+                height: 112px;
+                border-radius: 50%;
+                background: #fff;
+                overflow: hidden;
+                img {
+                    width: 100%;
+                    height: 100%;
+                    display: block;
+                }
+            }
+            .coach-info-box {
+                padding-left: 10px;
+                flex: 1 0 0%;
+                text-align: left;
+                .coach-name-tag {
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 10px;
+                    .coach-name {
+                        font-size: 36px;
+                        font-weight: bold;
+                        margin-right: 20px;
+                    }
+                    .coach-tag {
+                        height: 40px;
+                        line-height: 40px;
+                        background: #21b8c5;
+                        padding: 0 10px;
+                        color: #313340;
+                        border-radius: 5px;
+                        font-size: 24px;
+                    }
+                }
+                .coach-service {
+                    font-size: 24px;
+                }
+            }
+            .coach-qrcode {
+                font-size: 20px;
+                text-align: center;
+                .coach-qrcode-img {
+                    width: 140px;
+                    height: 140px;
+                    display: inline-block;
+                    background: #fff;
+                    padding: 10px;
+                    border-radius: 5px;
+                    margin-bottom: 10px;
+                    svg {
+                        width: 100% !important;
+                        height: 100% !important;
+                    }
+                    canvas {
+                        width: 100% !important;
+                        height: 100% !important;
+                    }
+                }
+            }
+        }
+    }
+}
