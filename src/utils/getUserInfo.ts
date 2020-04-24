@@ -1,4 +1,5 @@
 import Apis from '../apis/report'
+import { handleHandImg } from './index'
 // 获取用户信息
 interface getUserInfosType {
     memberId: string //会员ID
@@ -35,11 +36,15 @@ export const getUserInfos = (params: getUserInfosType) => {
         if (isshare === 1) {
             // 分享
             getUserInfoByShare(memberId, isFromStudio).then(resl => {
+                // 处理用户数据
+                resl.data.headPath = handleHandImg(resl.data.headPath, isFromStudio)
                 res(resl)
             })
         } else {
             // 非分享
             getUserInfo(memberId, isFromStudio).then((resl: any) => {
+                // 处理用户数据
+                resl.data.headPath = handleHandImg(resl.data.headPath, isFromStudio)
                 res(resl)
             })
         }
