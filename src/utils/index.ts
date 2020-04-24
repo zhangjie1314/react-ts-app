@@ -33,7 +33,7 @@ export function getPhoneType(): number {
  * @param funcName 调用app方法名称
  * @param params 传给app方法的参数
  */
-export const callAppMenthd: (code: string, params: object) => void = (funcName, params) => {
+export const callAppMenthd: (code: string, params: any) => void = (funcName, params) => {
     const phoneType = getPhoneType()
     const data = {
         code: funcName,
@@ -55,6 +55,35 @@ export const callAppMenthd: (code: string, params: object) => void = (funcName, 
         }
     }
 }
+
+/**
+ * 整理微信返回url
+ * params
+ */
+export function getShareContentUrl(params: any) {
+    let url = `https://${window.location.host}/#/report/${params.tabsId}?memberId=${params.memberId}&isDlCoach=${params.isDlCoach}&isshare=1`
+    let fromstudio = params.fromstudio ? `&fromstudio=${params.fromstudio}` : ''
+    let version = params.version ? `&version=${params.version}` : ''
+    let res = `${url}${fromstudio}${version}`
+    return res
+}
+
+/**
+ * 获取cookie
+ * name
+ */
+export function getCookieByName(name: any) {
+    const strcookie = document.cookie // 获取cookie字符串
+    // alert("strcookie=="+strcookie)
+    const arrcookie = strcookie.split('; ') // 分割
+    // 遍历匹配
+    for (let i = 0; i < arrcookie.length; i++) {
+        const arr = arrcookie[i].split('=')
+        if (arr[0] == name) {
+            return arr[1]
+        }
+    }
+    return ''
 /**
  * 调用app分享报告图片方法
  */

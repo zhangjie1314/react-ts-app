@@ -1,7 +1,35 @@
 import { Toast } from 'antd-mobile'
+import { getCookieByName } from '../utils/index'
 
+function getCookie(name: string) {
+    const reg = new RegExp(`(^| )${name}=([^;]*)(;|$)`)
+    const arr: any = document.cookie.match(reg)
+    return unescape(arr[2])
+}
+function getToken(type: string) {
+    let tk = ''
+    switch (type) {
+        // 教练
+        case 'bapp':
+            tk = getCookieByName('bapp_token')
+            break
+        // 工作室
+        case 'studio2':
+            tk = getCookieByName('bapp_token')
+            break
+        // 用户
+        case 'capp':
+            tk = JSON.parse(getCookie('cUserInfo')).token
+            break
+        // 俱乐部
+        case 'studio':
+            tk = getCookieByName('studio_token')
+            break
+    }
+    return tk
+}
 const request = (url: string, config: object) => {
-    return fetch(`${process.env.REACT_APP_CAPI_API_URL}${url}`, config)
+    return fetch(url, config)
         .then((res: any) => {
             if (!res.ok) {
                 // 服务器异常返回
@@ -23,12 +51,12 @@ const request = (url: string, config: object) => {
 }
 
 // get 请求
-export const fetchGet = (url: string, params: any) => {
+export const fetchGet = (url: string, params: any, token: string) => {
     // 参数处理
     if (params) {
         let paramsArray: any = []
         //拼接参数
-        Object.keys(params).forEach(key => paramsArray.push(`${key}=${encodeURIComponent(params.key)}`))
+        Object.keys(params).forEach((key) => paramsArray.push(`${key}=${encodeURIComponent(params.key)}`))
         if (paramsArray.length > 0) {
             if (url.search(/\?/) === -1) {
                 url += '?' + paramsArray.join('&')
@@ -42,13 +70,13 @@ export const fetchGet = (url: string, params: any) => {
         headers: new Headers({
             Accept: 'application/json',
             'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-            token: '',
+            token: getToken(token),
         }),
     })
 }
 
 // post 请求
-export const fetchPost = (url: string, params: object | any) => {
+export const fetchPost = (url: string, params: object | any, token: string) => {
     let formData = new FormData()
     if (params) {
         for (let key in params) {
@@ -62,7 +90,7 @@ export const fetchPost = (url: string, params: object | any) => {
         mode: 'cors',
         headers: new Headers({
             Accept: 'application/json',
-            token: '',
+            token: getToken(token),
         }),
     })
 }

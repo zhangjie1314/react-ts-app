@@ -1,6 +1,11 @@
 import { observable, action } from 'mobx'
 
 export default class ReportStore {
+    // 版本号
+    @observable version: string = ''
+    @action setVersion(id: string) {
+        this.version = id
+    }
     // 教练ID
     @observable coachId: string = ''
     @action setCoachId(id: string) {
