@@ -239,7 +239,10 @@ export default class PerfectCircumference extends Component<any, any> {
                         </div>
                     </div>
                 </div>
-                <div className={PcStyle.shareBtn}>分享报告图片</div>
+                <div className={PcStyle.footerBtn}>
+                    <div className={PcStyle.goToTest}>去体侧</div>
+                    <div className={PcStyle.shareBtn}>分享报告图片</div>
+                </div>
             </div>
         )
     }

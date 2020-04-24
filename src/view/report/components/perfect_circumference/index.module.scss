@@ -87,20 +87,33 @@
             }
         }
     }
-    .shareBtn {
+    .footerBtn {
         position: fixed;
         z-index: 1;
         left: 0;
         right: 0;
         bottom: calc(env(safe-area-inset-bottom) +20px);
-        width: 654px;
-        height: 96px;
         margin: auto;
-        background: #23cfe2;
-        border-radius: 48px;
-        line-height: 96px;
-        text-align: center;
-        font-size: 36px;
-        color: #fff;
+        display: flex;
+        justify-content: space-around;
+        padding: 0 48px;
+        div {
+            height: 96px;
+            line-height: 96px;
+            text-align: center;
+            border-radius: 48px;
+            font-size: 36px;
+        }
+        .shareBtn {
+            width: 416px;
+            background: #23cfe2;
+            color: #fff;
+        }
+        .goToTest {
+            width: 214px;
+            background: #fff;
+            color: #0c0c0c;
+            margin-right: 30px;
+        }
     }
 }
