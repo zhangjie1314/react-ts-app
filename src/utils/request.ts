@@ -1,5 +1,5 @@
 import { Toast } from 'antd-mobile'
-import { getCookieByName } from '../utils/index'
+import { getCookieByName } from './index'
 
 function getToken(type: string) {
     let tk = ''
@@ -52,7 +52,7 @@ export const fetchGet = (url: string, params: any, token: string) => {
     if (params) {
         let paramsArray: any = []
         //拼接参数
-        Object.keys(params).forEach(key => paramsArray.push(`${key}=${encodeURIComponent(params[key])}`))
+        Object.keys(params).forEach((key) => paramsArray.push(`${key}=${encodeURIComponent(params[key])}`))
         if (paramsArray.length > 0) {
             if (url.search(/\?/) === -1) {
                 url += '?' + paramsArray.join('&')

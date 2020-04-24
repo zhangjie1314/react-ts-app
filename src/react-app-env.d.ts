@@ -74,4 +74,6 @@ interface Window {
     // 安卓 app端调用方法使用
     bMatch: any
     posTestShare: any
+    //微信jssdk对象
+    wx: any
 }

@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
-import { getUserInfos } from '../../utils/getUserInfo'
+import { setRegisterShare } from '../../utils/register_share'
+import { getUserInfos } from '../../utils/get_user_info'
 import ReportStyle from './index.module.scss'
 import UserInfos from '../components/user_info'
 import PerfectCircumference from './components/perfect_circumference'
@@ -20,14 +21,6 @@ export default class Report extends Component<any, any> {
     constructor(props: any) {
         super(props)
         this.state = {
-            infos: {
-                img: '',
-                name: '----',
-                birthday: '----/--/--',
-                sex: 0,
-                height: '--cm',
-                weight: '--kg',
-            },
             tabs: [],
             tabsId: 0,
             circleData: [
@@ -37,13 +30,29 @@ export default class Report extends Component<any, any> {
             ],
         }
     }
-    /**
-     * 切换tab
-     */
+    // 切换tab
     changePage = (id: number) => {
         this.props.history.replace({ pathname: `/report/${id}`, search: this.props.history.location.search })
         this.props.reportStore.setTabsId(id)
         this.setState({ tabsId: id })
+    }
+    // 整理微信返回url
+    getShareContentUrl = (params: any) => {
+        let url = `https://${window.location.host}/#/report/${params.tabsId}?memberId=${params.memberId}&isDlCoach=${params.isDlCoach}&isshare=1`
+        let fromstudio = params.fromstudio ? `&fromstudio=${params.fromstudio}` : ''
+        let version = params.version ? `&version=${params.version}` : ''
+        let res = `${url}${fromstudio}${version}`
+        return res
+    }
+    // 分享配置
+    configRegisterShare = (params: any) => {
+        // 调用分享
+        setRegisterShare({
+            title: `${params.name.slice(0, 1)}${params.grander === 1 ? '先生' : '女士'}的体测报告`, // 分享标题
+            details: `快去查看${params.name.slice(0, 1)}${params.grander === 1 ? '先生' : '女士'}的详细报告吧`, // 分享内容
+            pic: `${process.env.REACT_APP_FILE_URL}/app/pos/pos_logo.png`, // 分享图片
+            url: `${this.getShareContentUrl(params.urlParams)}`, // 分享链接
+        })
     }
     componentDidMount() {
         // 禁止body滚动
@@ -65,15 +74,6 @@ export default class Report extends Component<any, any> {
         this.props.reportStore.setIsFromStudio(Number(queryParams.get('fromstudio')))
         // 获取当前版本
         this.props.reportStore.setVersion(queryParams.get('version'))
-        // 赋值用户信息
-        const infos: InfosRules = {
-            img: '',
-            name: 'wayman',
-            birthday: '1995/02/15',
-            sex: 0,
-            height: '175cm',
-            weight: '120kg',
-        }
         const tabs: tabsTyps[] = [
             { name: '人体成分', id: 5 },
             { name: '完美围度', id: 0 },
@@ -90,11 +90,23 @@ export default class Report extends Component<any, any> {
         }).then((res: any) => {
             // 设置用户信息
             this.props.reportStore.setUserInfos(res.data)
+            // 分享设置
+            let pm = {
+                name: res.data.name,
+                grander: res.data.grander,
+                urlParams: {
+                    tabsId,
+                    memberId: this.props.reportStore.memberId,
+                    isDlCoach: this.props.reportStore.isDlCoach,
+                    fromstudio: this.props.reportStore.fromstudio,
+                    version: this.props.reportStore.version,
+                    isshare: this.props.reportStore.isshare,
+                },
+            }
+            this.configRegisterShare(pm)
         })
-        // 微信设置
 
         this.setState({
-            infos,
             tabs,
             tabsId,
         })

@@ -1,7 +1,7 @@
 /**
  * 俱乐部工作室API合集
  */
-import { fetchGet, fetchPost } from '../../utils/request'
+import { fetchGet } from '../../utils/request'
 
 // 获取分享学员信息
 export const getMemberInfoByStudioShare = (params: any) => {
