@@ -3,7 +3,8 @@ import { PhotoProvider, PhotoConsumer } from 'react-photo-view'
 import 'react-photo-view/dist/index.css'
 import Html2canvas from 'html2canvas'
 import { observer, inject } from 'mobx-react'
-import { callAppMenthd } from '../../../../utils'
+import QRCode from 'qrcode.react'
+import { callAppMenthd, callAppShareImgMenthd } from '../../../../utils'
 import PosCharts from '../../../components/pos_charts'
 import FiancoContrast from '../../../components/fianco_contrast'
 import BodyCompositionStyle from './index.module.scss'
@@ -135,9 +136,18 @@ export default class BodyComposition extends Component<any, any> {
     // html转图片
     private toImg = () => {
         const shareRef = this.refs.bodyShareBox as HTMLElement
-        Html2canvas(shareRef).then(res => {
-            const data = res.toDataURL('image/png', 1)
-            console.log(data)
+        Html2canvas(shareRef, {
+            useCORS: true,
+            scale: 2,
+        }).then(res => {
+            const ctx: any = res.getContext('2d')
+            // 关闭抗锯齿
+            ctx.mozImageSmoothingEnabled = false
+            ctx.webkitImageSmoothingEnabled = false
+            ctx.msImageSmoothingEnabled = false
+            ctx.imageSmoothingEnabled = false
+            const data = ctx.canvas.toDataURL('image/png')
+            callAppShareImgMenthd(data, this.props.reportStore.tabsId)
         })
     }
     // 去体测
@@ -349,6 +359,25 @@ export default class BodyComposition extends Component<any, any> {
                                     </div>
                                 </PhotoConsumer>
                             </PhotoProvider>
+                        </div>
+                    </div>
+                    {/* 教练card */}
+                    <div className={BodyCompositionStyle['coach-warp-box']}>
+                        <div className={BodyCompositionStyle['coach-img-box']}>
+                            <img src='coachInfo.headPath' alt='头像' />
+                        </div>
+                        <div className={BodyCompositionStyle['coach-info-box']}>
+                            <div className={BodyCompositionStyle['coach-name-tag']}>
+                                <div className={BodyCompositionStyle['coach-name']}>教练名称</div>
+                                <div className={BodyCompositionStyle['coach-tag']}>私人教练</div>
+                            </div>
+                            <div className={BodyCompositionStyle['coach-service']}>团课 已服务10人</div>
+                        </div>
+                        <div className={BodyCompositionStyle['coach-qrcode']}>
+                            <div className={BodyCompositionStyle['coach-qrcode-img']}>
+                                <QRCode value='https://img-dev-club.ejoyst.com/promotion' />
+                            </div>
+                            <div className='coach-qrcode-text'>长按识别我的名片</div>
                         </div>
                     </div>
                 </div>

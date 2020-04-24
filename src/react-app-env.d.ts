@@ -66,10 +66,12 @@ declare module '*.module.sass' {
 declare module '@antv/f2'
 declare module '@antv/f2/lib/core'
 declare module 'body-scroll-lock'
+declare module 'qrcode.react'
 
 interface Window {
     // ios app端调用方法使用
     webkit: any
     // 安卓 app端调用方法使用
     bMatch: any
+    posTestShare: any
 }
