@@ -37,6 +37,7 @@ export default class PosCharts extends React.Component<any, any> {
     }
 
     componentWillReceiveProps(nextProps: any) {
+        console.log(nextProps)
         // 处理数据
         this.handleChartData(nextProps.chartData)
     }
@@ -187,7 +188,7 @@ export default class PosCharts extends React.Component<any, any> {
      */
     creatPointHtml(data: any) {
         return `<div
-        style="line-height:24px;background:#fff;text-align:center;border-radius:24px;white-space:nowrap;width:46px;margin-top:-26px;">
+        style="line-height:24px;background:#fff;text-align:center;border-radius:24px;white-space:nowrap;width:46px;margin-top:-26px;color:#0c0c0c;">
             ${data.grade}${data.type === 6 ? 'kg' : '分'}
             <div style="position: absolute;bottom:-4px;left:50%;border-top: 5px solid #fff;border-left: 5px solid transparent;border-right: 5px solid transparent;transform: translateX(-50%);"></div>
         </div>`
