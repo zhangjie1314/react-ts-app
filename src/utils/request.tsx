@@ -1,11 +1,6 @@
 import { Toast } from 'antd-mobile'
 import { getCookieByName } from '../utils/index'
 
-function getCookie(name: string) {
-    const reg = new RegExp(`(^| )${name}=([^;]*)(;|$)`)
-    const arr: any = document.cookie.match(reg)
-    return unescape(arr[2])
-}
 function getToken(type: string) {
     let tk = ''
     switch (type) {
@@ -19,7 +14,7 @@ function getToken(type: string) {
             break
         // 用户
         case 'capp':
-            tk = JSON.parse(getCookie('cUserInfo')).token
+            tk = JSON.parse(getCookieByName('cUserInfo')).token
             break
         // 俱乐部
         case 'studio':
@@ -28,6 +23,7 @@ function getToken(type: string) {
     }
     return tk
 }
+
 const request = (url: string, config: object) => {
     return fetch(url, config)
         .then((res: any) => {
@@ -56,7 +52,7 @@ export const fetchGet = (url: string, params: any, token: string) => {
     if (params) {
         let paramsArray: any = []
         //拼接参数
-        Object.keys(params).forEach((key) => paramsArray.push(`${key}=${encodeURIComponent(params.key)}`))
+        Object.keys(params).forEach(key => paramsArray.push(`${key}=${encodeURIComponent(params[key])}`))
         if (paramsArray.length > 0) {
             if (url.search(/\?/) === -1) {
                 url += '?' + paramsArray.join('&')

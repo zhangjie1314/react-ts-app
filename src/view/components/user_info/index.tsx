@@ -12,10 +12,10 @@ export default class UserInfo extends React.Component<any, any> {
         this.state = {}
     }
     static defaultProps = {
-        params: {}
+        params: {},
     }
     static propTypes = {
-        params: PropTypes.object
+        params: PropTypes.object,
     }
 
     render() {

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
+import { getUserInfos } from '../../utils/getUserInfo'
 import ReportStyle from './index.module.scss'
 import UserInfos from '../components/user_info'
 import PerfectCircumference from './components/perfect_circumference'
@@ -55,13 +56,15 @@ export default class Report extends Component<any, any> {
         // 获取会员ID
         this.props.reportStore.setMemberId(queryParams.get('memberId'))
         // 获取是否为独立教练
-        this.props.reportStore.setIsDlCoach(queryParams.get('isDlCoach'))
+        this.props.reportStore.setIsDlCoach(Number(queryParams.get('isDlCoach')))
         // 获取教练ID
         this.props.reportStore.setCoachId(queryParams.get('coachId'))
         // 获取当前是否为分享打开的页面
-        this.props.reportStore.setIsShare(queryParams.get('isshare'))
+        this.props.reportStore.setIsShare(Number(queryParams.get('isshare')))
         // 获取当前是否为工作室
-        this.props.reportStore.setIsFromStudio(queryParams.get('fromstudio'))
+        this.props.reportStore.setIsFromStudio(Number(queryParams.get('fromstudio')))
+        // 获取当前版本
+        this.props.reportStore.setVersion(queryParams.get('version'))
         // 赋值用户信息
         const infos: InfosRules = {
             img: '',
@@ -79,6 +82,16 @@ export default class Report extends Component<any, any> {
             { name: '运动评估', id: 3 },
             { name: '运动表现', id: 1 },
         ]
+        // 获取用户信息
+        getUserInfos({
+            memberId: this.props.reportStore.memberId,
+            isFromStudio: this.props.reportStore.isFromStudio,
+            isshare: this.props.reportStore.isShare,
+        }).then((res: any) => {
+            // 设置用户信息
+            this.props.reportStore.setUserInfos(res.data)
+        })
+        // 注册微信jssdk
         this.setState({
             infos,
             tabs,
@@ -110,10 +123,10 @@ export default class Report extends Component<any, any> {
         clearAllBodyScrollLocks() //释放body滚动
     }
     render() {
-        const { tabsId } = this.props.reportStore
+        const { tabsId, userInfos } = this.props.reportStore
         return (
             <div className={ReportStyle.App}>
-                <UserInfos params={this.state.UserInfos} />
+                <UserInfos params={userInfos} />
                 <div className={ReportStyle.tabsContain}>
                     <div className={ReportStyle.tabs}>
                         {this.state.tabs.map((itm: tabsTyps, idx: number) => {
