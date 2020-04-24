@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
 import { getUserInfos } from '../../utils/getUserInfo'
+import { getPhoneType } from '../../utils'
 import ReportStyle from './index.module.scss'
 import UserInfos from '../components/user_info'
 import PerfectCircumference from './components/perfect_circumference'
@@ -92,6 +93,9 @@ export default class Report extends Component<any, any> {
             this.props.reportStore.setUserInfos(res.data)
         })
         // 注册微信jssdk
+        if (getPhoneType() === -1) {
+            // jssdk
+        }
         this.setState({
             infos,
             tabs,
