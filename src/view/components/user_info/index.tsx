@@ -17,12 +17,11 @@ export default class UserInfo extends React.Component<any, any> {
     static propTypes = {
         params: PropTypes.object,
     }
-
     render() {
         return (
             <div className={InfoStyle.Infos}>
                 <div className={InfoStyle.img}>
-                    <img src={this.props.params.img ? this.props.params.img : normel} alt='' />
+                    <img src={this.props.params.headPath ? this.props.params.headPath : normel} alt='' />
                 </div>
                 <div className={InfoStyle.text}>
                     <div className={InfoStyle.hd}>
