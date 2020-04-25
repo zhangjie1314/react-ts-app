@@ -36,19 +36,57 @@ function getWxAuthorization(params: any) {
             wx.onMenuShareAppMessage(config)
             wx.onMenuShareTimeline(config)
         })
-        wx.ready()
     })
 }
 
 // 设置App端分享信息
-function setShareInfosByApp() {}
+function setShareInfosByApp(params: any) {
+    // ios
+    if (getPhoneType() === 1) {
+        if (!window.webkit) return
+        window.webkit.messageHandlers.getWebShareContent.postMessage(params.url)
+        // 显示分享按钮
+        window.webkit.messageHandlers.hideWidget.postMessage(
+            JSON.stringify([
+                {
+                    type: 'shareBtn',
+                    hide: false,
+                },
+                {
+                    type: 'closeBtn',
+                    hide: true,
+                },
+            ])
+        )
+    }
+    // android
+    if (getPhoneType() === 0) {
+        if (!window.posTestShare) return
+        // 显示分享按钮
+        window.posTestShare.hideWidget(
+            JSON.stringify([
+                {
+                    type: 'shareBtn',
+                    hide: false,
+                },
+                {
+                    type: 'closeBtn',
+                    hide: true,
+                },
+            ])
+        )
+        window.posTestShare.shareResult(params.url)
+    }
+}
 
 export function setRegisterShare(params: object) {
     return new Promise((res, rej) => {
-        // 判断 0安卓/ios1 为app端
+        // 判断 操作环境
         if (getPhoneType() === 0 || getPhoneType() === 1) {
-            setShareInfosByApp()
+            // App端
+            setShareInfosByApp(params)
         } else {
+            // 微信端
             getWxAuthorization(params)
         }
     })
