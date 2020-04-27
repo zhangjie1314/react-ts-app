@@ -57,7 +57,6 @@ export default class PosCharts extends React.Component<any, any> {
         }
     }
     componentDidMount() {
-        if (this.state.listData.length === 0) return
         this.handleChartData(this.state.listData)
     }
     // 处理图表数据
