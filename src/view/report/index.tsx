@@ -11,6 +11,7 @@ import { getUserInfos } from '../../utils/get_user_info'
 import ReportStyle from './index.module.scss'
 import UserInfos from '../components/user_info'
 import PerfectCircumference from './components/perfect_circumference'
+import ActionEvaluation from './components/action_evaluation'
 import BodyComposition from './components/body_composition'
 import FitnessAssessment from './components/fitness_assessment'
 import StaticEvaluation from './components/static_evaluation'
@@ -47,7 +48,7 @@ export default class Report extends Component<any, any> {
             memberId: memberId,
             pageNum: 1,
             pageSize: 999,
-        }).then(res => {
+        }).then((res) => {
             // 处理测试列表数据
             this.handleTestListData(res.data.records)
         })
@@ -101,7 +102,7 @@ export default class Report extends Component<any, any> {
             details: `快去查看${params.name.slice(0, 1)}${params.grander === 1 ? '先生' : '女士'}的详细报告吧`, // 分享内容
             pic: `${process.env.REACT_APP_FILE_URL}/app/pos/pos_logo.png`, // 分享图片
             url: `${this.getShareContentUrl(params.urlParams)}`, // 分享链接
-        }).then(res => {
+        }).then((res) => {
             alert(JSON.stringify(res))
         })
     }
@@ -176,7 +177,7 @@ export default class Report extends Component<any, any> {
                 return <StaticEvaluation />
             case 3:
                 // 运动评估
-                return <div>3</div>
+                return <ActionEvaluation />
             case 4:
                 // 体适能评估
                 return <FitnessAssessment />
