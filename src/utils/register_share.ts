@@ -6,7 +6,7 @@ import { getPhoneType } from '../utils/index'
 function getWxAuthorization(params: any) {
     let pm = window.location.href
     let url = `${process.env.REACT_APP_BWEBAPP_API_URL}/cp-game-biz/getJsApiSignature`
-    return fetchGet(url, { url: pm }, '').then((res) => {
+    return fetchGet(url, { url: pm }, '').then(res => {
         const data = res.data
         const wx = window.wx
         wx.config({
@@ -56,7 +56,7 @@ function setShareInfosByApp(params: any) {
                     type: 'closeBtn',
                     hide: true,
                 },
-            ])
+            ]),
         )
     }
     // android
@@ -73,7 +73,7 @@ function setShareInfosByApp(params: any) {
                     type: 'closeBtn',
                     hide: true,
                 },
-            ])
+            ]),
         )
         window.posTestShare.shareResult(params.url)
     }
@@ -82,11 +82,12 @@ function setShareInfosByApp(params: any) {
 export function setRegisterShare(params: object) {
     return new Promise((res, rej) => {
         // 判断 操作环境
+        // App端
         if (getPhoneType() === 0 || getPhoneType() === 1) {
-            // App端
             setShareInfosByApp(params)
-        } else {
-            // 微信端
+        }
+        // 微信端
+        if (getPhoneType() === 2) {
             getWxAuthorization(params)
         }
     })

@@ -2,7 +2,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import F2 from '@antv/f2/lib/core'
-import ChartItemObj from '../../../types/components/pos_charts'
+import { ChartItemRules } from '../../../types/components/pos_charts'
 import PosChartStyle from './index.module.scss'
 
 require('@antv/f2/lib/geom/line') // 只加载折线图
@@ -25,6 +25,8 @@ export default class PosCharts extends React.Component<any, any> {
             lineChartYTicks: [],
             chartTooltipText: '',
             pointsObj: null,
+            listData: [],
+            curPoint: {},
         }
     }
     static defaultProps = {
@@ -35,24 +37,36 @@ export default class PosCharts extends React.Component<any, any> {
         chartData: PropTypes.array,
         chartId: PropTypes.string,
     }
-
-    componentWillReceiveProps(nextProps: any) {
-        // console.log(nextProps)
-        // 处理数据
-        this.handleChartData(nextProps.chartData)
+    static getDerivedStateFromProps(nextProps: any, prevState: any) {
+        const oData = JSON.stringify(prevState.listData)
+        const nData = JSON.stringify(nextProps.chartData)
+        if (oData !== nData) {
+            console.log(oData, nData)
+            const data = nextProps.chartData
+            return {
+                listData: data,
+            }
+        }
+        return null
     }
     componentDidUpdate(prevProps: any, prevState: any) {
-        if (prevState.curPointArr && prevState.curPointArr.time !== this.state.curPointArr.time) {
+        const cpData = JSON.stringify(prevState.curPoint)
+        const ncpData = JSON.stringify(this.state.curPoint)
+        if (cpData !== ncpData && cpData !== '{}') {
             this.moveShowPoint()
         }
     }
+    componentDidMount() {
+        if (this.state.listData.length === 0) return
+        this.handleChartData(this.state.listData)
+    }
     // 处理图表数据
-    handleChartData(data: ChartItemObj[]) {
+    handleChartData(data: ChartItemRules[]) {
         let lcxt: string[] = []
         let lcyt: any[] = []
         let { chartId } = this.props
         let chart = null
-        data.forEach((el, idx) => {
+        this.state.listData.forEach((el: any, idx: number) => {
             lcxt.push(el.time)
             lcyt.push(el.grade)
         })
@@ -72,17 +86,17 @@ export default class PosCharts extends React.Component<any, any> {
                 lineChartXTicks: lcxt,
                 lineChartYTicks: lcyt,
                 lineChart: chart ? chart : this.state.lineChart,
-                curPointArr: data[0],
+                curPoint: data[0],
             },
             () => {
                 this.changeMainChart()
-            }
+            },
         )
     }
 
     changeMainChart() {
-        let { lineChart } = this.state
-        let chartData: ChartItemObj[] = this.props.chartData
+        let { lineChart, curPoint } = this.state
+        let chartData: ChartItemRules[] = this.state.listData
         lineChart.source(chartData, {
             sort: {
                 min: 0,
@@ -116,14 +130,12 @@ export default class PosCharts extends React.Component<any, any> {
                 }
             },
         })
-        // 创建显示点
-        const pointsObj = this.createrShowPointHtml()
         // 设置点击等事件处理
         lineChart.pluginGesture({
             gesture: {
                 tap: (data: any) => {
                     this.setState({
-                        curPointArr: data[0],
+                        curPoint: data[0],
                     })
                 },
             },
@@ -137,22 +149,11 @@ export default class PosCharts extends React.Component<any, any> {
                 offsetY: -5,
             },
         })
-        // 渲染
-        lineChart.render()
-        // 设置数据
-        this.setState({
-            pointsObj,
-        })
-    }
-    /**
-     * 创建显示点
-     */
-    createrShowPointHtml() {
-        let { lineChart, curPointArr } = this.state
+        lineChart.tooltip(false)
         // 显示当前选择的点
         const linePoint = lineChart.guide().point({
             top: true,
-            position: [curPointArr.sort, curPointArr.grade],
+            position: [curPoint.sort, curPoint.grade],
             limitInPlot: true,
             style: {
                 fill: '#fff',
@@ -163,24 +164,29 @@ export default class PosCharts extends React.Component<any, any> {
         })
         // 创建当前显示的提示框
         const lineTips = lineChart.guide().html({
-            position: [curPointArr.sort, curPointArr.grade],
-            html: this.creatPointHtml(curPointArr),
+            position: [curPoint.sort, curPoint.grade],
+            html: this.creatPointHtml(curPoint),
             limitInPlot: true,
         })
-        return {
-            linePoint,
-            lineTips,
-        }
+        // 渲染
+        lineChart.render()
+        // 设置数据
+        this.setState({
+            pointsObj: {
+                linePoint,
+                lineTips,
+            },
+        })
     }
     /**
      * 移动显示点提示
      */
     moveShowPoint() {
-        let { curPointArr, pointsObj } = this.state
-        pointsObj.linePoint.position = [curPointArr.sort, curPointArr.grade]
+        let { curPoint, pointsObj } = this.state
+        pointsObj.linePoint.position = [curPoint.sort, curPoint.grade]
         pointsObj.linePoint.repaint()
-        pointsObj.lineTips.position = [curPointArr.sort, curPointArr.grade]
-        pointsObj.lineTips.html = this.creatPointHtml(curPointArr)
+        pointsObj.lineTips.position = [curPoint.sort, curPoint.grade]
+        pointsObj.lineTips.html = this.creatPointHtml(curPoint)
         pointsObj.lineTips.repaint()
     }
     /**

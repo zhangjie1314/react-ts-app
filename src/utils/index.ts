@@ -12,19 +12,22 @@ export function handleHandImg(str: string, fromStudio: number): string {
 }
 /**
  * 获取手机系统类型
- * 0: 代表android; 1: 代表ios, -1 未知
+ * 0: 代表android; 1: 代表ios, 2 微信, -1 未知
  */
 export function getPhoneType(): number {
     const u = navigator.userAgent
     const isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1 // android终端
     const isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) // ios终端
+    const isWechart = u.match(/MicroMessenger/i) // ios终端
     let type = -1
     if (isAndroid) {
         type = 0
-    } else if (isIOS) {
+    }
+    if (isIOS) {
         type = 1
-    } else {
-        type = -1
+    }
+    if (isWechart) {
+        type = 2
     }
     return type
 }

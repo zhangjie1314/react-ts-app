@@ -1,12 +1,16 @@
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
+import Dayjs from 'dayjs'
+import { getTestListByBapp } from '../../apis/report/bapp'
+import { getTestListByStudio } from '../../apis/report/studio'
+import { ChartItemRules } from '../../types/components/pos_charts'
+import { FiancoRules } from '../../types/components/fianco_contrast'
 import { setRegisterShare } from '../../utils/register_share'
 import { getUserInfos } from '../../utils/get_user_info'
 import ReportStyle from './index.module.scss'
 import UserInfos from '../components/user_info'
 import PerfectCircumference from './components/perfect_circumference'
-import { InfosRules } from '../../types/components/infos'
 import BodyComposition from './components/body_composition'
 import FitnessAssessment from './components/fitness_assessment'
 import StaticEvaluation from './components/static_evaluation'
@@ -25,6 +29,8 @@ export default class Report extends Component<any, any> {
         this.state = {
             tabs: [],
             tabsId: 0,
+            chartData: [],
+            fiancoData: [],
             circleData: [
                 { name: '平衡', val: 100, index: 0, bgColor: '#242630', color: '#21b8c5' },
                 { name: '敏捷', val: 100, index: 1, bgColor: '#242630', color: '#eab807' },
@@ -32,11 +38,52 @@ export default class Report extends Component<any, any> {
             ],
         }
     }
+    // 获取体侧数据
+    getFiancoContrastData = () => {
+        const { memberId, coachId, tabsId } = this.props.reportStore
+        getTestListByBapp({
+            types: tabsId + 1, // 1.围度，2.运动表现 3.体态测试，4.动态表现 5体适能表现 6人体成分测试
+            coachId: coachId ? coachId : '',
+            memberId: memberId,
+            pageNum: 1,
+            pageSize: 999,
+        }).then(res => {
+            // 处理测试列表数据
+            this.handleTestListData(res.data.records)
+        })
+    }
+    // 处理测试列表数据
+    handleTestListData(data: any) {
+        const testList: ChartItemRules[] = []
+        const fiancoData: FiancoRules[] = []
+        data.forEach((itm: any, idx: number) => {
+            // 图表数据
+            testList.push({
+                time: Dayjs(itm.timeLong).format('MM.DD'),
+                grade: itm.grade,
+                sort: idx,
+                type: itm.type,
+                id: itm.wdId,
+            })
+            // 对比数据
+            fiancoData.push({
+                id: itm.wdId,
+                times: Dayjs(itm.timeLong).format('YYYY年MM月DD日'),
+                score: itm.grade,
+                selected: 0,
+            })
+        })
+        this.setState({
+            chartData: testList,
+            fiancoData,
+        })
+    }
     // 切换tab
     changePage = (id: number) => {
         this.props.history.replace({ pathname: `/report/${id}`, search: this.props.history.location.search })
         this.props.reportStore.setTabsId(id)
         this.setState({ tabsId: id })
+        this.getFiancoContrastData()
     }
     // 整理微信返回url
     getShareContentUrl = (params: any) => {
@@ -54,6 +101,8 @@ export default class Report extends Component<any, any> {
             details: `快去查看${params.name.slice(0, 1)}${params.grander === 1 ? '先生' : '女士'}的详细报告吧`, // 分享内容
             pic: `${process.env.REACT_APP_FILE_URL}/app/pos/pos_logo.png`, // 分享图片
             url: `${this.getShareContentUrl(params.urlParams)}`, // 分享链接
+        }).then(res => {
+            alert(JSON.stringify(res))
         })
     }
     componentDidMount() {
@@ -107,7 +156,7 @@ export default class Report extends Component<any, any> {
             }
             this.configRegisterShare(pm)
         })
-
+        this.getFiancoContrastData()
         this.setState({
             tabs,
             tabsId,
@@ -129,7 +178,7 @@ export default class Report extends Component<any, any> {
             case 4:
                 return <FitnessAssessment />
             case 5:
-                return <BodyComposition />
+                return <BodyComposition chartData={this.state.chartData} fiancoData={this.state.fiancoData} />
             default:
                 return <BodyComposition />
         }

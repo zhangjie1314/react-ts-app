@@ -18,3 +18,8 @@ export const getWechatShareParams = (params: any) => {
     const url = `${process.env.REACT_APP_BWEBAPP_API_URL}/pt/group/bapp/share`
     return fetchPost(url, params, 'bapp')
 }
+// 获取体测数据列表
+export const getTestListByBapp = (params: any) => {
+    const url = `${process.env.REACT_APP_BWEBAPP_API_URL}/coach/side/fuzzy/getTestList`
+    return fetchGet(url, params, 'bapp')
+}
