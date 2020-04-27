@@ -10,6 +10,8 @@ import PerfectCircumference from './components/perfect_circumference'
 import StaticEvaluation from './components/static_evaluation'
 import BodyComposition from './components/body_composition'
 import FitnessAssessment from './components/fitness_assessment'
+import StaticEvaluation from './components/static_evaluation'
+import AthleticPerformance from './components/athletic_performance'
 
 interface tabsTyps {
     name?: string
@@ -121,10 +123,8 @@ export default class Report extends Component<any, any> {
                 // 完美围度
                 return <PerfectCircumference />
             case 1:
-                // 运动表现
-                return <div>1</div>
+                return <AthleticPerformance />
             case 2:
-                // 静态评估
                 return <StaticEvaluation />
             case 3:
                 // 运动评估
@@ -133,7 +133,6 @@ export default class Report extends Component<any, any> {
                 // 体适能评估
                 return <FitnessAssessment />
             case 5:
-                // 人体成分
                 return <BodyComposition />
             default:
                 return <BodyComposition />
