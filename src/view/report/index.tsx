@@ -6,8 +6,7 @@ import { getUserInfos } from '../../utils/get_user_info'
 import ReportStyle from './index.module.scss'
 import UserInfos from '../components/user_info'
 import PerfectCircumference from './components/perfect_circumference'
-// import { InfosRules } from '../../types/components/infos'
-import StaticEvaluation from './components/static_evaluation'
+import ActionEvaluation from './components/action_evaluation'
 import BodyComposition from './components/body_composition'
 import FitnessAssessment from './components/fitness_assessment'
 import StaticEvaluation from './components/static_evaluation'
@@ -128,7 +127,7 @@ export default class Report extends Component<any, any> {
                 return <StaticEvaluation />
             case 3:
                 // 运动评估
-                return <div>3</div>
+                return <ActionEvaluation />
             case 4:
                 // 体适能评估
                 return <FitnessAssessment />
