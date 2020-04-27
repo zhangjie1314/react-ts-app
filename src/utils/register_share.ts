@@ -43,39 +43,45 @@ function getWxAuthorization(params: any) {
 function setShareInfosByApp(params: any) {
     // ios
     if (getPhoneType() === 1) {
-        if (!window.webkit) return
-        window.webkit.messageHandlers.getWebShareContent.postMessage(params.url)
-        // 显示分享按钮
-        window.webkit.messageHandlers.hideWidget.postMessage(
-            JSON.stringify([
-                {
-                    type: 'shareBtn',
-                    hide: false,
-                },
-                {
-                    type: 'closeBtn',
-                    hide: true,
-                },
-            ])
-        )
+        try {
+            window.webkit.messageHandlers.getWebShareContent.postMessage(params.url)
+            // 显示分享按钮
+            window.webkit.messageHandlers.hideWidget.postMessage(
+                JSON.stringify([
+                    {
+                        type: 'shareBtn',
+                        hide: false,
+                    },
+                    {
+                        type: 'closeBtn',
+                        hide: true,
+                    },
+                ])
+            )
+        } catch (e) {
+            Toast.info('error', e)
+        }
     }
     // android
     if (getPhoneType() === 0) {
-        if (!window.posTestShare) return
         // 显示分享按钮
-        window.posTestShare.hideWidget(
-            JSON.stringify([
-                {
-                    type: 'shareBtn',
-                    hide: false,
-                },
-                {
-                    type: 'closeBtn',
-                    hide: true,
-                },
-            ])
-        )
-        window.posTestShare.shareResult(params.url)
+        try {
+            window.posTestShare.hideWidget(
+                JSON.stringify([
+                    {
+                        type: 'shareBtn',
+                        hide: false,
+                    },
+                    {
+                        type: 'closeBtn',
+                        hide: true,
+                    },
+                ])
+            )
+            window.posTestShare.shareResult(params.url)
+        } catch (e) {
+            Toast.info('error', e)
+        }
     }
 }
 
