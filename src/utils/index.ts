@@ -55,19 +55,6 @@ export const callAppMenthd: (code: string, params: any) => void = (funcName, par
         }
     }
 }
-
-/**
- * 整理微信返回url
- * params
- */
-export function getShareContentUrl(params: any) {
-    let url = `https://${window.location.host}/#/report/${params.tabsId}?memberId=${params.memberId}&isDlCoach=${params.isDlCoach}&isshare=1`
-    let fromstudio = params.fromstudio ? `&fromstudio=${params.fromstudio}` : ''
-    let version = params.version ? `&version=${params.version}` : ''
-    let res = `${url}${fromstudio}${version}`
-    return res
-}
-
 /**
  * 获取cookie
  * name

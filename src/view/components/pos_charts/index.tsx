@@ -37,7 +37,7 @@ export default class PosCharts extends React.Component<any, any> {
     }
 
     componentWillReceiveProps(nextProps: any) {
-        console.log(nextProps)
+        // console.log(nextProps)
         // 处理数据
         this.handleChartData(nextProps.chartData)
     }
@@ -76,7 +76,7 @@ export default class PosCharts extends React.Component<any, any> {
             },
             () => {
                 this.changeMainChart()
-            },
+            }
         )
     }
 

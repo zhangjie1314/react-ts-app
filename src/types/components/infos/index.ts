@@ -1,8 +1,8 @@
 export interface InfosRules {
     img?: string
-    name?: string
+    name: string
     birthday?: string
-    sex?: number
+    grander?: number
     height?: string
     weight?: string
 }
