@@ -1,0 +1,293 @@
+.wrapper {
+    color: #fff;
+    font-size: 28px;
+    padding-bottom: 70px;
+    .score-box {
+        padding: 80px 0;
+        text-align: center;
+        .score {
+            font-size: 60px;
+            color: #23cfe2;
+            .num {
+                font-size: 100px;
+                line-height: 1;
+            }
+            span {
+                vertical-align: bottom;
+            }
+        }
+    }
+    .data-box {
+        padding: 80px 32px 32px;
+        display: flex;
+        flex-wrap: wrap;
+        .item {
+            width: calc(50% - 70px);
+            padding-bottom: 48px;
+            padding-right: 70px;
+            .title {
+                font-size: 28px;
+                padding-bottom: 12px;
+            }
+            .dbi-box {
+                font-size: 24px;
+                .dbib-item {
+                    display: flex;
+                    align-items: center;
+                    padding-bottom: 12px;
+                    .dbib-txt {
+                        width: 130px;
+                    }
+                    .dbib-progress-bar {
+                        height: 10px;
+                        flex: 1 0 0%;
+                        background: #434343;
+                        border-radius: 5px;
+                        overflow: hidden;
+                        .dpb-num {
+                            height: 10px;
+                            border-radius: 5px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .content-box {
+        padding: 0 32px 80px;
+        .title {
+            position: relative;
+            font-size: 32px;
+            padding-bottom: 12px;
+        }
+        .sub-title {
+            font-size: 24px;
+            color: rgba($color: #fff, $alpha: 0.6);
+            padding-bottom: 24px;
+        }
+        .content {
+            .data-item {
+                background: #fff;
+                border-radius: 8px;
+                margin-bottom: 24px;
+                color: #000;
+                padding: 26px 52px 52px;
+                .item-bottom-box {
+                    position: relative;
+                    font-size: 24px;
+                    text-align: left;
+                }
+                .item-top-box {
+                    .itb-title {
+                        font-size: 32px;
+                        text-align: left;
+                        padding-bottom: 16px;
+                    }
+                    .itb-sub-title {
+                        font-size: 28px;
+                    }
+                    .itb-inline-box {
+                        display: flex;
+                        align-items: center;
+                        padding-bottom: 22px;
+                    }
+                    .itb-data-box {
+                        flex: 1 0 0%;
+                        font-size: 24px;
+                        padding-top: 52px;
+                        .itbd-line {
+                            display: flex;
+                            align-items: center;
+                            .il-item {
+                                flex: 1 0 0%;
+                                .ii-line {
+                                    position: relative;
+                                    background: #505455;
+                                    height: 4px;
+                                    border-right: 1px solid #f8f9fa;
+                                    margin-bottom: 10px;
+                                }
+                                .ii-txt {
+                                    text-align: center;
+                                }
+                                &:last-child {
+                                    .ii-line {
+                                        border-right: 0;
+                                    }
+                                }
+                                &.il-selected-zd {
+                                    color: #f75944;
+                                    .ii-line {
+                                        background: #f75944;
+                                    }
+                                    .ii-txt {
+                                        color: #f75944;
+                                    }
+                                }
+                                &.il-selected-zdu {
+                                    color: #f78644;
+                                    .ii-line {
+                                        background: #f78644;
+                                    }
+                                    .ii-txt {
+                                        color: #f78644;
+                                    }
+                                }
+                                &.il-selected-qw {
+                                    color: #ffc701;
+                                    .ii-line {
+                                        background: #ffc701;
+                                    }
+                                    .ii-txt {
+                                        color: #ffc701;
+                                    }
+                                }
+                                &.il-selected-zc {
+                                    color: #21b8c5;
+                                    .ii-line {
+                                        background: #21b8c5;
+                                    }
+                                    .ii-txt {
+                                        color: #21b8c5;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                .item-bottom-box {
+                    font-size: 32px;
+                    text-align: center;
+                }
+            }
+        }
+    }
+    .bottom-btn-box {
+        position: fixed;
+        bottom: 20px;
+        bottom: calc(env(safe-area-inset-bottom) + 20px);
+        left: 0;
+        right: 0;
+        font-size: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 48px;
+        .qtc-btn {
+            width: 200px;
+            height: 96px;
+            line-height: 96px;
+            text-align: center;
+            border-radius: 96px;
+            background: #fff;
+            margin-right: 30px;
+            color: #0c0c0c;
+        }
+        .share-report-btn {
+            flex: 1 0 0%;
+            height: 96px;
+            line-height: 96px;
+            border-radius: 96px;
+            text-align: center;
+            color: #fff;
+            background: #23cfe2;
+        }
+    }
+    .share-box {
+        position: fixed;
+        bottom: -5000px;
+        // bottom: 50px;
+        left: 0;
+        right: 0;
+        z-index: 999;
+        background: #18191d;
+        .share-title {
+            font-size: 42px;
+            padding: 50px 0 30px;
+            text-align: center;
+            color: #fff;
+            font-weight: bold;
+        }
+        .user-info-box {
+            text-align: center;
+            .uib-avatar {
+                width: 90px;
+                height: 90px;
+                border-radius: 50%;
+                margin-bottom: 20px;
+            }
+            .uib-name {
+                font-size: 28px;
+                color: #fff;
+            }
+        }
+        .coach-warp-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #262833;
+            color: #fff;
+            padding: 30px;
+            .coach-img-box {
+                width: 112px;
+                height: 112px;
+                border-radius: 50%;
+                background: #fff;
+                overflow: hidden;
+                img {
+                    width: 100%;
+                    height: 100%;
+                    display: block;
+                }
+            }
+            .coach-info-box {
+                padding-left: 10px;
+                flex: 1 0 0%;
+                text-align: left;
+                .coach-name-tag {
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 10px;
+                    .coach-name {
+                        font-size: 36px;
+                        font-weight: bold;
+                        margin-right: 20px;
+                    }
+                    .coach-tag {
+                        height: 40px;
+                        line-height: 40px;
+                        background: #21b8c5;
+                        padding: 0 10px;
+                        color: #313340;
+                        border-radius: 5px;
+                        font-size: 24px;
+                    }
+                }
+                .coach-service {
+                    font-size: 24px;
+                }
+            }
+            .coach-qrcode {
+                font-size: 20px;
+                text-align: center;
+                .coach-qrcode-img {
+                    width: 140px;
+                    height: 140px;
+                    display: inline-block;
+                    background: #fff;
+                    padding: 10px;
+                    border-radius: 5px;
+                    margin-bottom: 10px;
+                    svg {
+                        width: 100% !important;
+                        height: 100% !important;
+                    }
+                    canvas {
+                        width: 100% !important;
+                        height: 100% !important;
+                    }
+                }
+            }
+        }
+    }
+}

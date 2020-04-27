@@ -10,16 +10,16 @@ export default class PosCircleCharts extends React.Component<any, any> {
     constructor(props: any) {
         super(props)
         this.state = {
-            circleChart: null
+            circleChart: null,
         }
     }
     static defaultProps = {
         chartData: [],
-        chartId: ''
+        chartId: '',
     }
     static propTypes = {
         chartData: PropTypes.array,
-        chartId: PropTypes.string
+        chartId: PropTypes.string,
     }
     componentWillReceiveProps(nextProps: any) {
         // 处理数据
@@ -39,17 +39,17 @@ export default class PosCircleCharts extends React.Component<any, any> {
                 id: chartId,
                 width: wVal,
                 height: (280 / 375) * wVal,
-                pixelRatio: window.devicePixelRatio
+                pixelRatio: window.devicePixelRatio,
             })
         }
         this.setState(
             {
-                circleChart: chart ? chart : this.state.circleChart
+                circleChart: chart ? chart : this.state.circleChart,
             },
             () => {
                 // 绘制圆环图表
                 this.drawChart(data)
-            }
+            },
         )
     }
     /**
@@ -65,10 +65,10 @@ export default class PosCircleCharts extends React.Component<any, any> {
                 const points = this.parsePoints(cfg.points)
                 const style = Util.mix(
                     {
-                        stroke: cfg.color
+                        stroke: cfg.color,
                     },
                     Global.shape.interval,
-                    cfg.style
+                    cfg.style,
                 )
                 if (cfg.isInCircle) {
                     let newPoints = points.slice(0)
@@ -114,13 +114,13 @@ export default class PosCircleCharts extends React.Component<any, any> {
                                 shadowColor: 'rgba(0, 0, 0, 0.6)',
                                 shadowOffsetX: 0,
                                 shadowOffsetY: -5,
-                                shadowBlur: 50
+                                shadowBlur: 50,
                             },
-                            style
-                        )
+                            style,
+                        ),
                     })
                 }
-            }
+            },
         })
         // 自定义动画
         Animate.registerAnimation('waveIn', function (shape: any, animateCfg: any) {
@@ -131,23 +131,23 @@ export default class PosCircleCharts extends React.Component<any, any> {
                 Util.mix(
                     {
                         attrs: {
-                            endAngle
-                        }
+                            endAngle,
+                        },
                     },
-                    animateCfg
-                )
+                    animateCfg,
+                ),
             )
         })
         // 数据
         circleChart.source(data, {
             val: {
-                max: 100
-            }
+                max: 100,
+            },
         })
         circleChart.coord('polar', {
             transposed: true,
             innerRadius: 0.48,
-            radius: 1
+            radius: 1,
         })
         circleChart.axis(false)
         circleChart
@@ -157,20 +157,20 @@ export default class PosCircleCharts extends React.Component<any, any> {
                 return val
             })
             .shape('tick')
-            .size(14)
+            .size(18)
             .animate({
                 appear: {
                     animation: 'waveIn',
                     duration: 1500,
-                    easing: 'elasticOut'
+                    easing: 'elasticOut',
                 },
                 update: {
                     duration: 1500,
-                    easing: 'elasticOut'
-                }
+                    easing: 'elasticOut',
+                },
             })
         // 图例items
-        const legendItem: any[] = []
+        // const legendItem: any[] = []
         data.forEach(function (obj) {
             // 背景
             circleChart.guide().arc({
@@ -178,40 +178,41 @@ export default class PosCircleCharts extends React.Component<any, any> {
                 end: [obj.name, 99.98],
                 top: false,
                 style: {
-                    lineWidth: 14,
-                    stroke: obj.bgColor
-                }
+                    lineWidth: 18,
+                    stroke: obj.bgColor,
+                },
             })
             // 处理图例items
-            legendItem.push({
-                name: `${obj.name}类`,
-                marker: {
-                    symbol: 'square',
-                    fill: obj.color,
-                    radius: 3
-                }
-            })
+            // legendItem.push({
+            //     name: `${obj.name}类`,
+            //     marker: {
+            //         symbol: 'square',
+            //         fill: obj.color,
+            //         radius: 3
+            //     }
+            // })
         })
         // 图例
-        circleChart.legend({
-            position: 'bottom',
-            align: 'center',
-            custom: true,
-            items: legendItem,
-            nameStyle: {
-                fill: '#fff'
-            },
-            offsetY: 24
-        })
+        circleChart.legend(false)
+        // circleChart.legend({
+        //     position: 'bottom',
+        //     align: 'center',
+        //     custom: true,
+        //     items: legendItem,
+        //     nameStyle: {
+        //         fill: '#fff'
+        //     },
+        //     offsetY: 24
+        // })
         // 添加中间总分数
         circleChart.guide().html({
             position: ['50%', '50%'],
-            html: `<div class='circle-chart-number-box'><span class='number'>100</span><span class='util'>分</span></div>`
+            html: `<div class='circle-chart-number-box'><span class='number'>100</span><span class='util'>分</span></div>`,
         })
         // 添加时间
         circleChart.guide().html({
             position: ['50%', '110%'],
-            html: `<div class='circle-chart-time-box'>2020.02.18</div>`
+            html: `<div class='circle-chart-time-box'>2020.02.18</div>`,
         })
         // 渲染
         circleChart.render()

@@ -8,6 +8,8 @@ import PerfectCircumference from './components/perfect_circumference'
 import { InfosRules } from '../../types/components/infos'
 import BodyComposition from './components/body_composition'
 import FitnessAssessment from './components/fitness_assessment'
+import StaticEvaluation from './components/static_evaluation'
+import AthleticPerformance from './components/athletic_performance'
 
 interface tabsTyps {
     name?: string
@@ -20,14 +22,6 @@ export default class Report extends Component<any, any> {
     constructor(props: any) {
         super(props)
         this.state = {
-            infos: {
-                img: '',
-                name: '----',
-                birthday: '----/--/--',
-                sex: 0,
-                height: '--cm',
-                weight: '--kg',
-            },
             tabs: [],
             tabsId: 0,
             circleData: [
@@ -107,14 +101,14 @@ export default class Report extends Component<any, any> {
             case 0: // 完美围度
                 return <PerfectCircumference />
             case 1:
-                return <div>1</div>
+                return <AthleticPerformance />
             case 2:
-                return <div>2</div>
+                return <StaticEvaluation />
             case 3:
                 return <div>3</div>
             case 4:
                 return <FitnessAssessment />
-            case 6:
+            case 5:
                 return <BodyComposition />
             default:
                 return <BodyComposition />
