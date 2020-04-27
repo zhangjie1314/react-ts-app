@@ -6,7 +6,8 @@ import { getUserInfos } from '../../utils/get_user_info'
 import ReportStyle from './index.module.scss'
 import UserInfos from '../components/user_info'
 import PerfectCircumference from './components/perfect_circumference'
-import { InfosRules } from '../../types/components/infos'
+// import { InfosRules } from '../../types/components/infos'
+import StaticEvaluation from './components/static_evaluation'
 import BodyComposition from './components/body_composition'
 import FitnessAssessment from './components/fitness_assessment'
 
@@ -116,17 +117,23 @@ export default class Report extends Component<any, any> {
      */
     showPageFun(curPage: any) {
         switch (curPage) {
-            case 0: // 完美围度
+            case 0:
+                // 完美围度
                 return <PerfectCircumference />
             case 1:
+                // 运动表现
                 return <div>1</div>
             case 2:
-                return <div>2</div>
+                // 静态评估
+                return <StaticEvaluation />
             case 3:
+                // 运动评估
                 return <div>3</div>
             case 4:
+                // 体适能评估
                 return <FitnessAssessment />
-            case 6:
+            case 5:
+                // 人体成分
                 return <BodyComposition />
             default:
                 return <BodyComposition />
