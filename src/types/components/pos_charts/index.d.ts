@@ -1,6 +1,7 @@
-export default interface ChartItemObj {
+export interface ChartItemRules {
     time: string
     grade: number
     sort: number
-    type?: number
+    type: number
+    id: string
 }

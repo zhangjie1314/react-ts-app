@@ -13,3 +13,8 @@ export const getMemberInfoByStudio = (params: any) => {
     const url = `${process.env.REACT_APP_STUDIO_API_URL}/coach/side/fuzzy/user/userSelect`
     return fetchGet(url, params, 'studio')
 }
+// 获取体测数据列表
+export const getTestListByStudio = (params: any) => {
+    const url = `${process.env.REACT_APP_STUDIO_API_URL}/coach/side/fuzzy/getTestList`
+    return fetchGet(url, params, 'studio')
+}

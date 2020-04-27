@@ -10,7 +10,7 @@ export default class FiancoContrast extends React.Component<any, any> {
         super(props)
         this.state = {
             isShow: false,
-            fiancoArr: []
+            fiancoArr: [],
         }
     }
     static defaultProps = {
@@ -25,7 +25,7 @@ export default class FiancoContrast extends React.Component<any, any> {
         if (isShow) {
         }
         this.setState({
-            isShow: !isShow
+            isShow: !isShow,
         })
     }
     // 选中
@@ -40,17 +40,19 @@ export default class FiancoContrast extends React.Component<any, any> {
         }
         fiancoArr[idx].selected = fiancoArr[idx].selected === 1 ? 0 : 1
         this.setState({
-            fiancoArr
+            fiancoArr,
         })
     }
     // 删除
     removeFn = () => {}
     // 开始对比
-    beginContrast = () => {}
+    beginContrast = () => {
+        console.log(this.props.fiancoArr)
+    }
     // 页面渲染之前 将父的props传个子的state
     componentWillReceiveProps = (nextProps: any) => {
         this.setState({
-            fiancoArr: nextProps.fiancoArr
+            fiancoArr: nextProps.fiancoArr,
         })
     }
 
@@ -89,7 +91,7 @@ export default class FiancoContrast extends React.Component<any, any> {
                                         体侧：<span className={FCStyle.fs40}>{itm.score}</span>分
                                     </div>
                                     <input
-                                        onChange={(e) => this.selectFn(e, idx)}
+                                        onChange={e => this.selectFn(e, idx)}
                                         className={FCStyle.checkboxs}
                                         type='checkbox'
                                         checked={itm.selected === 0 ? false : true}
