@@ -23,3 +23,8 @@ export const getTestListByBapp = (params: any) => {
     const url = `${process.env.REACT_APP_BWEBAPP_API_URL}/coach/side/fuzzy/getTestList`
     return fetchGet(url, params, 'bapp')
 }
+// 获取动作评估接口
+export const getActionEvaluationInfo = (params: any) => {
+    const url = `${process.env.REACT_APP_BWEBAPP_API_URL}/coach/side/fuzzy/getDtValue`
+    return fetchGet(url, params, 'bapp')
+}

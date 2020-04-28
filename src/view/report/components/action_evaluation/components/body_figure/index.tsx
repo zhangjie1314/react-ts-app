@@ -1,6 +1,7 @@
 // 人体图组件
 import React, { Component } from 'react'
 import BfStyle from './index.module.scss'
+import { getActionEvaluationInfo } from '../../../../../../apis/report/bapp'
 import frontImg from '../../../../../../assets/img/front3.0.png'
 import backImg from '../../../../../../assets/img/back3.0.png'
 interface fblObjType {
@@ -19,7 +20,10 @@ export default class BodyFigure extends Component<any, any> {
             fblObj: {},
         }
     }
-
+    // 获取信息
+    getData = () => {
+        console.log(11111111111, this.props.reportStore.userInfos)
+    }
     render() {
         return (
             <div className={BfStyle.figureBox}>
@@ -36,5 +40,7 @@ export default class BodyFigure extends Component<any, any> {
             </div>
         )
     }
-    componentDidMount() {}
+    componentDidMount() {
+        this.getData()
+    }
 }

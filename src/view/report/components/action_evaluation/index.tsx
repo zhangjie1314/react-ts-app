@@ -137,12 +137,16 @@ export default class ActionEvaluation extends Component<any, any> {
             },
         ]
         this.setState({ fiancoData, chartData })
+        // 获取人体图数据
     }
     // 点击选中tabs
     selectTabsFn = (e: any, idx: number) => {
         this.setState({
             tabsIdx: idx,
         })
+    }
+    componentDidMount() {
+        this.getFiancoContrastData()
     }
     render() {
         console.log(this.props)
@@ -170,15 +174,12 @@ export default class ActionEvaluation extends Component<any, any> {
                         )
                     })}
                 </div>
-                <BodyFigure></BodyFigure>
+                <BodyFigure params={}></BodyFigure>
                 <div className={AeStyle.footerBtn}>
                     <div className={AeStyle.goToTest}>去体侧</div>
                     <div className={AeStyle.shareBtn}>生成报告图片</div>
                 </div>
             </div>
         )
-    }
-    componentDidMount() {
-        this.getFiancoContrastData()
     }
 }
