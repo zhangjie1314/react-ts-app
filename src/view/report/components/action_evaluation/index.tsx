@@ -145,22 +145,22 @@ export default class ActionEvaluation extends Component<any, any> {
         })
     }
     render() {
-        console.log(this.state.chartData)
+        console.log(this.props)
         return (
             <div className={AeStyle.wrapper}>
                 {/* 图表 */}
-                {this.state.chartData && this.state.chartData.length > 0 ? (
-                    <PosCharts chartId='perfect-circumference-chart' chartData={this.state.chartData} />
-                ) : (
-                    ''
+                {this.props.chartData.length > 0 && (
+                    <PosCharts chartId='perfect-circumference-chart' chartData={this.props.chartData} />
                 )}
+
                 {/* 体测对比 */}
-                <FiancoContrast fiancoArr={this.state.fiancoData} />
+                <FiancoContrast fiancoArr={this.props.fiancoData} />
                 {/* 动作评估 */}
                 <div className={AeStyle.tabs}>
                     {this.state.tabs.map((el: any, idx: number) => {
                         return (
                             <div
+                                key={idx}
                                 className={`${AeStyle.tab} ${idx === this.state.tabsIdx ? AeStyle.selectBg : ''}`}
                                 onClick={(e) => this.selectTabsFn(e, idx)}
                             >
@@ -170,7 +170,7 @@ export default class ActionEvaluation extends Component<any, any> {
                         )
                     })}
                 </div>
-                {/* <BodyFigure></BodyFigure> */}
+                <BodyFigure></BodyFigure>
                 <div className={AeStyle.footerBtn}>
                     <div className={AeStyle.goToTest}>去体侧</div>
                     <div className={AeStyle.shareBtn}>生成报告图片</div>

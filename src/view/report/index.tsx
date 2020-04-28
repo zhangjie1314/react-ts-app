@@ -131,7 +131,7 @@ export default class Report extends Component<any, any> {
             { name: '完美围度', id: 0 },
             { name: '体适能评估', id: 4 },
             { name: '静态评估', id: 2 },
-            { name: '运动评估', id: 3 },
+            { name: '动作评估', id: 3 },
             { name: '运动表现', id: 1 },
         ]
         // 获取用户信息
@@ -167,6 +167,7 @@ export default class Report extends Component<any, any> {
      * 根据tab值显示对应页面
      */
     showPageFun(curPage: any) {
+        const { chartData, fiancoData } = this.state
         switch (curPage) {
             case 0:
                 // 完美围度
@@ -177,14 +178,14 @@ export default class Report extends Component<any, any> {
                 return <StaticEvaluation />
             case 3:
                 // 运动评估
-                return <ActionEvaluation />
+                return <ActionEvaluation chartData={chartData} fiancoData={fiancoData} />
             case 4:
                 // 体适能评估
                 return <FitnessAssessment />
             case 5:
-                return <BodyComposition chartData={this.state.chartData} fiancoData={this.state.fiancoData} />
+                return <BodyComposition chartData={chartData} fiancoData={fiancoData} />
             default:
-                return <BodyComposition />
+                return <BodyComposition chartData={chartData} fiancoData={fiancoData} />
         }
     }
     componentWillUnmount() {

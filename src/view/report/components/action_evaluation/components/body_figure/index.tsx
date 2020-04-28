@@ -1,7 +1,8 @@
-// 动作评估
+// 人体图组件
 import React, { Component } from 'react'
 import BfStyle from './index.module.scss'
-
+import frontImg from '../../../../../../assets/img/front3.0.png'
+import backImg from '../../../../../../assets/img/back3.0.png'
 interface fblObjType {
     num?: number
     pj?: string
@@ -15,26 +16,25 @@ export default class BodyFigure extends Component<any, any> {
         this.state = {
             chartData: [],
             fiancoData: [],
-            tabs: [
-                {
-                    txt: '过度激活',
-                    num: 0,
-                },
-                {
-                    txt: '激活不足',
-                    num: 0,
-                },
-                {
-                    txt: '指令混乱',
-                    num: 0,
-                },
-            ],
             fblObj: {},
         }
     }
 
     render() {
-        return <div>1111</div>
+        return (
+            <div className={BfStyle.figureBox}>
+                <div className={`${BfStyle.front} ${BfStyle.modules}`}>
+                    <div className={BfStyle.figureImg}>
+                        <img src={frontImg} alt='人体图前' />
+                    </div>
+                </div>
+                <div className={`${BfStyle.back} ${BfStyle.modules}`}>
+                    <div className={BfStyle.figureImg}>
+                        <img src={backImg} alt='人体图后' />
+                    </div>
+                </div>
+            </div>
+        )
     }
     componentDidMount() {}
 }
