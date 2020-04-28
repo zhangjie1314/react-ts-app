@@ -38,3 +38,8 @@ export function getCoachInfo(params = {}) {
     const url = `${process.env.REACT_APP_BWEBAPP_API_URL}/coach/side/fuzzy/getSideCoachInfo`
     return fetchGet(url, params, 'bapp')
 }
+// 获取完美围度数据
+export function getPerfectCircumferenceResult(params = {}) {
+    const url = `${process.env.REACT_APP_BWEBAPP_API_URL}/coach/side/fuzzy/getWDId`
+    return fetchGet(url, params, 'bapp')
+}

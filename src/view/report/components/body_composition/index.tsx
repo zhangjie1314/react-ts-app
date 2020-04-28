@@ -10,7 +10,6 @@ import { getBodyCompositionResult } from '../../../../apis/report/bapp'
 import PosCharts from '../../../components/pos_charts'
 import FiancoContrast from '../../../components/fianco_contrast'
 import BodyCompositionStyle from './index.module.scss'
-import NoImg from '../../../../assets/img/no-img.png'
 import { ChartItemRules } from '../../../../types/components/pos_charts'
 
 @inject('reportStore')
@@ -24,6 +23,7 @@ export default class BodyComposition extends Component<any, any> {
             bodyCompositionData: {},
             imgHandleing: false,
             shareBtnTxt: '分享报告图片',
+            coachInfo: {},
         }
     }
     static defaultProps = {
@@ -70,22 +70,22 @@ export default class BodyComposition extends Component<any, any> {
     }
     // 去体测
     private gotoTcFun = () => {
-        const { userInfo } = this.props.reportStore
+        const { userInfos } = this.props.reportStore
         callAppMenthd('gotoTestTool', {
-            age: userInfo.age,
-            birthday: userInfo.birthday,
-            gender: userInfo.gender,
-            height: userInfo.height,
-            memberId: userInfo.memberId,
-            name: userInfo.name,
-            weight: userInfo.weight,
-            headPath: userInfo.headPath,
+            age: userInfos.age,
+            birthday: userInfos.birthday,
+            gender: userInfos.gender,
+            height: userInfos.height,
+            memberId: userInfos.memberId,
+            name: userInfos.name,
+            weight: userInfos.weight,
+            headPath: userInfos.headPath,
         })
     }
     componentDidUpdate(prevProps: any, prevState: any) {
         const oldChartData = JSON.stringify(prevState.chartData)
         const newChartData = JSON.stringify(this.state.chartData)
-        if (oldChartData !== newChartData) {
+        if (oldChartData !== newChartData && newChartData !== '[]') {
             this.handleClickPointFunc(this.state.chartData[0])
         }
     }
@@ -228,124 +228,138 @@ export default class BodyComposition extends Component<any, any> {
                     </div>
                 )}
                 {/* 分享图片html */}
-                <div className={BodyCompositionStyle['share-box']} ref='bodyShareBox'>
-                    {/* 分享标题 */}
-                    <div className={BodyCompositionStyle['share-title']}>人体成分报告</div>
-                    {/* 用户信息 */}
-                    <div className={BodyCompositionStyle['user-info-box']}>
-                        <img className={BodyCompositionStyle['uib-avatar']} src={userInfos.headPath} alt='头像' />
-                        <div className={BodyCompositionStyle['uib-name']}>{userInfos.name}</div>
-                        <div className={BodyCompositionStyle['uib-time']}>测试时：{bodyCompositionData.createTime}</div>
-                    </div>
-                    {/* 人体成分数据 */}
-                    <div className={BodyCompositionStyle['content-box']}>
-                        <div className={BodyCompositionStyle['title']}>人体成分数据</div>
-                        <div className={BodyCompositionStyle['special-data-box']}>
-                            <div className={BodyCompositionStyle['item']}>
-                                <div className={BodyCompositionStyle['num']}>{bodyCompositionData.tzl || '--'}%</div>
-                                <div className={BodyCompositionStyle['txt']}>体脂率</div>
-                            </div>
-                            <div className={BodyCompositionStyle['line']}></div>
-                            <div className={BodyCompositionStyle['item']}>
-                                <div className={BodyCompositionStyle['num']}>
-                                    {bodyCompositionData.weight || '--'}kg
-                                </div>
-                                <div className={BodyCompositionStyle['txt']}>体重</div>
-                            </div>
-                            <div className={BodyCompositionStyle['line']}></div>
-                            <div className={BodyCompositionStyle['item']}>
-                                <div className={BodyCompositionStyle['num']}>{bodyCompositionData.bmi || '--'}</div>
-                                <div className={BodyCompositionStyle['txt']}>BMI</div>
+                {isShare === 1 ? null : (
+                    <div className={BodyCompositionStyle['share-box']} ref='bodyShareBox'>
+                        {/* 分享标题 */}
+                        <div className={BodyCompositionStyle['share-title']}>人体成分报告</div>
+                        {/* 用户信息 */}
+                        <div className={BodyCompositionStyle['user-info-box']}>
+                            <img className={BodyCompositionStyle['uib-avatar']} src={userInfos.headPath} alt='头像' />
+                            <div className={BodyCompositionStyle['uib-name']}>{userInfos.name}</div>
+                            <div className={BodyCompositionStyle['uib-time']}>
+                                测试时：{bodyCompositionData.createTime}
                             </div>
                         </div>
-                        <div className={BodyCompositionStyle['data-box']}>
-                            <div className={BodyCompositionStyle['txt-item']}>
-                                <div className={BodyCompositionStyle['num']}>{bodyCompositionData.jrl || '--'}kg</div>
-                                <div className={BodyCompositionStyle['txt']}>肌肉量</div>
-                            </div>
-                            <div className={BodyCompositionStyle['txt-item']}>
-                                <div className={BodyCompositionStyle['num']}>{bodyCompositionData.qztz || '--'}kg</div>
-                                <div className={BodyCompositionStyle['txt']}>去脂体重</div>
-                            </div>
-                            <div className={BodyCompositionStyle['txt-item']}>
-                                <div className={BodyCompositionStyle['num']}>{bodyCompositionData.tizl || '--'}kg</div>
-                                <div className={BodyCompositionStyle['txt']}>体脂量</div>
-                            </div>
-                        </div>
-                        <div className={BodyCompositionStyle['data-box']}>
-                            <div className={BodyCompositionStyle['txt-item']}>
-                                <div className={BodyCompositionStyle['num']}>{bodyCompositionData.nzzf || '--'}</div>
-                                <div className={BodyCompositionStyle['txt']}>内脏脂肪</div>
-                            </div>
-                            <div className={BodyCompositionStyle['txt-item']}>
-                                <div className={BodyCompositionStyle['num']}>{bodyCompositionData.ytb || '--'}</div>
-                                <div className={BodyCompositionStyle['txt']}>腰臀比</div>
-                            </div>
-                            <div className={BodyCompositionStyle['txt-item']}>
-                                <div className={BodyCompositionStyle['num']}>
-                                    {bodyCompositionData.jcdx || '--'}kcal
-                                </div>
-                                <div className={BodyCompositionStyle['txt']}>基础代谢值</div>
-                            </div>
-                        </div>
-                    </div>
-                    {/* 照片展示 */}
-                    {bodyCompositionData.url1 || bodyCompositionData.url2 ? (
+                        {/* 人体成分数据 */}
                         <div className={BodyCompositionStyle['content-box']}>
-                            <div className={BodyCompositionStyle['title']}>照片展示</div>
-                            <div className={BodyCompositionStyle['photo-box']}>
-                                {bodyCompositionData.url1 ? (
-                                    <div className={BodyCompositionStyle['img-box']}>
-                                        <div className={BodyCompositionStyle['img']}>
-                                            <img src={bodyCompositionData.url1} alt='正面照' />
-                                        </div>
-                                        <div className={BodyCompositionStyle['txt']}>正面照</div>
+                            <div className={BodyCompositionStyle['title']}>人体成分数据</div>
+                            <div className={BodyCompositionStyle['special-data-box']}>
+                                <div className={BodyCompositionStyle['item']}>
+                                    <div className={BodyCompositionStyle['num']}>
+                                        {bodyCompositionData.tzl || '--'}%
                                     </div>
-                                ) : null}
-                                {bodyCompositionData.url2 ? (
-                                    <div className={BodyCompositionStyle['img-box']}>
-                                        <div className={BodyCompositionStyle['img']}>
-                                            <img src={bodyCompositionData.url2} alt='侧面照' />
-                                        </div>
-                                        <div className={BodyCompositionStyle['txt']}>侧面照</div>
+                                    <div className={BodyCompositionStyle['txt']}>体脂率</div>
+                                </div>
+                                <div className={BodyCompositionStyle['line']}></div>
+                                <div className={BodyCompositionStyle['item']}>
+                                    <div className={BodyCompositionStyle['num']}>
+                                        {bodyCompositionData.weight || '--'}kg
                                     </div>
-                                ) : null}
+                                    <div className={BodyCompositionStyle['txt']}>体重</div>
+                                </div>
+                                <div className={BodyCompositionStyle['line']}></div>
+                                <div className={BodyCompositionStyle['item']}>
+                                    <div className={BodyCompositionStyle['num']}>{bodyCompositionData.bmi || '--'}</div>
+                                    <div className={BodyCompositionStyle['txt']}>BMI</div>
+                                </div>
                             </div>
-                        </div>
-                    ) : null}
-                    {/* 报告图片 */}
-                    {bodyCompositionData.url3 ? (
-                        <div className={BodyCompositionStyle['content-box']}>
-                            <div className={BodyCompositionStyle['title']}>人体成分报告</div>
-                            <div className={BodyCompositionStyle['one-photo-box']}>
-                                <div className={BodyCompositionStyle['img-box']}>
-                                    <img src={bodyCompositionData.url3} alt='人体成分报告图片' />
+                            <div className={BodyCompositionStyle['data-box']}>
+                                <div className={BodyCompositionStyle['txt-item']}>
+                                    <div className={BodyCompositionStyle['num']}>
+                                        {bodyCompositionData.jrl || '--'}kg
+                                    </div>
+                                    <div className={BodyCompositionStyle['txt']}>肌肉量</div>
+                                </div>
+                                <div className={BodyCompositionStyle['txt-item']}>
+                                    <div className={BodyCompositionStyle['num']}>
+                                        {bodyCompositionData.qztz || '--'}kg
+                                    </div>
+                                    <div className={BodyCompositionStyle['txt']}>去脂体重</div>
+                                </div>
+                                <div className={BodyCompositionStyle['txt-item']}>
+                                    <div className={BodyCompositionStyle['num']}>
+                                        {bodyCompositionData.tizl || '--'}kg
+                                    </div>
+                                    <div className={BodyCompositionStyle['txt']}>体脂量</div>
+                                </div>
+                            </div>
+                            <div className={BodyCompositionStyle['data-box']}>
+                                <div className={BodyCompositionStyle['txt-item']}>
+                                    <div className={BodyCompositionStyle['num']}>
+                                        {bodyCompositionData.nzzf || '--'}
+                                    </div>
+                                    <div className={BodyCompositionStyle['txt']}>内脏脂肪</div>
+                                </div>
+                                <div className={BodyCompositionStyle['txt-item']}>
+                                    <div className={BodyCompositionStyle['num']}>{bodyCompositionData.ytb || '--'}</div>
+                                    <div className={BodyCompositionStyle['txt']}>腰臀比</div>
+                                </div>
+                                <div className={BodyCompositionStyle['txt-item']}>
+                                    <div className={BodyCompositionStyle['num']}>
+                                        {bodyCompositionData.jcdx || '--'}kcal
+                                    </div>
+                                    <div className={BodyCompositionStyle['txt']}>基础代谢值</div>
                                 </div>
                             </div>
                         </div>
-                    ) : null}
-                    {/* 教练card */}
-                    <div className={BodyCompositionStyle['coach-warp-box']}>
-                        <div className={BodyCompositionStyle['coach-img-box']}>
-                            <img src={coachInfo.headPath || ''} alt='头像' />
-                        </div>
-                        <div className={BodyCompositionStyle['coach-info-box']}>
-                            <div className={BodyCompositionStyle['coach-name-tag']}>
-                                <div className={BodyCompositionStyle['coach-name']}>{coachInfo.name || '--'}</div>
-                                <div className={BodyCompositionStyle['coach-tag']}>私人教练</div>
+                        {/* 照片展示 */}
+                        {bodyCompositionData.url1 || bodyCompositionData.url2 ? (
+                            <div className={BodyCompositionStyle['content-box']}>
+                                <div className={BodyCompositionStyle['title']}>照片展示</div>
+                                <div className={BodyCompositionStyle['photo-box']}>
+                                    {bodyCompositionData.url1 ? (
+                                        <div className={BodyCompositionStyle['img-box']}>
+                                            <div className={BodyCompositionStyle['img']}>
+                                                <img src={bodyCompositionData.url1} alt='正面照' />
+                                            </div>
+                                            <div className={BodyCompositionStyle['txt']}>正面照</div>
+                                        </div>
+                                    ) : null}
+                                    {bodyCompositionData.url2 ? (
+                                        <div className={BodyCompositionStyle['img-box']}>
+                                            <div className={BodyCompositionStyle['img']}>
+                                                <img src={bodyCompositionData.url2} alt='侧面照' />
+                                            </div>
+                                            <div className={BodyCompositionStyle['txt']}>侧面照</div>
+                                        </div>
+                                    ) : null}
+                                </div>
                             </div>
-                            <div className={BodyCompositionStyle['coach-service']}>
-                                {coachInfo.coachType || '--'} 已服务{coachInfo.waiterCount || 0}人
+                        ) : null}
+                        {/* 报告图片 */}
+                        {bodyCompositionData.url3 ? (
+                            <div className={BodyCompositionStyle['content-box']}>
+                                <div className={BodyCompositionStyle['title']}>人体成分报告</div>
+                                <div className={BodyCompositionStyle['one-photo-box']}>
+                                    <div className={BodyCompositionStyle['img-box']}>
+                                        <img src={bodyCompositionData.url3} alt='人体成分报告图片' />
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div className={BodyCompositionStyle['coach-qrcode']}>
-                            <div className={BodyCompositionStyle['coach-qrcode-img']}>
-                                <QRCode value={coachInfo.qrCodeInfo || ''} />
+                        ) : null}
+                        {/* 教练card */}
+                        <div className={BodyCompositionStyle['coach-warp-box']}>
+                            <div className={BodyCompositionStyle['coach-img-box']}>
+                                <img src={coachInfo.headPath || ''} alt='头像' />
                             </div>
-                            <div className='coach-qrcode-text'>长按识别我的名片</div>
+                            <div className={BodyCompositionStyle['coach-info-box']}>
+                                <div className={BodyCompositionStyle['coach-name-tag']}>
+                                    <div className={BodyCompositionStyle['coach-name']}>{coachInfo.name || '--'}</div>
+                                    <div className={BodyCompositionStyle['coach-tag']}>私人教练</div>
+                                </div>
+                                <div className={BodyCompositionStyle['coach-service']}>
+                                    {coachInfo.coachType || '--'} 已服务{coachInfo.waiterCount || 0}人
+                                </div>
+                            </div>
+                            <div className={BodyCompositionStyle['coach-qrcode']}>
+                                <div className={BodyCompositionStyle['coach-qrcode-img']}>
+                                    <QRCode value={coachInfo.qrCodeInfo || ''} />
+                                </div>
+                                <div className='coach-qrcode-text'>长按识别我的名片</div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                )}
             </div>
         )
     }
