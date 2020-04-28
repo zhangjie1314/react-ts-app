@@ -22,25 +22,34 @@ export default class BodyComposition extends Component<any, any> {
             chartData: [],
             fiancoData: [],
             bodyCompositionData: {},
+            imgHandleing: false,
+            shareBtnTxt: '分享报告图片',
         }
     }
     static defaultProps = {
         chartData: [],
         fiancoData: [],
+        coachInfo: {},
     }
     static propType = {
         chartData: PropTypes.array,
         fiancoData: PropTypes.array,
+        coachInfo: PropTypes.object,
     }
     static getDerivedStateFromProps(nextProps: any, prevState: any) {
         return {
             chartData: nextProps.chartData,
             fiancoData: nextProps.fiancoData,
+            coachInfo: nextProps.coachInfo,
         }
     }
     // html转图片
     private toImg = () => {
         const shareRef = this.refs.bodyShareBox as HTMLElement
+        this.setState({
+            imgHandleing: true,
+            shareBtnTxt: '正在处理图片中...',
+        })
         Html2canvas(shareRef, {
             useCORS: true,
             scale: 2,
@@ -53,6 +62,10 @@ export default class BodyComposition extends Component<any, any> {
             ctx.imageSmoothingEnabled = false
             const data = ctx.canvas.toDataURL('image/png')
             callAppShareImgMenthd(data, this.props.reportStore.tabsId)
+            this.setState({
+                imgHandleing: false,
+                shareBtnTxt: '分享报告图片',
+            })
         })
     }
     // 去体测
@@ -91,7 +104,7 @@ export default class BodyComposition extends Component<any, any> {
         })
     }
     render() {
-        const { chartData, bodyCompositionData } = this.state
+        const { chartData, bodyCompositionData, coachInfo, shareBtnTxt, imgHandleing } = this.state
         const { isShare, userInfos } = this.props.reportStore
         return (
             <div className={BodyCompositionStyle['wrapper']} ref='bodyComposition'>
@@ -161,7 +174,7 @@ export default class BodyComposition extends Component<any, any> {
                             <div className={BodyCompositionStyle['photo-box']}>
                                 {bodyCompositionData.url1 ? (
                                     <div className={BodyCompositionStyle['img-box']}>
-                                        <PhotoConsumer src={NoImg} intro='正面照'>
+                                        <PhotoConsumer src={bodyCompositionData.url1} intro='正面照'>
                                             <div className={BodyCompositionStyle['img']}>
                                                 <img src={bodyCompositionData.url1} alt='正面照' />
                                             </div>
@@ -171,7 +184,7 @@ export default class BodyComposition extends Component<any, any> {
                                 ) : null}
                                 {bodyCompositionData.url2 ? (
                                     <div className={BodyCompositionStyle['img-box']}>
-                                        <PhotoConsumer src={NoImg} intro='侧面照'>
+                                        <PhotoConsumer src={bodyCompositionData.url2} intro='侧面照'>
                                             <div className={BodyCompositionStyle['img']}>
                                                 <img src={bodyCompositionData.url2} alt='侧面照' />
                                             </div>
@@ -189,7 +202,7 @@ export default class BodyComposition extends Component<any, any> {
                         <div className={BodyCompositionStyle['title']}>人体成分报告</div>
                         <div className={BodyCompositionStyle['one-photo-box']}>
                             <PhotoProvider photoClosable={true}>
-                                <PhotoConsumer src={NoImg} intro='人体成分报告图片'>
+                                <PhotoConsumer src={bodyCompositionData.url3} intro='人体成分报告图片'>
                                     <div className={BodyCompositionStyle['img-box']}>
                                         <img src={bodyCompositionData.url3} alt='人体成分报告图片' />
                                     </div>
@@ -204,8 +217,13 @@ export default class BodyComposition extends Component<any, any> {
                         <div className={BodyCompositionStyle['qtc-btn']} onClick={this.gotoTcFun}>
                             去体测
                         </div>
-                        <div className={BodyCompositionStyle['share-report-btn']} onClick={this.toImg}>
-                            分享报告图片
+                        <div
+                            className={`${BodyCompositionStyle['share-report-btn']} ${
+                                imgHandleing ? BodyCompositionStyle['dis'] : ''
+                            }`}
+                            onClick={this.toImg}
+                        >
+                            {shareBtnTxt}
                         </div>
                     </div>
                 )}
@@ -275,30 +293,24 @@ export default class BodyComposition extends Component<any, any> {
                     {bodyCompositionData.url1 || bodyCompositionData.url2 ? (
                         <div className={BodyCompositionStyle['content-box']}>
                             <div className={BodyCompositionStyle['title']}>照片展示</div>
-                            <PhotoProvider photoClosable={true}>
-                                <div className={BodyCompositionStyle['photo-box']}>
-                                    {bodyCompositionData.url1 ? (
-                                        <div className={BodyCompositionStyle['img-box']}>
-                                            <PhotoConsumer src={NoImg} intro='正面照'>
-                                                <div className={BodyCompositionStyle['img']}>
-                                                    <img src={bodyCompositionData.url1} alt='正面照' />
-                                                </div>
-                                            </PhotoConsumer>
-                                            <div className={BodyCompositionStyle['txt']}>正面照</div>
+                            <div className={BodyCompositionStyle['photo-box']}>
+                                {bodyCompositionData.url1 ? (
+                                    <div className={BodyCompositionStyle['img-box']}>
+                                        <div className={BodyCompositionStyle['img']}>
+                                            <img src={bodyCompositionData.url1} alt='正面照' />
                                         </div>
-                                    ) : null}
-                                    {bodyCompositionData.url2 ? (
-                                        <div className={BodyCompositionStyle['img-box']}>
-                                            <PhotoConsumer src={NoImg} intro='侧面照'>
-                                                <div className={BodyCompositionStyle['img']}>
-                                                    <img src={bodyCompositionData.url2} alt='侧面照' />
-                                                </div>
-                                            </PhotoConsumer>
-                                            <div className={BodyCompositionStyle['txt']}>侧面照</div>
+                                        <div className={BodyCompositionStyle['txt']}>正面照</div>
+                                    </div>
+                                ) : null}
+                                {bodyCompositionData.url2 ? (
+                                    <div className={BodyCompositionStyle['img-box']}>
+                                        <div className={BodyCompositionStyle['img']}>
+                                            <img src={bodyCompositionData.url2} alt='侧面照' />
                                         </div>
-                                    ) : null}
-                                </div>
-                            </PhotoProvider>
+                                        <div className={BodyCompositionStyle['txt']}>侧面照</div>
+                                    </div>
+                                ) : null}
+                            </div>
                         </div>
                     ) : null}
                     {/* 报告图片 */}
@@ -306,31 +318,29 @@ export default class BodyComposition extends Component<any, any> {
                         <div className={BodyCompositionStyle['content-box']}>
                             <div className={BodyCompositionStyle['title']}>人体成分报告</div>
                             <div className={BodyCompositionStyle['one-photo-box']}>
-                                <PhotoProvider photoClosable={true}>
-                                    <PhotoConsumer src={NoImg} intro='人体成分报告图片'>
-                                        <div className={BodyCompositionStyle['img-box']}>
-                                            <img src={bodyCompositionData.url3} alt='人体成分报告图片' />
-                                        </div>
-                                    </PhotoConsumer>
-                                </PhotoProvider>
+                                <div className={BodyCompositionStyle['img-box']}>
+                                    <img src={bodyCompositionData.url3} alt='人体成分报告图片' />
+                                </div>
                             </div>
                         </div>
                     ) : null}
                     {/* 教练card */}
                     <div className={BodyCompositionStyle['coach-warp-box']}>
                         <div className={BodyCompositionStyle['coach-img-box']}>
-                            <img src='coachInfo.headPath' alt='头像' />
+                            <img src={coachInfo.headPath || ''} alt='头像' />
                         </div>
                         <div className={BodyCompositionStyle['coach-info-box']}>
                             <div className={BodyCompositionStyle['coach-name-tag']}>
-                                <div className={BodyCompositionStyle['coach-name']}>教练名称</div>
+                                <div className={BodyCompositionStyle['coach-name']}>{coachInfo.name || '--'}</div>
                                 <div className={BodyCompositionStyle['coach-tag']}>私人教练</div>
                             </div>
-                            <div className={BodyCompositionStyle['coach-service']}>团课 已服务10人</div>
+                            <div className={BodyCompositionStyle['coach-service']}>
+                                {coachInfo.coachType || '--'} 已服务{coachInfo.waiterCount || 0}人
+                            </div>
                         </div>
                         <div className={BodyCompositionStyle['coach-qrcode']}>
                             <div className={BodyCompositionStyle['coach-qrcode-img']}>
-                                <QRCode value='https://img-dev-club.ejoyst.com/promotion' />
+                                <QRCode value={coachInfo.qrCodeInfo || ''} />
                             </div>
                             <div className='coach-qrcode-text'>长按识别我的名片</div>
                         </div>

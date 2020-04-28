@@ -121,6 +121,10 @@
             text-align: center;
             color: #fff;
             background: #23cfe2;
+            &.dis {
+                background: #ccc;
+                color: #fff;
+            }
         }
     }
     .share-box {

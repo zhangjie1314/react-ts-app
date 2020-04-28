@@ -166,7 +166,7 @@ export default class ActionEvaluation extends Component<any, any> {
                             <div
                                 key={idx}
                                 className={`${AeStyle.tab} ${idx === this.state.tabsIdx ? AeStyle.selectBg : ''}`}
-                                onClick={(e) => this.selectTabsFn(e, idx)}
+                                onClick={e => this.selectTabsFn(e, idx)}
                             >
                                 <p>{el.txt}</p>
                                 <p>({el.num}项)</p>
@@ -174,7 +174,7 @@ export default class ActionEvaluation extends Component<any, any> {
                         )
                     })}
                 </div>
-                <BodyFigure params={}></BodyFigure>
+                <BodyFigure params={''}></BodyFigure>
                 <div className={AeStyle.footerBtn}>
                     <div className={AeStyle.goToTest}>去体侧</div>
                     <div className={AeStyle.shareBtn}>生成报告图片</div>

@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
 import Dayjs from 'dayjs'
-import { getTestListByBapp } from '../../apis/report/bapp'
-import { getTestListByStudio } from '../../apis/report/studio'
+import { getTestListByBapp, getCoachInfo } from '../../apis/report/bapp'
 import { ChartItemRules } from '../../types/components/pos_charts'
 import { FiancoRules } from '../../types/components/fianco_contrast'
 import { setRegisterShare } from '../../utils/register_share'
@@ -16,6 +15,7 @@ import BodyComposition from './components/body_composition'
 import FitnessAssessment from './components/fitness_assessment'
 import StaticEvaluation from './components/static_evaluation'
 import AthleticPerformance from './components/athletic_performance'
+import { handleHandImg } from '../../utils'
 
 interface tabsTyps {
     name?: string
@@ -32,6 +32,7 @@ export default class Report extends Component<any, any> {
             tabsId: 0,
             chartData: [],
             fiancoData: [],
+            coachInfo: {},
             circleData: [
                 { name: '平衡', val: 100, index: 0, bgColor: '#242630', color: '#21b8c5' },
                 { name: '敏捷', val: 100, index: 1, bgColor: '#242630', color: '#eab807' },
@@ -48,7 +49,7 @@ export default class Report extends Component<any, any> {
             memberId: memberId,
             pageNum: 1,
             pageSize: 999,
-        }).then((res) => {
+        }).then(res => {
             // 重置表格数据
             this.setState(
                 {
@@ -58,7 +59,7 @@ export default class Report extends Component<any, any> {
                 () => {
                     // 处理测试列表数据
                     this.handleTestListData(res.data.records)
-                }
+                },
             )
         })
     }
@@ -111,7 +112,7 @@ export default class Report extends Component<any, any> {
             details: `快去查看${params.name.slice(0, 1)}${params.grander === 1 ? '先生' : '女士'}的详细报告吧`, // 分享内容
             pic: `${process.env.REACT_APP_FILE_URL}/app/pos/pos_logo.png`, // 分享图片
             url: `${this.getShareContentUrl(params.urlParams)}`, // 分享链接
-        }).then((res) => {
+        }).then(res => {
             alert(JSON.stringify(res))
         })
     }
@@ -167,38 +168,53 @@ export default class Report extends Component<any, any> {
             this.configRegisterShare(pm)
         })
         this.getFiancoContrastData()
+        // 不是分享时请求教练数据
+        if (!this.props.reportStore.isShare) {
+            this.getCoachInfo()
+        }
         this.setState({
             tabs,
             tabsId,
+        })
+    }
+    // 获取教练信息
+    getCoachInfo() {
+        const { tabsId, isFromStudio } = this.props.reportStore
+        getCoachInfo({ sideType: tabsId + 1 }).then(res => {
+            // 处理头像
+            res.data.headPath = handleHandImg(res.data.headPath, isFromStudio)
+            this.setState({
+                coachInfo: res.data,
+            })
         })
     }
     /**
      * 根据tab值显示对应页面
      */
     showPageFun(curPage: any) {
-        const { chartData, fiancoData } = this.state
+        const { chartData, fiancoData, coachInfo } = this.state
         switch (curPage) {
             case 0:
                 // 完美围度
-                return <PerfectCircumference chartData={this.state.chartData} fiancoData={this.state.fiancoData} />
+                return <PerfectCircumference chartData={chartData} fiancoData={fiancoData} coachInfo={coachInfo} />
             case 1:
                 // 运动表现
-                return <AthleticPerformance chartData={this.state.chartData} fiancoData={this.state.fiancoData} />
+                return <AthleticPerformance chartData={chartData} fiancoData={fiancoData} coachInfo={coachInfo} />
             case 2:
                 // 静态评估
-                return <StaticEvaluation chartData={this.state.chartData} fiancoData={this.state.fiancoData} />
+                return <StaticEvaluation chartData={chartData} fiancoData={fiancoData} coachInfo={coachInfo} />
             case 3:
                 // 运动评估
-                return <ActionEvaluation chartData={this.state.chartData} fiancoData={this.state.fiancoData} />
+                return <ActionEvaluation chartData={chartData} fiancoData={fiancoData} coachInfo={coachInfo} />
             case 4:
                 // 体适能评估
-                return <FitnessAssessment chartData={this.state.chartData} fiancoData={this.state.fiancoData} />
+                return <FitnessAssessment chartData={chartData} fiancoData={fiancoData} coachInfo={coachInfo} />
             case 5:
                 // 人体成分
-                return <BodyComposition chartData={this.state.chartData} fiancoData={this.state.fiancoData} />
+                return <BodyComposition chartData={chartData} fiancoData={fiancoData} coachInfo={coachInfo} />
             default:
                 // 人体成分
-                return <BodyComposition chartData={this.state.chartData} fiancoData={this.state.fiancoData} />
+                return <BodyComposition chartData={chartData} fiancoData={fiancoData} coachInfo={coachInfo} />
         }
     }
     componentWillUnmount() {
