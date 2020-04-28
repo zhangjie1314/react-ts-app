@@ -49,8 +49,17 @@ export default class Report extends Component<any, any> {
             pageNum: 1,
             pageSize: 999,
         }).then((res) => {
-            // 处理测试列表数据
-            this.handleTestListData(res.data.records)
+            // 重置表格数据
+            this.setState(
+                {
+                    chartData: [],
+                    fiancoData: [],
+                },
+                () => {
+                    // 处理测试列表数据
+                    this.handleTestListData(res.data.records)
+                }
+            )
         })
     }
     // 处理测试列表数据
@@ -171,21 +180,25 @@ export default class Report extends Component<any, any> {
         switch (curPage) {
             case 0:
                 // 完美围度
-                return <PerfectCircumference />
+                return <PerfectCircumference chartData={this.state.chartData} fiancoData={this.state.fiancoData} />
             case 1:
-                return <AthleticPerformance />
+                // 运动表现
+                return <AthleticPerformance chartData={this.state.chartData} fiancoData={this.state.fiancoData} />
             case 2:
-                return <StaticEvaluation />
+                // 静态评估
+                return <StaticEvaluation chartData={this.state.chartData} fiancoData={this.state.fiancoData} />
             case 3:
                 // 运动评估
-                return <ActionEvaluation chartData={chartData} fiancoData={fiancoData} />
+                return <ActionEvaluation chartData={this.state.chartData} fiancoData={this.state.fiancoData} />
             case 4:
                 // 体适能评估
-                return <FitnessAssessment />
+                return <FitnessAssessment chartData={this.state.chartData} fiancoData={this.state.fiancoData} />
             case 5:
-                return <BodyComposition chartData={chartData} fiancoData={fiancoData} />
+                // 人体成分
+                return <BodyComposition chartData={this.state.chartData} fiancoData={this.state.fiancoData} />
             default:
-                return <BodyComposition chartData={chartData} fiancoData={fiancoData} />
+                // 人体成分
+                return <BodyComposition chartData={this.state.chartData} fiancoData={this.state.fiancoData} />
         }
     }
     componentWillUnmount() {

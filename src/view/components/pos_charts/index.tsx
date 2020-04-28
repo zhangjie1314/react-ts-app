@@ -38,13 +38,12 @@ export default class PosCharts extends React.Component<any, any> {
         chartId: PropTypes.string,
     }
     static getDerivedStateFromProps(nextProps: any, prevState: any) {
-        const oData = JSON.stringify(prevState.listData)
-        const nData = JSON.stringify(nextProps.chartData)
-        if (oData !== nData) {
-            console.log(oData, nData)
-            const data = nextProps.chartData
+        const newData = JSON.stringify(nextProps.chartData)
+        const oldData = JSON.stringify(prevState.listData)
+        if (newData !== oldData) {
+            console.log('getDerivedStateFromProps:', newData, oldData)
             return {
-                listData: data,
+                listData: nextProps.chartData,
             }
         }
         return null
@@ -52,7 +51,7 @@ export default class PosCharts extends React.Component<any, any> {
     componentDidUpdate(prevProps: any, prevState: any) {
         const cpData = JSON.stringify(prevState.curPoint)
         const ncpData = JSON.stringify(this.state.curPoint)
-        if (cpData !== ncpData && cpData !== '{}') {
+        if (ncpData && cpData !== ncpData && cpData !== '{}') {
             this.moveShowPoint()
         }
     }
@@ -70,16 +69,17 @@ export default class PosCharts extends React.Component<any, any> {
             lcyt.push(el.grade)
         })
         // 判断是否存在linechart 对象 无则 创建一个
-        if (!this.state.lineChart) {
-            const wVal = document.body.offsetWidth
-            chart = new F2.Chart({
-                id: chartId,
-                height: (220 / 375) * wVal,
-                pixelRatio: window.devicePixelRatio,
-                plugins: [ScrollBar, Tooltip, Gesture, Guide],
-                padding: [40, 30, 'auto', 30],
-            })
+        if (this.state.lineChart) {
+            this.state.lineChart.clear()
         }
+        const wVal = document.body.offsetWidth
+        chart = new F2.Chart({
+            id: chartId,
+            height: (220 / 375) * wVal,
+            pixelRatio: window.devicePixelRatio,
+            plugins: [ScrollBar, Tooltip, Gesture, Guide],
+            padding: [40, 30, 'auto', 30],
+        })
         this.setState(
             {
                 lineChartXTicks: lcxt,
@@ -193,7 +193,7 @@ export default class PosCharts extends React.Component<any, any> {
      */
     creatPointHtml(data: any) {
         return `<div
-        style="line-height:24px;background:#fff;text-align:center;border-radius:24px;white-space:nowrap;width:46px;margin-top:-26px;color:#0c0c0c;">
+        style="line-height:24px;background:#fff;text-align:center;border-radius:24px;white-space:nowrap;width:46px;margin-top:-26px;color:#0c0c0c;font-size:12px;">
             ${data.grade}${data.type === 6 ? 'kg' : '分'}
             <div style="position: absolute;bottom:-4px;left:50%;border-top: 5px solid #fff;border-left: 5px solid transparent;border-right: 5px solid transparent;transform: translateX(-50%);"></div>
         </div>`

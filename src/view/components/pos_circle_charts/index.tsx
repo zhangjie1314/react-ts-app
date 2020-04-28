@@ -11,6 +11,7 @@ export default class PosCircleCharts extends React.Component<any, any> {
         super(props)
         this.state = {
             circleChart: null,
+            circleData: [],
         }
     }
     static defaultProps = {
@@ -21,9 +22,18 @@ export default class PosCircleCharts extends React.Component<any, any> {
         chartData: PropTypes.array,
         chartId: PropTypes.string,
     }
-    componentWillReceiveProps(nextProps: any) {
-        // 处理数据
-        this.initChart(nextProps.chartData)
+    static getDerivedStateFromProps(nextProps: any, prevState: any) {
+        const newData = JSON.stringify(nextProps.chartData)
+        const oldData = JSON.stringify(prevState.circleData)
+        if (newData !== oldData) {
+            return {
+                circleData: nextProps.chartData,
+            }
+        }
+        return null
+    }
+    componentDidMount() {
+        this.initChart(this.state.circleData)
     }
     /**
      * 实例化图表
