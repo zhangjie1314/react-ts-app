@@ -23,3 +23,8 @@ export const getTestListByBapp = (params: any) => {
     const url = `${process.env.REACT_APP_BWEBAPP_API_URL}/coach/side/fuzzy/getTestList`
     return fetchGet(url, params, 'bapp')
 }
+// 获取人体成分数据
+export function getBodyCompositionResult(params = {}) {
+    const url = `${process.env.REACT_APP_BWEBAPP_API_URL}/coach/side/fuzzy/getRtcfValue`
+    return fetchGet(url, params, 'bapp')
+}

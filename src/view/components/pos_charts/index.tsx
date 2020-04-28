@@ -32,10 +32,12 @@ export default class PosCharts extends React.Component<any, any> {
     static defaultProps = {
         chartData: [],
         chartId: '',
+        clickPointCallback: (res: any) => {},
     }
     static propTypes = {
         chartData: PropTypes.array,
         chartId: PropTypes.string,
+        clickPointCallback: PropTypes.func,
     }
     static getDerivedStateFromProps(nextProps: any, prevState: any) {
         const newData = JSON.stringify(nextProps.chartData)
@@ -136,6 +138,7 @@ export default class PosCharts extends React.Component<any, any> {
                     this.setState({
                         curPoint: data[0],
                     })
+                    this.props.clickPointCallback(data[0])
                 },
             },
         })
