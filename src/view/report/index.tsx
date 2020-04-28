@@ -48,9 +48,18 @@ export default class Report extends Component<any, any> {
             memberId: memberId,
             pageNum: 1,
             pageSize: 999,
-        }).then((res) => {
-            // 处理测试列表数据
-            this.handleTestListData(res.data.records)
+        }).then(res => {
+            // 重置表格数据
+            this.setState(
+                {
+                    chartData: [],
+                    fiancoData: [],
+                },
+                () => {
+                    // 处理测试列表数据
+                    this.handleTestListData(res.data.records)
+                },
+            )
         })
     }
     // 处理测试列表数据
@@ -102,7 +111,7 @@ export default class Report extends Component<any, any> {
             details: `快去查看${params.name.slice(0, 1)}${params.grander === 1 ? '先生' : '女士'}的详细报告吧`, // 分享内容
             pic: `${process.env.REACT_APP_FILE_URL}/app/pos/pos_logo.png`, // 分享图片
             url: `${this.getShareContentUrl(params.urlParams)}`, // 分享链接
-        }).then((res) => {
+        }).then(res => {
             alert(JSON.stringify(res))
         })
     }
@@ -170,21 +179,25 @@ export default class Report extends Component<any, any> {
         switch (curPage) {
             case 0:
                 // 完美围度
-                return <PerfectCircumference />
+                return <PerfectCircumference chartData={this.state.chartData} fiancoData={this.state.fiancoData} />
             case 1:
-                return <AthleticPerformance />
+                // 运动表现
+                return <AthleticPerformance chartData={this.state.chartData} fiancoData={this.state.fiancoData} />
             case 2:
-                return <StaticEvaluation />
+                // 静态评估
+                return <StaticEvaluation chartData={this.state.chartData} fiancoData={this.state.fiancoData} />
             case 3:
                 // 运动评估
-                return <ActionEvaluation />
+                return <ActionEvaluation chartData={this.state.chartData} fiancoData={this.state.fiancoData} />
             case 4:
                 // 体适能评估
-                return <FitnessAssessment />
+                return <FitnessAssessment chartData={this.state.chartData} fiancoData={this.state.fiancoData} />
             case 5:
+                // 人体成分
                 return <BodyComposition chartData={this.state.chartData} fiancoData={this.state.fiancoData} />
             default:
-                return <BodyComposition />
+                // 人体成分
+                return <BodyComposition chartData={this.state.chartData} fiancoData={this.state.fiancoData} />
         }
     }
     componentWillUnmount() {

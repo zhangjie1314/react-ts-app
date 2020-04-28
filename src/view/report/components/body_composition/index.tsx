@@ -69,11 +69,11 @@ export default class BodyComposition extends Component<any, any> {
     render() {
         const { chartData } = this.state
         const { isShare } = this.props.reportStore
-        console.log(chartData)
+        console.log(chartData, chartData.length)
         return (
             <div className={BodyCompositionStyle['wrapper']} ref='bodyComposition'>
                 {/* 图表 */}
-                {chartData.length > 0 ? <PosCharts chartId='body-composition-chart' chartData={chartData} /> : null}
+                {chartData.length > 0 && <PosCharts chartId='body-composition-chart' chartData={chartData} />}
                 {/* 对比 */}
                 <FiancoContrast fiancoArr={this.state.fiancoData} />
                 {/* 人体成分数据 */}
