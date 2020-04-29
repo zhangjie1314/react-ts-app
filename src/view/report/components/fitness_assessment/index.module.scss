@@ -24,6 +24,10 @@
             padding-bottom: 20px;
         }
         .content {
+            p {
+                line-height: 1.8;
+                margin-bottom: 20px;
+            }
             .data-item {
                 background: #fff;
                 border-radius: 8px;
@@ -85,11 +89,6 @@
                             &:last-child {
                                 .headbar {
                                     border-right: 0;
-                                    &.share-style {
-                                        &::after {
-                                            width: 0;
-                                        }
-                                    }
                                 }
                             }
                             .headbar-color-1 {
@@ -205,6 +204,9 @@
             text-align: center;
             color: #fff;
             background: #23cfe2;
+            &.dis {
+                background: #ccc;
+            }
         }
     }
     .share-box {

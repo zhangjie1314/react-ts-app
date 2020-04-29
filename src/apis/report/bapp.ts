@@ -43,3 +43,8 @@ export function getPerfectCircumferenceResult(params = {}) {
     const url = `${process.env.REACT_APP_BWEBAPP_API_URL}/coach/side/fuzzy/getWDId`
     return fetchGet(url, params, 'bapp')
 }
+// 获取体适能评估数据
+export function getfitnessAssessmentResult(params = {}) {
+    const url = `${process.env.REACT_APP_BWEBAPP_API_URL}/coach/side/fuzzy/getTnValue`
+    return fetchGet(url, params, 'bapp')
+}

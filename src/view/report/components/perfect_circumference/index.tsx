@@ -104,7 +104,6 @@ export default class PerfectCircumference extends Component<any, any> {
     componentDidUpdate(prevProps: any, prevState: any) {
         const oldChartData = JSON.stringify(prevState.chartData)
         const newChartData = JSON.stringify(this.state.chartData)
-        console.log(oldChartData, newChartData)
         if (oldChartData !== newChartData && newChartData !== '[]') {
             this.handleClickPointFunc(this.state.chartData[0])
         }
@@ -217,7 +216,13 @@ export default class PerfectCircumference extends Component<any, any> {
         return (
             <div className={PcStyle['wrapper']}>
                 {/* 图表 */}
-                {chartData.length > 0 && <PosCharts chartId='perfect-circumference-chart' chartData={chartData} />}
+                {chartData.length > 0 && (
+                    <PosCharts
+                        chartId='perfect-circumference-chart'
+                        chartData={chartData}
+                        clickPointCallback={this.handleClickPointFunc.bind(this)}
+                    />
+                )}
                 {/* 体测对比 */}
                 <FiancoContrast fiancoArr={this.state.fiancoData} />
                 {/* 完美围度数据 */}
