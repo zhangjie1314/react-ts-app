@@ -90,7 +90,7 @@ export default class PosCharts extends React.Component<any, any> {
             },
             () => {
                 this.changeMainChart()
-            },
+            }
         )
     }
 
