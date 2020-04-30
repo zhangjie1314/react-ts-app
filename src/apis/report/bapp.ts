@@ -48,3 +48,8 @@ export function getfitnessAssessmentResult(params = {}) {
     const url = `${process.env.REACT_APP_BWEBAPP_API_URL}/coach/side/fuzzy/getTnValue`
     return fetchGet(url, params, 'bapp')
 }
+// 获取静态评估数据
+export function getStaticEvaluationResult(params = {}) {
+    const url = `${process.env.REACT_APP_BWEBAPP_API_URL}/coach/side/fuzzy/getTyValue`
+    return fetchGet(url, params, 'bapp')
+}

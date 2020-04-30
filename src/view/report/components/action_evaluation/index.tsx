@@ -1,10 +1,10 @@
 // 动作评估
 import React, { Component } from 'react'
-import PosCharts from '../../../components/pos_charts'
-import FiancoContrast from '../../../components/fianco_contrast'
+import PosCharts from '@comps/pos_charts'
+import FiancoContrast from '@comps/fianco_contrast'
 import BodyFigure from './components/body_figure'
 import AeStyle from './index.module.scss'
-import { FiancoRules } from '../../../../types/components/fianco_contrast'
+import { FiancoRules } from '@ctypes/components/fianco_contrast'
 
 interface fblObjType {
     num?: number

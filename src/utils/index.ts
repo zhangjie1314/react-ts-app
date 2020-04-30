@@ -1,4 +1,4 @@
-import defAvatar from '../assets/img/normal.png'
+import defAvatar from '@assets/img/normal.png'
 /**
  * 替换头像地址
  */

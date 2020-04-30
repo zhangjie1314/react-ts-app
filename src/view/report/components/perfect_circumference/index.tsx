@@ -1,16 +1,16 @@
 // 完美围度
 import React, { Component } from 'react'
-import PosCharts from '../../../components/pos_charts'
-import FiancoContrast from '../../../components/fianco_contrast'
+import PosCharts from '@comps/pos_charts'
+import FiancoContrast from '@comps/fianco_contrast'
 import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
 import { PhotoProvider, PhotoConsumer } from 'react-photo-view'
 import QRCode from 'qrcode.react'
 import Html2canvas from 'html2canvas'
 import PcStyle from './index.module.scss'
-import { ChartItemRules } from '../../../../types/components/pos_charts'
-import { getPerfectCircumferenceResult } from '../../../../apis/report/bapp'
-import { handleHandImg, callAppShareImgMenthd, callAppMenthd } from '../../../../utils'
+import { ChartItemRules } from '@ctypes/components/pos_charts'
+import { getPerfectCircumferenceResult } from '@apis/report/bapp'
+import { handleHandImg, callAppShareImgMenthd, callAppMenthd } from '@utils/index'
 
 interface fblObjType {
     num?: number

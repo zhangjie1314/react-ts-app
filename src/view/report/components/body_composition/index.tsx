@@ -5,12 +5,12 @@ import Html2canvas from 'html2canvas'
 import { observer, inject } from 'mobx-react'
 import QRCode from 'qrcode.react'
 import PropTypes from 'prop-types'
-import { callAppMenthd, callAppShareImgMenthd, handleHandImg } from '../../../../utils'
-import { getBodyCompositionResult } from '../../../../apis/report/bapp'
-import PosCharts from '../../../components/pos_charts'
-import FiancoContrast from '../../../components/fianco_contrast'
+import { callAppMenthd, callAppShareImgMenthd, handleHandImg } from '@utils/index'
+import { getBodyCompositionResult } from '@apis/report/bapp'
+import PosCharts from '@comps/pos_charts'
+import FiancoContrast from '@comps/fianco_contrast'
 import BodyCompositionStyle from './index.module.scss'
-import { ChartItemRules } from '../../../../types/components/pos_charts'
+import { ChartItemRules } from '@ctypes/components/pos_charts'
 
 @inject('reportStore')
 @observer

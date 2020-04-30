@@ -2,7 +2,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import F2 from '@antv/f2/lib/core'
-import { ChartItemRules } from '../../../types/components/pos_charts'
+import { ChartItemRules } from '@ctypes/components/pos_charts'
 import PosChartStyle from './index.module.scss'
 
 require('@antv/f2/lib/geom/line') // 只加载折线图

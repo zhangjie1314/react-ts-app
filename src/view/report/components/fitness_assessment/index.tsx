@@ -5,11 +5,10 @@ import Html2canvas from 'html2canvas'
 import { callAppMenthd, callAppShareImgMenthd } from '../../../../utils'
 import QRCode from 'qrcode.react'
 import FitnessAssessmentStyle from './index.module.scss'
-import PosCharts from '../../../components/pos_charts'
-import FiancoContrast from '../../../components/fianco_contrast'
-import DefUserAvatar from '../../../../assets/img/normal.png'
-import { ChartItemRules } from '../../../../types/components/pos_charts'
-import { getfitnessAssessmentResult } from '../../../../apis/report/bapp'
+import PosCharts from '@comps/pos_charts'
+import FiancoContrast from '@comps/fianco_contrast'
+import { ChartItemRules } from '@ctypes/components/pos_charts'
+import { getfitnessAssessmentResult } from '@apis/report/bapp'
 
 @inject('reportStore')
 @observer

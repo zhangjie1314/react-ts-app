@@ -2,8 +2,8 @@
 import React, { Component } from 'react'
 import BfStyle from './index.module.scss'
 import { getActionEvaluationInfo } from '../../../../../../apis/report/bapp'
-import frontImg from '../../../../../../assets/img/front3.0.png'
-import backImg from '../../../../../../assets/img/back3.0.png'
+import frontImg from '@assets/img/front3.0.png'
+import backImg from '@assets/img/back3.0.png'
 interface fblObjType {
     num?: number
     pj?: string
