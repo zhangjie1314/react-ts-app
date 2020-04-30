@@ -6,10 +6,10 @@ import { callAppMenthd, callAppShareImgMenthd } from '../../../../utils'
 import QRCode from 'qrcode.react'
 import { PhotoProvider, PhotoConsumer } from 'react-photo-view'
 import AthleticPerformanceStyle from './index.module.scss'
-import PosCharts from '../../../components/pos_charts'
-import PosCircleCharts from '../../../components/pos_circle_charts'
-import FiancoContrast from '../../../components/fianco_contrast'
-import DefUserAvatar from '../../../../assets/img/normal.png'
+import PosCharts from '@comps/pos_charts'
+import PosCircleCharts from '@comps/pos_circle_charts'
+import FiancoContrast from '@comps/fianco_contrast'
+import DefUserAvatar from '@assets/img/normal.png'
 
 @inject('reportStore')
 @observer

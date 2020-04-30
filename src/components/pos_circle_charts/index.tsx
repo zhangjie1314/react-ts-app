@@ -2,7 +2,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import F2 from '@antv/f2'
-import { circleItem } from '../../../types/components/pos_circle_charts'
+import { circleItem } from '@ctypes/components/pos_circle_charts'
 import PosCircleChartsStyle from './index.module.scss'
 import './index.scss'
 

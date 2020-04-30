@@ -1,13 +1,13 @@
 // 动作评估
 import React, { Component } from 'react'
+
 import { observer, inject } from 'mobx-react'
-import PosCharts from '../../../components/pos_charts'
-import FiancoContrast from '../../../components/fianco_contrast'
+import PosCharts from '@comps/pos_charts'
+import FiancoContrast from '@comps/fianco_contrast'
 import BodyFigure from './components/body_figure'
 import { getActionEvaluationInfo } from '../../../../apis/report/bapp'
 import AeStyle from './index.module.scss'
 import { figureData } from './components/body_figure/figure_data'
-// import { ChartItemRules } from '../../../../types/components/pos_charts'
 
 interface fblObjType {
     num?: number

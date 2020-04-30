@@ -2,9 +2,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import InfoStyle from './index.module.scss'
-import normel from '../../../assets/img/normal.png'
-import male from '../../../assets/img/male.png'
-import female from '../../../assets/img/female.png'
+import normel from '@assets/img/normal.png'
+import male from '@assets/img/male.png'
+import female from '@assets/img/female.png'
 
 export default class UserInfo extends React.Component<any, any> {
     static defaultProps = {

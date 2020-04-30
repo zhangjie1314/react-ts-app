@@ -2,13 +2,15 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
 import Html2canvas from 'html2canvas'
-import { callAppMenthd, callAppShareImgMenthd } from '../../../../utils'
+import { callAppMenthd, callAppShareImgMenthd } from '@utils/index'
 import QRCode from 'qrcode.react'
 import { PhotoProvider, PhotoConsumer } from 'react-photo-view'
 import StaticEvaluationStyle from './index.module.scss'
-import PosCharts from '../../../components/pos_charts'
-import FiancoContrast from '../../../components/fianco_contrast'
-import DefUserAvatar from '../../../../assets/img/normal.png'
+import PosCharts from '@comps/pos_charts'
+import FiancoContrast from '@comps/fianco_contrast'
+import { ChartItemRules } from '@ctypes/components/pos_charts'
+import { getStaticEvaluationResult } from '@apis/report/bapp'
+import DefUserAvatar from '@assets/img/normal.png'
 
 @inject('reportStore')
 @observer
@@ -51,24 +53,49 @@ export default class StaticEvaluation extends Component<any, any> {
     }
     // 去体测
     private gotoTcFun = () => {
-        const { userInfo } = this.props.reportStore
+        const { userInfos } = this.props.reportStore
         callAppMenthd('gotoTestTool', {
-            age: userInfo.age,
-            birthday: userInfo.birthday,
-            gender: userInfo.gender,
-            height: userInfo.height,
-            memberId: userInfo.memberId,
-            name: userInfo.name,
-            weight: userInfo.weight,
-            headPath: userInfo.headPath,
+            age: userInfos.age,
+            birthday: userInfos.birthday,
+            gender: userInfos.gender,
+            height: userInfos.height,
+            memberId: userInfos.memberId,
+            name: userInfos.name,
+            weight: userInfos.weight,
+            headPath: userInfos.headPath,
         })
+    }
+    componentDidUpdate(prevProps: any, prevState: any) {
+        const oldChartData = JSON.stringify(prevState.chartData)
+        const newChartData = JSON.stringify(this.state.chartData)
+        if (oldChartData !== newChartData && newChartData !== '[]') {
+            this.handleClickPointFunc(this.state.chartData[0])
+        }
+    }
+    // 点击图表点
+    handleClickPointFunc(item: ChartItemRules) {
+        getStaticEvaluationResult({
+            wdId: item.id,
+        }).then((res: any) => {
+            this.handleDataFunc(res.data)
+        })
+    }
+    // 处理数据
+    handleDataFunc(res: any) {
+        console.log(res)
     }
     render() {
         const { chartData, fiancoData } = this.state
         return (
             <div className={StaticEvaluationStyle['wrapper']}>
                 {/* 图表 */}
-                {chartData.length > 0 && <PosCharts chartId='fitness-assessment-chart' chartData={chartData} />}
+                {chartData.length > 0 && (
+                    <PosCharts
+                        chartId='fitness-assessment-chart'
+                        chartData={chartData}
+                        clickPointCallback={this.handleClickPointFunc.bind(this)}
+                    />
+                )}
                 {/* 对比 */}
                 <FiancoContrast fiancoArr={fiancoData} />
                 {/* 分数 */}

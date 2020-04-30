@@ -2,7 +2,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import F2 from '@antv/f2/lib/core'
-import { ChartItemRules } from '../../../types/components/pos_charts'
+import { ChartItemRules } from '@ctypes/components/pos_charts'
 import PosChartStyle from './index.module.scss'
 
 require('@antv/f2/lib/geom/line') // 只加载折线图
@@ -43,7 +43,6 @@ export default class PosCharts extends React.Component<any, any> {
         const newData = JSON.stringify(nextProps.chartData)
         const oldData = JSON.stringify(prevState.listData)
         if (newData !== oldData) {
-            // console.log('getDerivedStateFromProps:', newData, oldData)
             return {
                 listData: nextProps.chartData,
             }

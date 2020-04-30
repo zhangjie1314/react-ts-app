@@ -33,3 +33,23 @@ export function getBodyCompositionResult(params = {}) {
     const url = `${process.env.REACT_APP_BWEBAPP_API_URL}/coach/side/fuzzy/getRtcfValue`
     return fetchGet(url, params, 'bapp')
 }
+// 获取教练信息
+export function getCoachInfo(params = {}) {
+    const url = `${process.env.REACT_APP_BWEBAPP_API_URL}/coach/side/fuzzy/getSideCoachInfo`
+    return fetchGet(url, params, 'bapp')
+}
+// 获取完美围度数据
+export function getPerfectCircumferenceResult(params = {}) {
+    const url = `${process.env.REACT_APP_BWEBAPP_API_URL}/coach/side/fuzzy/getWDId`
+    return fetchGet(url, params, 'bapp')
+}
+// 获取体适能评估数据
+export function getfitnessAssessmentResult(params = {}) {
+    const url = `${process.env.REACT_APP_BWEBAPP_API_URL}/coach/side/fuzzy/getTnValue`
+    return fetchGet(url, params, 'bapp')
+}
+// 获取静态评估数据
+export function getStaticEvaluationResult(params = {}) {
+    const url = `${process.env.REACT_APP_BWEBAPP_API_URL}/coach/side/fuzzy/getTyValue`
+    return fetchGet(url, params, 'bapp')
+}

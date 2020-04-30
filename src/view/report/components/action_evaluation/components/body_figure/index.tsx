@@ -4,8 +4,8 @@ import PropTypes from 'prop-types'
 import BfStyle from './index.module.scss'
 import swiper from 'swiper/dist/js/swiper.min.js'
 import swStyle from 'swiper/dist/css/swiper.min.css'
-import frontImg from '../../../../../../assets/img/front3.0.png'
-import backImg from '../../../../../../assets/img/back3.0.png'
+import frontImg from '@assets/img/front3.0.png'
+import backImg from '@assets/img/back3.0.png'
 
 interface fblObjType {
     num?: number
