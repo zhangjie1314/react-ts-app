@@ -43,7 +43,7 @@ export default class PosCharts extends React.Component<any, any> {
         const newData = JSON.stringify(nextProps.chartData)
         const oldData = JSON.stringify(prevState.listData)
         if (newData !== oldData) {
-            console.log('getDerivedStateFromProps:', newData, oldData)
+            // console.log('getDerivedStateFromProps:', newData, oldData)
             return {
                 listData: nextProps.chartData,
             }
@@ -91,7 +91,7 @@ export default class PosCharts extends React.Component<any, any> {
             },
             () => {
                 this.changeMainChart()
-            },
+            }
         )
     }
 

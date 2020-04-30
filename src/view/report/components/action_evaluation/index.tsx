@@ -1,10 +1,13 @@
 // 动作评估
 import React, { Component } from 'react'
+import { observer, inject } from 'mobx-react'
 import PosCharts from '../../../components/pos_charts'
 import FiancoContrast from '../../../components/fianco_contrast'
 import BodyFigure from './components/body_figure'
+import { getActionEvaluationInfo } from '../../../../apis/report/bapp'
 import AeStyle from './index.module.scss'
-import { FiancoRules } from '../../../../types/components/fianco_contrast'
+import { figureData } from './components/body_figure/figure_data'
+// import { ChartItemRules } from '../../../../types/components/pos_charts'
 
 interface fblObjType {
     num?: number
@@ -13,6 +16,9 @@ interface fblObjType {
     jb?: number
     photo?: string
 }
+
+@inject('reportStore')
+@observer
 export default class ActionEvaluation extends Component<any, any> {
     constructor(props: any) {
         super(props)
@@ -20,143 +26,118 @@ export default class ActionEvaluation extends Component<any, any> {
             chartData: [],
             fiancoData: [],
             tabs: [
-                { txt: '过度激活', num: 0 },
-                { txt: '激活不足', num: 0 },
-                { txt: '指令混乱', num: 0 },
+                { txt: '过度激活', num: 0, type: 'jhgd' },
+                { txt: '激活不足', num: 0, type: 'jhbz' },
+                { txt: '指令混乱', num: 0, type: 'jhhl' },
             ],
             tabsIdx: 0,
             fblObj: {},
+            params: {}, // 肌肉点图
         }
     }
-    // 获取体侧数据
-    getFiancoContrastData = () => {
-        const fiancoData: FiancoRules[] = [
-            {
-                id: '1',
-                times: '2020年04月08日',
-                score: '54',
-                selected: 0,
-            },
-            {
-                id: '2',
-                times: '2021年04月08日',
-                score: '54',
-                selected: 0,
-            },
-            {
-                id: '3',
-                times: '2020年04月08日',
-                score: '54',
-                selected: 0,
-            },
-            {
-                id: '4',
-                times: '2020年04月08日',
-                score: '54',
-                selected: 0,
-            },
-            {
-                id: '5',
-                times: '2020年04月08日',
-                score: '54',
-                selected: 0,
-            },
-            {
-                id: '6',
-                times: '2020年04月08日',
-                score: '54',
-                selected: 0,
-            },
-            {
-                id: '7',
-                times: '2020年04月08日',
-                score: '54',
-                selected: 0,
-            },
-            {
-                id: '8',
-                times: '2020年04月08日',
-                score: '54',
-                selected: 0,
-            },
-            {
-                id: '9',
-                times: '2020年04月08日',
-                score: '54',
-                selected: 0,
-            },
-        ]
-        const chartData = [
-            {
-                time: '04.14\n08:01',
-                grade: 40,
-                sort: 0,
-                type: 2,
-            },
-            {
-                time: '04.14\n08:02',
-                grade: 56,
-                sort: 1,
-                type: 2,
-            },
-            {
-                time: '04.14\n08:03',
-                grade: 43,
-                sort: 2,
-                type: 2,
-            },
-            {
-                time: '04.14\n08:04',
-                grade: 60,
-                sort: 3,
-                type: 2,
-            },
-            {
-                time: '04.14\n08:05',
-                grade: 58,
-                sort: 4,
-                type: 2,
-            },
-            {
-                time: '04.14\n08:06',
-                grade: 50,
-                sort: 5,
-                type: 2,
-            },
-            {
-                time: '04.14\n08:07',
-                grade: 59,
-                sort: 6,
-                type: 2,
-            },
-            {
-                time: '04.14\n08:08',
-                grade: 80,
-                sort: 7,
-                type: 2,
-            },
-        ]
-        this.setState({ fiancoData, chartData })
-        // 获取人体图数据
+    static getDerivedStateFromProps(nextProps: any, prevState: any) {
+        return {
+            chartData: nextProps.chartData,
+            fiancoData: nextProps.fiancoData,
+        }
+    }
+    componentDidUpdate(prevProps: any, prevState: any) {
+        const oldChartData = JSON.stringify(prevState.chartData)
+        const newChartData = JSON.stringify(this.state.chartData)
+        if (oldChartData !== newChartData) {
+            this.handleClickPointFunc(this.state.chartData[0].id)
+        }
+    }
+    // 数据去重
+    removeRepetiton(arr: any) {
+        for (var x = 0; x < arr.length; x++) {
+            for (var y = x + 1; y < arr.length; y++) {
+                if (arr[x].className === arr[y].className) {
+                    arr[x].imglist.push(...arr[y].imglist)
+                    arr.splice(y, 1)
+                }
+            }
+        }
+    }
+    // 获取肌肉图
+    handleMuscleImg(data: any, isImg: string) {
+        let res: any = {}
+        data.forEach((item: any, idx: number) => {
+            if (item.positionName === isImg) {
+                res = item
+            }
+        })
+        return res
+    }
+    // 处理数据
+    handleBodyFigure = (request: any, data: any) => {
+        let { tabsIdx } = this.state
+        let arr: any = []
+        data.forEach((el: any, idx: number) => {
+            request.forEach((rim: any, ix: number) => {
+                let initIsCent = rim.cnetent.replace(/[\r\n]/g, '')
+                let isCnet = initIsCent ? initIsCent.split('  ')[1] : ''
+                // 根据cnetent判断大类
+                if (el.reportArrName.indexOf(isCnet) !== -1) {
+                    arr.push({
+                        position: el.position,
+                        className: el.className,
+                        imglist: [this.handleMuscleImg(el.imgList[tabsIdx], rim.tile)],
+                    })
+                }
+            })
+        })
+        this.removeRepetiton(arr)
+        return arr
+    }
+    // 获取人体显示点
+    getBodyFigure = (request: any) => {
+        let { params } = this.state
+        const { upDomList, backDomList } = figureData
+        params.front = this.handleBodyFigure(request, upDomList) // 正面数据
+        params.back = this.handleBodyFigure(request, backDomList) // 背面数据
+        this.setState({ params })
     }
     // 点击选中tabs
     selectTabsFn = (e: any, idx: number) => {
-        this.setState({
-            tabsIdx: idx,
+        this.setState({ tabsIdx: idx })
+        // this.getBodyFigure(this.state.fblObj[])
+    }
+    // 点击图表点
+    handleClickPointFunc(item: any) {
+        // 获取对应人体数据
+        getActionEvaluationInfo({ dtId: item }).then((res: any) => {
+            let { fblObj, tabs, params } = this.state
+            fblObj = res.data
+            // tabs 数量
+            tabs.forEach((el: any) => {
+                if (el.type === 'jhgd') el.num = res.data.jhgdNum
+                if (el.type === 'jhbz') el.num = res.data.jhbzNum
+                if (el.type === 'jhhl') el.num = res.data.jhhlNum
+            })
+            this.getBodyFigure(res.data.jhgdDate)
+            // params = res.data.jhgdDate
+            this.setState({
+                tabs,
+                fblObj,
+                params,
+            })
         })
     }
     componentDidMount() {
-        this.getFiancoContrastData()
+        // this.getFiancoContrastData()
     }
     render() {
-        console.log(this.props)
         return (
             <div className={AeStyle.wrapper}>
                 {/* 图表 */}
                 {this.props.chartData.length > 0 && (
-                    <PosCharts chartId='perfect-circumference-chart' chartData={this.props.chartData} />
+                    <PosCharts
+                        chartId='perfect-circumference-chart'
+                        chartData={this.props.chartData}
+                        clickPointCallback={this.handleClickPointFunc.bind(this)}
+                    />
                 )}
-
                 {/* 体测对比 */}
                 <FiancoContrast fiancoArr={this.props.fiancoData} />
                 {/* 动作评估 */}
@@ -174,7 +155,8 @@ export default class ActionEvaluation extends Component<any, any> {
                         )
                     })}
                 </div>
-                <BodyFigure params={}></BodyFigure>
+                <BodyFigure params={this.state.params}></BodyFigure>
+                <div style={{ height: '300px' }}></div>
                 <div className={AeStyle.footerBtn}>
                     <div className={AeStyle.goToTest}>去体侧</div>
                     <div className={AeStyle.shareBtn}>生成报告图片</div>
