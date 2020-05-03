@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
+import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
 import Html2canvas from 'html2canvas'
-import { callAppMenthd, callAppShareImgMenthd, handleHandImg } from '@utils/index'
 import QRCode from 'qrcode.react'
 import { PhotoProvider, PhotoConsumer } from 'react-photo-view'
+import { callAppMenthd, callAppShareImgMenthd, handleHandImg } from '@utils/index'
 import StaticEvaluationStyle from './index.module.scss'
 import PosCharts from '@comps/pos_charts'
 import FiancoContrast from '@comps/fianco_contrast'
@@ -30,7 +31,7 @@ import headR2 from '@assets/img/static_evaluation_img/head_r2.png'
 
 @inject('reportStore')
 @observer
-export default class StaticEvaluation extends Component<any, any> {
+class StaticEvaluation extends Component<any, any> {
     constructor(props: any) {
         super(props)
         this.state = {
@@ -409,6 +410,16 @@ export default class StaticEvaluation extends Component<any, any> {
         }
         return ''
     }
+    // 去详情
+    gotoDetail(data: any, level: string) {
+        this.props.history.push({
+            pathname: '/report/static-detail',
+            state: {
+                data,
+                level,
+            },
+        })
+    }
     // 数据列表显示
     createrListDataDom(data: any, index: number) {
         return (
@@ -424,8 +435,13 @@ export default class StaticEvaluation extends Component<any, any> {
     }
     // 数据模块显示
     createrItemDataDom(data: any, index: number, level: string) {
+        const { isShare } = this.props.reportStore
         return (
-            <div className={StaticEvaluationStyle['data-item']} key={index}>
+            <div
+                className={StaticEvaluationStyle['data-item']}
+                key={index}
+                onClick={this.gotoDetail.bind(this, data, level)}
+            >
                 <div className={StaticEvaluationStyle['item-top-box']}>
                     <div className={StaticEvaluationStyle['itb-title']}>{data.partName}</div>
                     <div className={StaticEvaluationStyle['itb-inline-box']}>
@@ -487,7 +503,13 @@ export default class StaticEvaluation extends Component<any, any> {
                         </div>
                     </div>
                 </div>
-                <div className={StaticEvaluationStyle['item-bottom-box']}>{data.description}</div>
+                <div
+                    className={`${StaticEvaluationStyle['item-bottom-box']} ${
+                        isShare === 1 ? '' : StaticEvaluationStyle['show-two-line']
+                    }`}
+                >
+                    {data.description}
+                </div>
             </div>
         )
     }
@@ -584,106 +606,22 @@ export default class StaticEvaluation extends Component<any, any> {
                         </div>
                         {/* 图片 */}
                         <div className={StaticEvaluationStyle['imgs-box']}>
-                            <div className={StaticEvaluationStyle['img-item']}>
-                                <img src={staticEvaluationData.url1} alt='正面示意图' />
-                            </div>
-                            <div className={StaticEvaluationStyle['img-item']}>
-                                <img src={staticEvaluationData.url2} alt='侧面示意图' />
-                            </div>
+                            <PhotoProvider photoClosable={true}>
+                                <PhotoConsumer src={staticEvaluationData.url1} intro='正面示意图'>
+                                    <div className={StaticEvaluationStyle['img-item']}>
+                                        <img src={staticEvaluationData.url1} alt='正面示意图' />
+                                    </div>
+                                </PhotoConsumer>
+                                <PhotoConsumer src={staticEvaluationData.url2} intro='侧面示意图'>
+                                    <div className={StaticEvaluationStyle['img-item']}>
+                                        <img src={staticEvaluationData.url2} alt='侧面示意图' />
+                                    </div>
+                                </PhotoConsumer>
+                            </PhotoProvider>
                         </div>
                         {/* 体适能数据 */}
                         <div className={StaticEvaluationStyle['content-box']}>
-                            <div className={StaticEvaluationStyle['title']}>重度(3项)</div>
-                            <div className={StaticEvaluationStyle['content']}>
-                                <div className={StaticEvaluationStyle['data-item']}>
-                                    <div className={StaticEvaluationStyle['item-top-box']}>
-                                        <div className={StaticEvaluationStyle['itb-title']}>高低肩</div>
-                                        <div className={StaticEvaluationStyle['itb-inline-box']}>
-                                            <img className={StaticEvaluationStyle['comp-img']} src='' alt='' />
-                                            <img className={StaticEvaluationStyle['comp-img']} src='' alt='' />
-                                            <div className={StaticEvaluationStyle['itb-data-box']}>
-                                                <div className={StaticEvaluationStyle['itbd-line']}>
-                                                    <div className={StaticEvaluationStyle['il-item']}>
-                                                        <div className={StaticEvaluationStyle['ii-line']}>
-                                                            <div className={StaticEvaluationStyle['ii-cur-val']}></div>
-                                                        </div>
-                                                        <div className={StaticEvaluationStyle['ii-txt']}>轻度</div>
-                                                    </div>
-                                                    <div className={StaticEvaluationStyle['il-item']}>
-                                                        <div className={StaticEvaluationStyle['ii-line']}>
-                                                            <div className={StaticEvaluationStyle['ii-cur-val']}></div>
-                                                        </div>
-                                                        <div className={StaticEvaluationStyle['ii-txt']}>轻微</div>
-                                                    </div>
-                                                    <div
-                                                        className={`${StaticEvaluationStyle['il-item']} ${StaticEvaluationStyle['il-selected-zdu']}`}
-                                                    >
-                                                        <div className={StaticEvaluationStyle['ii-line']}>
-                                                            <div className={StaticEvaluationStyle['ii-cur-val']}>
-                                                                15°
-                                                            </div>
-                                                        </div>
-                                                        <div className={StaticEvaluationStyle['ii-txt']}>中度</div>
-                                                    </div>
-                                                    <div className={StaticEvaluationStyle['il-item']}>
-                                                        <div className={StaticEvaluationStyle['ii-line']}>
-                                                            <div className={StaticEvaluationStyle['ii-cur-val']}></div>
-                                                        </div>
-                                                        <div className={StaticEvaluationStyle['ii-txt']}>重度</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className={StaticEvaluationStyle['item-bottom-box']}>
-                                        但是看了放假啦绝对是风口浪尖啊死了都快放假啊了
-                                    </div>
-                                </div>
-                                <div className={StaticEvaluationStyle['data-item']}>
-                                    <div className={StaticEvaluationStyle['item-top-box']}>
-                                        <div className={StaticEvaluationStyle['itb-title']}>高低肩</div>
-                                        <div className={StaticEvaluationStyle['itb-inline-box']}>
-                                            <img className={StaticEvaluationStyle['comp-img']} src='' alt='' />
-                                            <img className={StaticEvaluationStyle['comp-img']} src='' alt='' />
-                                            <div className={StaticEvaluationStyle['itb-data-box']}>
-                                                <div className={StaticEvaluationStyle['itbd-line']}>
-                                                    <div className={StaticEvaluationStyle['il-item']}>
-                                                        <div className={StaticEvaluationStyle['ii-line']}>
-                                                            <div className={StaticEvaluationStyle['ii-cur-val']}></div>
-                                                        </div>
-                                                        <div className={StaticEvaluationStyle['ii-txt']}>轻度</div>
-                                                    </div>
-                                                    <div className={StaticEvaluationStyle['il-item']}>
-                                                        <div className={StaticEvaluationStyle['ii-line']}>
-                                                            <div className={StaticEvaluationStyle['ii-cur-val']}></div>
-                                                        </div>
-                                                        <div className={StaticEvaluationStyle['ii-txt']}>轻微</div>
-                                                    </div>
-                                                    <div
-                                                        className={`${StaticEvaluationStyle['il-item']} ${StaticEvaluationStyle['il-selected-zdu']}`}
-                                                    >
-                                                        <div className={StaticEvaluationStyle['ii-line']}>
-                                                            <div className={StaticEvaluationStyle['ii-cur-val']}>
-                                                                15°
-                                                            </div>
-                                                        </div>
-                                                        <div className={StaticEvaluationStyle['ii-txt']}>中度</div>
-                                                    </div>
-                                                    <div className={StaticEvaluationStyle['il-item']}>
-                                                        <div className={StaticEvaluationStyle['ii-line']}>
-                                                            <div className={StaticEvaluationStyle['ii-cur-val']}></div>
-                                                        </div>
-                                                        <div className={StaticEvaluationStyle['ii-txt']}>重度</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className={StaticEvaluationStyle['item-bottom-box']}>
-                                        但是看了放假啦绝对是风口浪尖啊死了都快放假啊了
-                                    </div>
-                                </div>
-                            </div>
+                            {listData.map((item: any, index: number) => this.createrListDataDom(item, index))}
                         </div>
                         {/* 教练card */}
                         <div className={StaticEvaluationStyle['coach-warp-box']}>
@@ -712,3 +650,5 @@ export default class StaticEvaluation extends Component<any, any> {
         )
     }
 }
+
+export default withRouter(StaticEvaluation)

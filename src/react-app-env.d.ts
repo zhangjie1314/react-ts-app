@@ -67,8 +67,6 @@ declare module '@antv/f2'
 declare module '@antv/f2/lib/core'
 declare module 'body-scroll-lock'
 declare module 'qrcode.react'
-declare module 'swiper/dist/js/swiper.min.js'
-declare module 'swiper/dist/css/swiper.min.css'
 
 interface Window {
     // ios app端调用方法使用
