@@ -201,7 +201,7 @@ export default class PerfectCircumference extends Component<any, any> {
             value: resultData.jcdx,
             diffValue: Math.abs(resultData.jcdxV).toFixed(1),
             idealValue: resultData.jcdxS,
-            status: resultData.jcdxV == 0 ? 1 : resultData.jcdxV > 0 ? 0 : 2,
+            status: resultData.jcdxV === 0 ? 1 : resultData.jcdxV > 0 ? 0 : 2,
         })
         // 赋值
         this.setState({

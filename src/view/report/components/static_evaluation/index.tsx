@@ -28,6 +28,7 @@ import rightInnerFoot from '@assets/img/static_evaluation_img/right_inner_foot2.
 import rightOutFoot from '@assets/img/static_evaluation_img/right_out_foot2.png'
 import headL2 from '@assets/img/static_evaluation_img/head_l2.png'
 import headR2 from '@assets/img/static_evaluation_img/head_r2.png'
+import DataItem from './components/data_item'
 
 @inject('reportStore')
 @observer
@@ -428,7 +429,16 @@ class StaticEvaluation extends Component<any, any> {
                     {data.level}({data.parts.length}项)
                 </div>
                 <div className={StaticEvaluationStyle['content']}>
-                    {data.parts.map((itm: any, idx: number) => this.createrItemDataDom(itm, idx, data.level))}
+                    {data.parts.map((itm: any, idx: number) => (
+                        <DataItem
+                            level={data.level}
+                            dataItem={itm}
+                            key={idx}
+                            from='list'
+                            onClick={this.gotoDetail.bind(this, itm, data.level)}
+                        />
+                    ))}
+                    {/* {data.parts.map((itm: any, idx: number) => this.createrItemDataDom(itm, idx, data.level))} */}
                 </div>
             </div>
         )
@@ -547,20 +557,26 @@ class StaticEvaluation extends Component<any, any> {
                     </div>
                 </div>
                 {/* 图片 */}
-                <div className={StaticEvaluationStyle['imgs-box']}>
-                    <PhotoProvider photoClosable={true}>
-                        <PhotoConsumer src={staticEvaluationData.url1} intro='正面示意图'>
-                            <div className={StaticEvaluationStyle['img-item']}>
-                                <img src={staticEvaluationData.url1} alt='正面示意图' />
-                            </div>
-                        </PhotoConsumer>
-                        <PhotoConsumer src={staticEvaluationData.url2} intro='侧面示意图'>
-                            <div className={StaticEvaluationStyle['img-item']}>
-                                <img src={staticEvaluationData.url2} alt='侧面示意图' />
-                            </div>
-                        </PhotoConsumer>
-                    </PhotoProvider>
-                </div>
+                {staticEvaluationData.url1 || staticEvaluationData.url2 ? (
+                    <div className={StaticEvaluationStyle['imgs-box']}>
+                        <PhotoProvider photoClosable={true}>
+                            {staticEvaluationData.url1 ? (
+                                <PhotoConsumer src={staticEvaluationData.url1} intro='正面示意图'>
+                                    <div className={StaticEvaluationStyle['img-item']}>
+                                        <img src={staticEvaluationData.url1} alt='正面示意图' />
+                                    </div>
+                                </PhotoConsumer>
+                            ) : null}
+                            {staticEvaluationData.url2 ? (
+                                <PhotoConsumer src={staticEvaluationData.url2} intro='侧面示意图'>
+                                    <div className={StaticEvaluationStyle['img-item']}>
+                                        <img src={staticEvaluationData.url2} alt='侧面示意图' />
+                                    </div>
+                                </PhotoConsumer>
+                            ) : null}
+                        </PhotoProvider>
+                    </div>
+                ) : null}
                 {/* 体适能数据 */}
                 <div className={StaticEvaluationStyle['content-box']}>
                     {listData.map((item: any, index: number) => this.createrListDataDom(item, index))}

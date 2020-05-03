@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import StaticDetailPageStyle from './index.module.scss'
+import DataItem from '../components/static_evaluation/components/data_item'
 
 class StaticDetail extends Component<any, any> {
     constructor(props: any) {
@@ -38,69 +39,7 @@ class StaticDetail extends Component<any, any> {
         const item = pageData.data ? pageData.data : {}
         return (
             <div className={StaticDetailPageStyle['detail-box']}>
-                <div className={StaticDetailPageStyle['data-item']}>
-                    <div className={StaticDetailPageStyle['item-top-box']}>
-                        <div className={StaticDetailPageStyle['itb-title']}>{item.partName}</div>
-                        <div className={StaticDetailPageStyle['itb-inline-box']}>
-                            {item.photoImg ? (
-                                <img className={StaticDetailPageStyle['comp-img']} src={item.photoImg} alt='原图' />
-                            ) : null}
-                            <img className={StaticDetailPageStyle['comp-img']} src={item.img} alt='标准图' />
-                            <div className={StaticDetailPageStyle['itb-data-box']}>
-                                <div className={StaticDetailPageStyle['itbd-line']}>
-                                    <div
-                                        className={`${StaticDetailPageStyle['il-item']} ${
-                                            pageData.level === '正常' ? StaticDetailPageStyle['il-selected-zc'] : ''
-                                        }`}
-                                    >
-                                        <div className={StaticDetailPageStyle['ii-line']}>
-                                            {pageData.level === '正常' ? (
-                                                <div className={StaticDetailPageStyle['ii-cur-val']}>{item.angle}</div>
-                                            ) : null}
-                                        </div>
-                                        <div className={StaticDetailPageStyle['ii-txt']}>正常</div>
-                                    </div>
-                                    <div
-                                        className={`${StaticDetailPageStyle['il-item']} ${
-                                            pageData.level === '轻微' ? StaticDetailPageStyle['il-selected-qw'] : ''
-                                        }`}
-                                    >
-                                        <div className={StaticDetailPageStyle['ii-line']}>
-                                            {pageData.level === '轻微' ? (
-                                                <div className={StaticDetailPageStyle['ii-cur-val']}>{item.angle}</div>
-                                            ) : null}
-                                        </div>
-                                        <div className={StaticDetailPageStyle['ii-txt']}>轻微</div>
-                                    </div>
-                                    <div
-                                        className={`${StaticDetailPageStyle['il-item']} ${
-                                            pageData.level === '中度' ? StaticDetailPageStyle['il-selected-zdu'] : ''
-                                        }`}
-                                    >
-                                        <div className={StaticDetailPageStyle['ii-line']}>
-                                            {pageData.level === '中度' ? (
-                                                <div className={StaticDetailPageStyle['ii-cur-val']}>{item.angle}</div>
-                                            ) : null}
-                                        </div>
-                                        <div className={StaticDetailPageStyle['ii-txt']}>中度</div>
-                                    </div>
-                                    <div
-                                        className={`${StaticDetailPageStyle['il-item']} ${
-                                            pageData.level === '重度' ? StaticDetailPageStyle['il-selected-zd'] : ''
-                                        }`}
-                                    >
-                                        <div className={StaticDetailPageStyle['ii-line']}>
-                                            {pageData.level === '重度' ? (
-                                                <div className={StaticDetailPageStyle['ii-cur-val']}>{item.angle}</div>
-                                            ) : null}
-                                        </div>
-                                        <div className={StaticDetailPageStyle['ii-txt']}>重度</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <DataItem level={pageData.level} dataItem={item} from='detail' />
                 <div className={StaticDetailPageStyle['title']}>问题描述</div>
                 <div className={StaticDetailPageStyle['content']}>{item.description || '无'}</div>
                 <div className={StaticDetailPageStyle['title']}>导致问题</div>
