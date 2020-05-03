@@ -1,0 +1,138 @@
+.data-item {
+    background: #fff;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    color: #000;
+    padding: 34px 28px;
+    .item-bottom-box {
+        position: relative;
+        font-size: 24px;
+        text-align: left;
+        &.show-two-line {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+    }
+    .item-top-box {
+        .itb-title {
+            font-size: 32px;
+            text-align: left;
+            padding-bottom: 16px;
+        }
+        .itb-inline-box {
+            display: flex;
+            align-items: center;
+            padding-bottom: 22px;
+        }
+        .comp-img {
+            width: 116px;
+            height: 116px;
+            background: #1f2122;
+            margin-left: 18px;
+            &:first-child {
+                margin-left: 0;
+            }
+        }
+        .itb-data-box {
+            flex: 1 0 0%;
+            font-size: 24px;
+            padding-top: 52px;
+            padding-left: 120px;
+            .itbd-line {
+                display: flex;
+                align-items: center;
+                .il-item {
+                    flex: 1 0 0%;
+                    .ii-line {
+                        position: relative;
+                        background: #505455;
+                        height: 4px;
+                        border-right: 1px solid #f8f9fa;
+                        margin-bottom: 10px;
+                        .ii-cur-val {
+                            position: absolute;
+                            top: -40px;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            font-family: DINCond-Black;
+                            font-size: 26px;
+                            &::after {
+                                content: '';
+                                position: absolute;
+                                bottom: -8px;
+                                left: 50%;
+                                transform: translateX(-50%);
+                                display: block;
+                                width: 1px;
+                                height: 8px;
+                                background: #fff;
+                                border-radius: 50%;
+                            }
+                        }
+                    }
+                    .ii-txt {
+                        text-align: center;
+                        color: rgba($color: #000, $alpha: 0.5);
+                    }
+                    &:last-child {
+                        .ii-line {
+                            border-right: 0;
+                        }
+                    }
+                    &.il-selected-zd {
+                        color: #f75944;
+                        .ii-line {
+                            background: #f75944;
+                            .ii-cur-val::after {
+                                background: #f75944;
+                            }
+                        }
+                        .ii-txt {
+                            color: #f75944;
+                        }
+                    }
+                    &.il-selected-zdu {
+                        color: #f78644;
+                        .ii-line {
+                            background: #f78644;
+                            .ii-cur-val::after {
+                                background: #f78644;
+                            }
+                        }
+                        .ii-txt {
+                            color: #f78644;
+                        }
+                    }
+                    &.il-selected-qw {
+                        color: #ffc701;
+                        .ii-line {
+                            background: #ffc701;
+                            .ii-cur-val::after {
+                                background: #ffc701;
+                            }
+                        }
+                        .ii-txt {
+                            color: #ffc701;
+                        }
+                    }
+                    &.il-selected-zc {
+                        color: #21b8c5;
+                        .ii-line {
+                            background: #21b8c5;
+                            .ii-cur-val::after {
+                                background: #21b8c5;
+                            }
+                        }
+                        .ii-txt {
+                            color: #21b8c5;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
