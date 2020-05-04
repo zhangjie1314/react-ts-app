@@ -85,7 +85,7 @@ export default class Report extends Component<any, any> {
             })
         })
         this.setState({
-            chartData: testList.reverse(),
+            chartData: testList,
             fiancoData,
         })
     }

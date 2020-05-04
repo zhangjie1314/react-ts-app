@@ -47,7 +47,7 @@ export default class ActionEvaluation extends Component<any, any> {
         if (oldChartData !== newChartData) {
             let lg = this.state.chartData.length
             if (lg > 0) {
-                this.handleClickPointFunc(this.state.chartData[lg - 1].id)
+                this.handleClickPointFunc(this.state.chartData[lg - 1])
             }
         }
     }
@@ -116,7 +116,7 @@ export default class ActionEvaluation extends Component<any, any> {
     // 点击图表点
     handleClickPointFunc(item: any) {
         // 获取对应人体数据
-        getActionEvaluationInfo({ dtId: item }).then((res: any) => {
+        getActionEvaluationInfo({ dtId: item.id }).then((res: any) => {
             let { fblObj, tabs } = this.state
             fblObj = res.data
             // tabs 数量
