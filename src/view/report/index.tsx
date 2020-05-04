@@ -49,7 +49,7 @@ export default class Report extends Component<any, any> {
             memberId: memberId,
             pageNum: 1,
             pageSize: 999,
-        }).then(res => {
+        }).then((res) => {
             // 重置表格数据
             this.setState(
                 {
@@ -59,7 +59,7 @@ export default class Report extends Component<any, any> {
                 () => {
                     // 处理测试列表数据
                     this.handleTestListData(res.data.records)
-                },
+                }
             )
         })
     }
@@ -85,7 +85,7 @@ export default class Report extends Component<any, any> {
             })
         })
         this.setState({
-            chartData: testList,
+            chartData: testList.reverse(),
             fiancoData,
         })
     }
@@ -112,7 +112,7 @@ export default class Report extends Component<any, any> {
             details: `快去查看${params.name.slice(0, 1)}${params.grander === 1 ? '先生' : '女士'}的详细报告吧`, // 分享内容
             pic: `${process.env.REACT_APP_FILE_URL}/app/pos/pos_logo.png`, // 分享图片
             url: `${this.getShareContentUrl(params.urlParams)}`, // 分享链接
-        }).then(res => {
+        }).then((res) => {
             alert(JSON.stringify(res))
         })
     }
@@ -180,7 +180,7 @@ export default class Report extends Component<any, any> {
     // 获取教练信息
     getCoachInfo() {
         const { tabsId, isFromStudio } = this.props.reportStore
-        getCoachInfo({ sideType: tabsId + 1 }).then(res => {
+        getCoachInfo({ sideType: tabsId + 1 }).then((res) => {
             // 处理头像
             res.data.headPath = handleHandImg(res.data.headPath, isFromStudio)
             this.setState({

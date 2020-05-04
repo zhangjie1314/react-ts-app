@@ -46,7 +46,9 @@ export default class ActionEvaluation extends Component<any, any> {
         const newChartData = JSON.stringify(this.state.chartData)
         if (oldChartData !== newChartData) {
             let lg = this.state.chartData.length
-            this.handleClickPointFunc(this.state.chartData[lg - 1].id)
+            if (lg > 0) {
+                this.handleClickPointFunc(this.state.chartData[lg - 1].id)
+            }
         }
     }
     // 数据去重
