@@ -54,19 +54,7 @@ export default class BodyFigure extends Component<any, any> {
         frontIdx = null
         backIdx = null
         isShow = null
-<<<<<<< HEAD
         this.setState({ isShow, frontIdx, backIdx })
-=======
-        this.setState({ isShow })
-    }
-    componentDidMount() {
-        // var mySwiper: any = new swiper('.swiper-container', {
-        //     // autoplay: true,
-        //     pagination: {
-        //         el: '.swiper-pagination',
-        //     },
-        // })
->>>>>>> 8a710b0b58a7c42bcfc41599f2bba99cc8d13dde
     }
     componentDidMount() {}
     render() {
