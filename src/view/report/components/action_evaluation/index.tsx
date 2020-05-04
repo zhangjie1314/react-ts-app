@@ -5,6 +5,7 @@ import { observer, inject } from 'mobx-react'
 import PosCharts from '@comps/pos_charts'
 import FiancoContrast from '@comps/fianco_contrast'
 import BodyFigure from './components/body_figure'
+import BodyResult from './components/body_result'
 import { getActionEvaluationInfo } from '../../../../apis/report/bapp'
 import AeStyle from './index.module.scss'
 import { figureData } from './components/body_figure/figure_data'
@@ -33,6 +34,7 @@ export default class ActionEvaluation extends Component<any, any> {
             tabsIdx: 0,
             fblObj: {},
             params: {}, // 肌肉点图
+            bodyResultData: [], // 动作评估动作
         }
     }
     static getDerivedStateFromProps(nextProps: any, prevState: any) {
@@ -42,8 +44,18 @@ export default class ActionEvaluation extends Component<any, any> {
         }
     }
     bodyFigure: any = {}
-    onRef = (ref: any) => {
-        this.bodyFigure = ref
+    bodyResult: any = {}
+    onRef = (name: string, ref: any) => {
+        switch (name) {
+            case 'bodyFigure':
+                this.bodyFigure = ref
+                break
+            case 'bodyResult':
+                this.bodyResult = ref
+                break
+            default:
+                break
+        }
     }
     componentDidUpdate(prevProps: any, prevState: any) {
         const oldChartData = JSON.stringify(prevState.chartData)
@@ -106,7 +118,7 @@ export default class ActionEvaluation extends Component<any, any> {
     }
     // 点击选中tabs
     selectTabsFn = (e: any, idx: number) => {
-        const { tabs, fblObj } = this.state
+        let { tabs, fblObj, bodyResultData } = this.state
         let obj: any = null
         for (var x in fblObj) {
             if (fblObj[x] === tabs[idx].num) {
@@ -114,14 +126,15 @@ export default class ActionEvaluation extends Component<any, any> {
             }
         }
         this.bodyFigure.clickCancelFn()
+        bodyResultData = obj
         this.getBodyFigure(obj, idx)
-        this.setState({ tabsIdx: idx })
+        this.setState({ tabsIdx: idx, bodyResultData })
     }
     // 点击图表点
     handleClickPointFunc(item: any) {
         // 获取对应人体数据
         getActionEvaluationInfo({ dtId: item.id }).then((res: any) => {
-            let { fblObj, tabs } = this.state
+            let { fblObj, tabs, bodyResultData } = this.state
             fblObj = res.data
             // tabs 数量
             tabs.forEach((el: any) => {
@@ -130,7 +143,9 @@ export default class ActionEvaluation extends Component<any, any> {
                 if (el.type === 'jhhl') el.num = res.data.jhhlNum
             })
             this.getBodyFigure(res.data.jhgdDate, 0)
+            bodyResultData = res.data.jhgdDate
             this.setState({
+                bodyResultData,
                 tabs,
                 fblObj,
             })
@@ -138,6 +153,7 @@ export default class ActionEvaluation extends Component<any, any> {
     }
 
     render() {
+        const { userInfos, isShare } = this.props.reportStore
         return (
             <div className={AeStyle.wrapper}>
                 {/* 图表 */}
@@ -166,7 +182,17 @@ export default class ActionEvaluation extends Component<any, any> {
                     })}
                 </div>
                 <BodyFigure onRef={this.onRef} params={this.state.params}></BodyFigure>
-                <div style={{ height: '300px' }}></div>
+                {/* 数据详情list */}
+                <BodyResult onRef={this.onRef} bodyResultData={this.state.bodyResultData}></BodyResult>
+                <div style={{ height: '100px' }}></div>
+                {/* 底部按钮 */}
+                {/* {isShare === 1 ? null : (
+                    <div className={AeStyle['bottom-btn-box']}>
+                        <div className={AeStyle['qtc-btn']} onClick={this.gotoTcFun}>
+                            去体测
+                        </div>
+                    </div>
+                )} */}
             </div>
         )
     }

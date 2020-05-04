@@ -6,13 +6,6 @@ import BfStyle from './index.module.scss'
 import frontImg from '@assets/img/front3.0.png'
 import backImg from '@assets/img/back3.0.png'
 
-interface fblObjType {
-    num?: number
-    pj?: string
-    bmi?: string
-    jb?: number
-    photo?: string
-}
 export default class BodyFigure extends Component<any, any> {
     constructor(props: any) {
         super(props)
@@ -58,7 +51,7 @@ export default class BodyFigure extends Component<any, any> {
         this.setState({ isShow: null, frontIdx: null, backIdx: null })
     }
     componentDidMount() {
-        this.props.onRef(this)
+        this.props.onRef('bodyFigure', this)
     }
     render() {
         const { params } = this.props

@@ -1,0 +1,64 @@
+.resultBox {
+    .h1 {
+        padding: 0 52px 22px;
+        font-size: 32px;
+        color: #f6605c;
+    }
+    .content {
+        width: 100%;
+        border: 1px solid #292929;
+        border-width: 1px 0;
+        padding-left: 58px;
+        .el {
+            padding: 22px 32px 22px 0;
+            border-bottom: 1px solid #292929;
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+        .title {
+            display: flex;
+            align-items: center;
+            font-size: 36px;
+            color: #fff;
+            .lf {
+                display: flex;
+                align-items: center;
+                width: calc(100% - 80px);
+            }
+            .dot {
+                width: 16px;
+                height: 16px;
+                background-color: #d8d8d8;
+                border-radius: 50%;
+                margin-right: 14px;
+            }
+            .arrow {
+                display: block;
+                width: 22px;
+                height: 20px;
+            }
+        }
+        .text {
+            display: flex;
+            align-items: center;
+            color: #fff;
+            font-size: 24px;
+            transition: 0.5s;
+            padding: 22px 0 17px;
+            .lf {
+                padding-right: 18px;
+                max-width: 192px;
+            }
+            .line {
+                flex: 1 0 auto;
+                height: 5px;
+                border-bottom: 2px dashed #292929;
+            }
+            .rg {
+                width: 394px;
+                padding-left: 18px;
+            }
+        }
+    }
+}
