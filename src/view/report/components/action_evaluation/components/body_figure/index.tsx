@@ -1,11 +1,11 @@
 // 人体图组件
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { Carousel, WingBlank } from 'antd-mobile'
 import BfStyle from './index.module.scss'
-import swiper from 'swiper/dist/js/swiper.min.js'
-import swStyle from 'swiper/dist/css/swiper.min.css'
 import frontImg from '@assets/img/front3.0.png'
 import backImg from '@assets/img/back3.0.png'
+import { relative } from 'path'
 
 interface fblObjType {
     num?: number
@@ -20,8 +20,10 @@ export default class BodyFigure extends Component<any, any> {
         this.state = {
             frontIdx: null,
             backIdx: null,
+            masclesIdx: 0,
             mascles: [],
             isShow: null,
+            dotStyle: { width: '4px', height: '4px', bottom: '10px' },
         }
     }
     static defaultProps = { params: {} }
@@ -43,19 +45,13 @@ export default class BodyFigure extends Component<any, any> {
         this.setState({ frontIdx, backIdx, mascles, isShow })
     }
     clickCancelFn = () => {
-        let { isShow } = this.state
+        let { isShow, frontIdx, backIdx } = this.state
+        frontIdx = null
+        backIdx = null
         isShow = null
-        this.setState({ isShow })
+        this.setState({ isShow, frontIdx, backIdx })
     }
-    componentDidMount() {
-        var mySwiper: any = new swiper('.swiper-container', {
-            // autoplay: true,
-
-            pagination: {
-                el: '.swiper-pagination',
-            },
-        })
-    }
+    componentDidMount() {}
     render() {
         const { params } = this.props
         return (
@@ -130,14 +126,36 @@ export default class BodyFigure extends Component<any, any> {
                 </div>
                 {/* 肌肉图 */}
                 <div className={`${BfStyle.mascles} ${this.state.isShow !== null ? BfStyle.show : ''}`}>
-                    <div className={BfStyle['swiper-container']}>
-                        <div className={BfStyle['swiper-wrapper']}>
-                            <div className={BfStyle['swiper-slide']}>Slide 1</div>
-                            <div className={BfStyle['swiper-slide']}>Slide 2</div>
-                            <div className={BfStyle['swiper-slide']}>Slide 3</div>
+                    <WingBlank style={{ height: '100%', position: 'relative' }}>
+                        <Carousel
+                            style={{ touchAction: 'none', paddingTop: '10px' }}
+                            dots={false}
+                            cellSpacing={10}
+                            slideWidth={0.9}
+                            frameOverflow='visible'
+                            dotStyle={this.state.dotStyle}
+                            dotActiveStyle={this.state.dotStyle}
+                            beforeChange={(from, to) => {}}
+                            afterChange={(index: number) => {
+                                this.setState({ masclesIdx: index })
+                            }}
+                        >
+                            {this.state.mascles.map((itm: any, idx: number) => (
+                                <div className={BfStyle.img} key={idx}>
+                                    <img src={itm.imgName} alt='' />
+                                    <p>{itm.positionName}</p>
+                                </div>
+                            ))}
+                        </Carousel>
+                        <div className={BfStyle.dots}>
+                            {this.state.mascles.map((itm: any, idx: number) => (
+                                <div
+                                    key={idx}
+                                    className={`${BfStyle._dot} ${this.state.masclesIdx === idx ? BfStyle.active : ''}`}
+                                ></div>
+                            ))}
                         </div>
-                        <div className={BfStyle['swiper-pagination']}></div>
-                    </div>
+                    </WingBlank>
                 </div>
             </div>
         )

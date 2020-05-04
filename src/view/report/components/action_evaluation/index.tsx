@@ -45,7 +45,8 @@ export default class ActionEvaluation extends Component<any, any> {
         const oldChartData = JSON.stringify(prevState.chartData)
         const newChartData = JSON.stringify(this.state.chartData)
         if (oldChartData !== newChartData) {
-            this.handleClickPointFunc(this.state.chartData[0].id)
+            let lg = this.state.chartData.length
+            this.handleClickPointFunc(this.state.chartData[lg - 1].id)
         }
     }
     // 数据去重
@@ -100,14 +101,21 @@ export default class ActionEvaluation extends Component<any, any> {
     }
     // 点击选中tabs
     selectTabsFn = (e: any, idx: number) => {
+        const { tabs, fblObj } = this.state
+        let obj: any = null
+        for (var x in fblObj) {
+            if (fblObj[x] === tabs[idx].num) {
+                obj = fblObj[`${x.split('Num')[0]}Date`]
+            }
+        }
+        this.getBodyFigure(obj)
         this.setState({ tabsIdx: idx })
-        // this.getBodyFigure(this.state.fblObj[])
     }
     // 点击图表点
     handleClickPointFunc(item: any) {
         // 获取对应人体数据
         getActionEvaluationInfo({ dtId: item }).then((res: any) => {
-            let { fblObj, tabs, params } = this.state
+            let { fblObj, tabs } = this.state
             fblObj = res.data
             // tabs 数量
             tabs.forEach((el: any) => {
@@ -116,11 +124,9 @@ export default class ActionEvaluation extends Component<any, any> {
                 if (el.type === 'jhhl') el.num = res.data.jhhlNum
             })
             this.getBodyFigure(res.data.jhgdDate)
-            // params = res.data.jhgdDate
             this.setState({
                 tabs,
                 fblObj,
-                params,
             })
         })
     }

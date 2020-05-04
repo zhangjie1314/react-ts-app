@@ -86,7 +86,7 @@ export default class PosCharts extends React.Component<any, any> {
                 lineChartXTicks: lcxt,
                 lineChartYTicks: lcyt,
                 lineChart: chart ? chart : this.state.lineChart,
-                curPoint: data[0],
+                curPoint: data[data.length - 1],
             },
             () => {
                 this.changeMainChart()

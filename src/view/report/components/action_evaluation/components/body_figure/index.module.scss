@@ -63,6 +63,44 @@
         &.show {
             transform: scale(1);
         }
+        .img {
+            // width: 300px;
+            height: 300px;
+            position: relative;
+            img {
+                display: block;
+                width: 200px;
+                height: 200px;
+            }
+            p {
+                padding-top: 15px;
+                font-size: 24px;
+                width: 100%;
+                color: #fff;
+                text-align: center;
+            }
+        }
+        .dots {
+            position: absolute;
+            margin: auto;
+            left: 0;
+            right: 0;
+            bottom: 32px;
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            ._dot {
+                width: 8px;
+                height: 8px;
+                margin: 0 5px;
+                border-radius: 50%;
+                background-color: #000;
+                &.active {
+                    background-color: #fff;
+                }
+            }
+        }
     }
     .front {
         transition: 0.3s linear;
@@ -162,294 +200,3 @@
         }
     }
 }
-
-// .topDiv {
-//     width: 690px;
-//     height: 600px;
-//     box-sizing: border-box;
-//     position: relative;
-//     border-radius: 4px;
-//     .left_img {
-//         position: relative;
-//         display: inline-block;
-//         width: 212px;
-//         height: 520px;
-//         margin-top: 39px;
-//         margin-bottom: 4px;
-//         margin-right: 48px;
-//         margin-left: 50px;
-//         right: 48px;
-//         transition: 0.3s linear;
-//         &.toFace {
-//             transform: translateX(80px) scale(1.1);
-//             z-index: 14;
-//         }
-//         &.outFace {
-//             transform: translateX(180px) scale(0.8);
-//             opacity: 0.3;
-//         }
-//         img {
-//             height: 100%;
-//             width: 100%;
-//         }
-//         .dom {
-//             display: flex;
-//             justify-content: center;
-//             align-items: center;
-//             position: absolute;
-//             width: 42px;
-//             height: 42px;
-//             border-radius: 21px;
-//             &:focus {
-//                 outline: none;
-//             }
-//             &.head {
-//                 //头部问题
-//                 left: 45 * 2-5px;
-//                 top: 13 * 2-5px;
-//             }
-//             &.rightArm {
-//                 //右肩问题
-//                 left: 22 * 2-5px;
-//                 top: 44 * 2-5px;
-//             }
-//             &.leftArm {
-//                 //左肩问题
-//                 left: 66 * 2-5px;
-//                 top: 44 * 2-5px;
-//             }
-//             &.leftArmAdd {
-//                 //新增一个隐藏点,解决左肩点点击不正常bug
-//                 left: 66 * 2+37px;
-//                 top: 44 * 2-5px;
-//             }
-//             &.Abdomen {
-//                 //腹部问题
-//                 left: 45 * 2-5px;
-//                 top: 102 * 2-5px;
-//             }
-//             &.rightPelvicBone {
-//                 //右盆骨
-//                 left: 28 * 2-5px;
-//                 top: 114 * 2-5px;
-//             }
-//             &.leftPelvicBone {
-//                 //左盆骨
-//                 left: 61 * 2-5px;
-//                 top: 114 * 2-5px;
-//             }
-//             &.rightThigh {
-//                 //右大腿
-//                 left: 30 * 2-5px;
-//                 top: 153 * 2-5px;
-//             }
-//             &.leftThigh {
-//                 //左大腿
-//                 left: 60 * 2-5px;
-//                 top: 153 * 2-5px;
-//             }
-//             &.rightKnee {
-//                 //右膝
-//                 left: 30 * 2-5px;
-//                 top: 185 * 2-5px;
-//             }
-//             &.leftKnee {
-//                 //左膝
-//                 left: 58 * 2-5px;
-//                 top: 185 * 2-5px;
-//             }
-//             &.rightLeg {
-//                 //右小腿
-//                 left: 30 * 2-5px;
-//                 top: 210 * 2-5px;
-//             }
-//             &.leftLeg {
-//                 //左小腿
-//                 left: 59 * 2-5px;
-//                 top: 210 * 2-5px;
-//             }
-//             &.rightFoot {
-//                 //右足
-//                 left: 30 * 2-5px;
-//                 top: 237 * 2-5px;
-//             }
-//             &.leftFoot {
-//                 //左足
-//                 left: 59 * 2-5px;
-//                 top: 237 * 2-5px;
-//             }
-//             .outDom {
-//                 display: flex;
-//                 justify-content: center;
-//                 align-items: center;
-//                 width: 32px;
-//                 height: 32px;
-//                 border-radius: 16px;
-//                 background-color: rgba(255, 255, 255, 0.4);
-//                 .inDom {
-//                     display: block;
-//                     width: 18px;
-//                     height: 18px;
-//                     border-radius: 9px;
-//                     background-color: #fff;
-//                     &.blue.sel {
-//                         background-color: #ef6a6a;
-//                     }
-//                     &.yellow.sel {
-//                         background-color: #fbc54e;
-//                     }
-//                     &.red.sel {
-//                         background-color: #ff8052;
-//                     }
-//                 }
-//             }
-//         }
-//     }
-//     .right_img {
-//         display: inline-block;
-//         width: 196px;
-//         height: 520px;
-//         margin-top: 39px;
-//         margin-bottom: 4px;
-//         position: relative;
-//         transition: 0.3s linear;
-//         &.toFace {
-//             transform: translateX(-220px) scale(1.1);
-//             z-index: 14;
-//         }
-//         &.outFace {
-//             transform: translateX(-120px) scale(0.8);
-//             opacity: 0.3;
-//         }
-//         img {
-//             height: 100%;
-//             width: 100%;
-//         }
-//         .dom {
-//             display: flex;
-//             justify-content: center;
-//             align-items: center;
-//             position: absolute;
-//             width: 42px;
-//             height: 42px;
-//             border-radius: 21px;
-//             &.backHeader {
-//                 //背面头部问题
-//                 left: 41 * 2-5px;
-//                 top: 13 * 2-5px;
-//             }
-//             &.leftShoulder {
-//                 //左肩
-//                 left: 19 * 2-5px;
-//                 top: 44 * 2-5px;
-//             }
-//             &.rightShoulder {
-//                 //右肩
-//                 left: 63 * 2-5px;
-//                 top: 43 * 2-5px;
-//             }
-//             &.rightScapula {
-//                 //右肩胛问题
-//                 left: 53 * 2-5px;
-//                 top: 59 * 2-5px;
-//             }
-//             &.leftScapula {
-//                 //左肩胛问题
-//                 left: 29 * 2-5px;
-//                 top: 59 * 2-5px;
-//             }
-//             &.rightAbdomen {
-//                 //腹部两侧多裂肌
-//                 left: 52 * 2-5px;
-//                 top: 103 * 2-5px;
-//             }
-//             &.leftAbdomen {
-//                 //腹部两侧多裂肌
-//                 left: 30 * 2-5px;
-//                 top: 103 * 2-5px;
-//             }
-//             &.rightHips {
-//                 //右臀
-//                 left: 53 * 2-5px;
-//                 top: 127 * 2-5px;
-//             }
-//             &.leftHips {
-//                 //左臀
-//                 left: 26 * 2-5px;
-//                 top: 127 * 2-5px;
-//             }
-//             &.rightThigh {
-//                 //右大腿
-//                 left: 53 * 2-5px;
-//                 top: 153 * 2-5px;
-//             }
-//             &.leftThigh {
-//                 //左大腿
-//                 left: 26 * 2-5px;
-//                 top: 153 * 2-5px;
-//             }
-//             &.rightLeg {
-//                 //右小腿
-//                 left: 53 * 2-5px;
-//                 top: 210 * 2-5px;
-//             }
-//             &.leftLeg {
-//                 //左小腿
-//                 left: 26 * 2-5px;
-//                 top: 210 * 2-5px;
-//             }
-//             &.rightFoot {
-//                 //右足
-//                 left: 53 * 2-5px;
-//                 top: 238 * 2-5px;
-//             }
-//             &.leftFoot {
-//                 //左足
-//                 left: 26 * 2-5px;
-//                 top: 238 * 2-5px;
-//             }
-//             .outDom {
-//                 display: flex;
-//                 justify-content: center;
-//                 align-items: center;
-//                 width: 32px;
-//                 height: 32px;
-//                 border-radius: 16px;
-//                 background-color: rgba(255, 255, 255, 0.4);
-//                 .inDom {
-//                     display: block;
-//                     width: 18px;
-//                     height: 18px;
-//                     border-radius: 9px;
-//                     background-color: #fff;
-//                     &.blue.sel {
-//                         background-color: #ef6a6a;
-//                     }
-//                     &.yellow.sel {
-//                         background-color: #fbc54e;
-//                     }
-//                     &.red.sel {
-//                         background-color: #ff8052;
-//                     }
-//                 }
-//             }
-//         }
-//     }
-//     .detailPositions {
-//         position: absolute;
-//         top: 0;
-//         right: 0;
-//         width: 300px;
-//         height: 300px;
-//         background: url('../../../../assets/muscle_bg.png');
-//         background-size: 100%;
-//         border-radius: 150px;
-//         border: none;
-//         overflow: hidden;
-//         transform: scale(0);
-//         transition: 0.3s all linear;
-//         &.show {
-//             transform: scale(1);
-//         }
-//     }
-// }
