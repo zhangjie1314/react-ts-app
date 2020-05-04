@@ -41,6 +41,10 @@ export default class ActionEvaluation extends Component<any, any> {
             fiancoData: nextProps.fiancoData,
         }
     }
+    bodyFigure: any = {}
+    onRef = (ref: any) => {
+        this.bodyFigure = ref
+    }
     componentDidUpdate(prevProps: any, prevState: any) {
         const oldChartData = JSON.stringify(prevState.chartData)
         const newChartData = JSON.stringify(this.state.chartData)
@@ -73,8 +77,7 @@ export default class ActionEvaluation extends Component<any, any> {
         return res
     }
     // 处理数据
-    handleBodyFigure = (request: any, data: any) => {
-        let { tabsIdx } = this.state
+    handleBodyFigure = (request: any, data: any, tabsIdx: number) => {
         let arr: any = []
         data.forEach((el: any, idx: number) => {
             request.forEach((rim: any, ix: number) => {
@@ -94,11 +97,11 @@ export default class ActionEvaluation extends Component<any, any> {
         return arr
     }
     // 获取人体显示点
-    getBodyFigure = (request: any) => {
+    getBodyFigure = (request: any, idx: number) => {
         let { params } = this.state
         const { upDomList, backDomList } = figureData
-        params.front = this.handleBodyFigure(request, upDomList) // 正面数据
-        params.back = this.handleBodyFigure(request, backDomList) // 背面数据
+        params.front = this.handleBodyFigure(request, upDomList, idx) // 正面数据
+        params.back = this.handleBodyFigure(request, backDomList, idx) // 背面数据
         this.setState({ params })
     }
     // 点击选中tabs
@@ -110,7 +113,8 @@ export default class ActionEvaluation extends Component<any, any> {
                 obj = fblObj[`${x.split('Num')[0]}Date`]
             }
         }
-        this.getBodyFigure(obj)
+        this.bodyFigure.clickCancelFn()
+        this.getBodyFigure(obj, idx)
         this.setState({ tabsIdx: idx })
     }
     // 点击图表点
@@ -125,16 +129,14 @@ export default class ActionEvaluation extends Component<any, any> {
                 if (el.type === 'jhbz') el.num = res.data.jhbzNum
                 if (el.type === 'jhhl') el.num = res.data.jhhlNum
             })
-            this.getBodyFigure(res.data.jhgdDate)
+            this.getBodyFigure(res.data.jhgdDate, 0)
             this.setState({
                 tabs,
                 fblObj,
             })
         })
     }
-    componentDidMount() {
-        // this.getFiancoContrastData()
-    }
+
     render() {
         return (
             <div className={AeStyle.wrapper}>
@@ -163,12 +165,8 @@ export default class ActionEvaluation extends Component<any, any> {
                         )
                     })}
                 </div>
-                <BodyFigure params={this.state.params}></BodyFigure>
+                <BodyFigure onRef={this.onRef} params={this.state.params}></BodyFigure>
                 <div style={{ height: '300px' }}></div>
-                <div className={AeStyle.footerBtn}>
-                    <div className={AeStyle.goToTest}>去体侧</div>
-                    <div className={AeStyle.shareBtn}>生成报告图片</div>
-                </div>
             </div>
         )
     }
