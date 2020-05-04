@@ -43,8 +43,10 @@ export default class PosCharts extends React.Component<any, any> {
         const newData = JSON.stringify(nextProps.chartData)
         const oldData = JSON.stringify(prevState.listData)
         if (newData !== oldData) {
+            let arr = nextProps.chartData.reverse()
+            arr.map((el: any, idx: number) => (el.sort = idx)) // 处理数据显示折线图
             return {
-                listData: nextProps.chartData,
+                listData: arr,
             }
         }
         return null
@@ -86,7 +88,7 @@ export default class PosCharts extends React.Component<any, any> {
                 lineChartXTicks: lcxt,
                 lineChartYTicks: lcyt,
                 lineChart: chart ? chart : this.state.lineChart,
-                curPoint: data[0],
+                curPoint: data[data.length - 1],
             },
             () => {
                 this.changeMainChart()
