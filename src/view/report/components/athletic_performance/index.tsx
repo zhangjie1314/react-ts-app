@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
 import PropTypes from 'prop-types'
 import Html2canvas from 'html2canvas'
-import { callAppMenthd, callAppShareImgMenthd } from '../../../../utils'
+import _ from 'lodash'
+import { callAppMenthd, callAppShareImgMenthd } from '@utils/index'
 import QRCode from 'qrcode.react'
 import { PhotoProvider, PhotoConsumer } from 'react-photo-view'
 import AthleticPerformanceStyle from './index.module.scss'
@@ -10,6 +11,9 @@ import PosCharts from '@comps/pos_charts'
 import PosCircleCharts from '@comps/pos_circle_charts'
 import FiancoContrast from '@comps/fianco_contrast'
 import DefUserAvatar from '@assets/img/normal.png'
+import { ChartItemRules } from '@ctypes/components/pos_charts'
+import { getActionPerformanceResult } from '@apis/report/bapp'
+import Util from './util'
 
 @inject('reportStore')
 @observer
@@ -17,56 +21,43 @@ export default class AthleticPerformance extends Component<any, any> {
     state = {
         chartData: [],
         fiancoData: [],
+        coachInfo: {},
         circleData: [],
+        imgHandleing: false,
+        shareBtnTxt: '分享报告图片',
+        athleticPerformanceData: {},
+        score: 0,
+        creatTime: '',
+        typesData: [],
     }
     static defaultProps = {
         chartData: [],
         fiancoData: [],
+        coachInfo: {},
     }
     static propType = {
         chartData: PropTypes.array,
         fiancoData: PropTypes.array,
+        coachInfo: PropTypes.object,
     }
     static getDerivedStateFromProps(nextProps: any, prevState: any) {
         return {
             chartData: nextProps.chartData,
             fiancoData: nextProps.fiancoData,
+            coachInfo: nextProps.coachInfo,
         }
-    }
-    componentDidMount() {
-        this.setState({
-            circleData: [
-                {
-                    name: '力量',
-                    val: 20,
-                    index: 0,
-                    bgColor: 'rgba(0,0,0,0.25)',
-                    color: '#52dea4',
-                },
-                {
-                    name: '敏捷',
-                    val: 40,
-                    index: 1,
-                    bgColor: 'rgba(0,0,0,0.25)',
-                    color: '#32a7e7',
-                },
-                {
-                    name: '平衡',
-                    val: 60,
-                    index: 2,
-                    bgColor: 'rgba(0,0,0,0.25)',
-                    color: '#5260de',
-                },
-            ],
-        })
     }
     // html转图片
     private toImg = () => {
         const shareRef = this.refs.fitShareBox as HTMLElement
+        this.setState({
+            imgHandleing: true,
+            shareBtnTxt: '正在处理图片中...',
+        })
         Html2canvas(shareRef, {
             useCORS: true,
             scale: 2,
-        }).then(res => {
+        }).then((res: any) => {
             const ctx: any = res.getContext('2d')
             // 关闭抗锯齿
             ctx.mozImageSmoothingEnabled = false
@@ -75,33 +66,118 @@ export default class AthleticPerformance extends Component<any, any> {
             ctx.imageSmoothingEnabled = false
             const data = ctx.canvas.toDataURL('image/png')
             callAppShareImgMenthd(data, this.props.reportStore.tabsId)
+            this.setState({
+                imgHandleing: false,
+                shareBtnTxt: '分享报告图片',
+            })
         })
     }
     // 去体测
     private gotoTcFun = () => {
-        const { userInfo } = this.props.reportStore
+        const { userInfos } = this.props.reportStore
         callAppMenthd('gotoTestTool', {
-            age: userInfo.age,
-            birthday: userInfo.birthday,
-            gender: userInfo.gender,
-            height: userInfo.height,
-            memberId: userInfo.memberId,
-            name: userInfo.name,
-            weight: userInfo.weight,
-            headPath: userInfo.headPath,
+            age: userInfos.age,
+            birthday: userInfos.birthday,
+            gender: userInfos.gender,
+            height: userInfos.height,
+            memberId: userInfos.memberId,
+            name: userInfos.name,
+            weight: userInfos.weight,
+            headPath: userInfos.headPath,
         })
     }
+    componentDidUpdate(prevProps: any, prevState: any) {
+        if (!_.isEqual(this.state.chartData, prevState.chartData) && !_.isEmpty(this.state.chartData)) {
+            this.handleClickPointFunc(this.state.chartData[0])
+        }
+    }
+    // 点击图表点
+    handleClickPointFunc(item: ChartItemRules) {
+        getActionPerformanceResult({
+            wdId: item.id,
+        }).then((res: any) => {
+            const circleData = res.data.ydAllSunDataVo.ldDataVo
+            circleData.map((item: any, index: number) => {
+                if (index === 0) {
+                    item.color = '#5260de'
+                } else if (index === 1) {
+                    item.color = '#32a7e7'
+                } else if (index === 2) {
+                    item.color = '#52dea4'
+                }
+                item.percent = item.val
+                item.bgColor = '#242630'
+                return item
+            })
+            this.setState(
+                {
+                    athleticPerformanceData: res.data,
+                    circleData,
+                    score: res.data.ydAllSunDataVo.grade,
+                    creatTime: res.data.ydbxVO.day,
+                },
+                () => {
+                    // 处理类型展示数据（版本兼容）
+                    this.handleTypesShowData(res.data)
+                },
+            )
+        })
+    }
+    // 处理类型展示数据（版本兼容）
+    handleTypesShowData(data: any) {
+        const { circleData } = this.state
+        const baseData = data.ydbxVO
+        let resultArr = []
+        // 倒序数据使其能匹配另个对象的数据顺序
+        const typesObj = circleData.reverse()
+        // 处理版本兼容
+        if (baseData.ver) {
+            const verArr = baseData.ver.split('.')
+            //版本号第一位
+            if (verArr[0] === '3') {
+                //版本号第二位
+                if (verArr[1] === '1') {
+                    resultArr = Util.handleOldDataFunc(baseData, typesObj)
+                } else {
+                    //版本号第一位为 3的版本规则
+                    resultArr = Util.handleNewDataFunc(baseData, typesObj)
+                }
+            } else {
+                //最新的版本规则
+                resultArr = Util.handleNewDataFunc(baseData, typesObj)
+            }
+        } else {
+            //最老版本的规则
+            resultArr = Util.handleOldDataFunc(baseData, typesObj)
+        }
+        this.setState({
+            typesData: resultArr,
+        })
+    }
+
     render() {
-        const { chartData, fiancoData, circleData } = this.state
+        const { chartData, fiancoData, circleData, imgHandleing, shareBtnTxt, score, creatTime } = this.state
+        const { isShare } = this.props.reportStore
         return (
             <div className={AthleticPerformanceStyle['wrapper']}>
                 {/* 图表 */}
-                {chartData.length > 0 && <PosCharts chartId='athletic-performance-chart' chartData={chartData} />}
+                {chartData.length > 0 && (
+                    <PosCharts
+                        chartId='athletic-performance-chart'
+                        chartData={chartData}
+                        clickPointCallback={this.handleClickPointFunc.bind(this)}
+                    />
+                )}
                 {/* 对比 */}
                 <FiancoContrast fiancoArr={fiancoData} />
                 {/* 圆环图表 */}
                 {circleData.length > 0 && (
-                    <PosCircleCharts chartId='athletic-performance-circle-chart' chartData={circleData} />
+                    <PosCircleCharts
+                        chartId='athletic-performance-circle-chart'
+                        chartData={circleData}
+                        score={score}
+                        creatTime={creatTime}
+                    />
                 )}
                 {/* 数据 */}
                 <div className={AthleticPerformanceStyle['data-box']}>
@@ -175,6 +251,27 @@ export default class AthleticPerformance extends Component<any, any> {
                                     <div className={AthleticPerformanceStyle['dpb-num']} style={{ width: '50%' }}></div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                {/* 跳转按钮 */}
+                <div className={AthleticPerformanceStyle['dump-box']}>
+                    <div
+                        className={`${AthleticPerformanceStyle['dump-inline-box']} ${AthleticPerformanceStyle['fixed-box']}`}
+                    >
+                        <div
+                            className={`${AthleticPerformanceStyle['dib-item']} ${AthleticPerformanceStyle['active']}`}
+                        >
+                            <div className={AthleticPerformanceStyle['di-title']}>力量类</div>
+                            <div className={AthleticPerformanceStyle['di-count']}>(8项)</div>
+                        </div>
+                        <div className={AthleticPerformanceStyle['dib-item']}>
+                            <div className={AthleticPerformanceStyle['di-title']}>敏捷类</div>
+                            <div className={AthleticPerformanceStyle['di-count']}>(8项)</div>
+                        </div>
+                        <div className={AthleticPerformanceStyle['dib-item']}>
+                            <div className={AthleticPerformanceStyle['di-title']}>柔韧类</div>
+                            <div className={AthleticPerformanceStyle['di-count']}>(8项)</div>
                         </div>
                     </div>
                 </div>
@@ -276,14 +373,21 @@ export default class AthleticPerformance extends Component<any, any> {
                     </div>
                 </div>
                 {/* 底部按钮 */}
-                <div className={AthleticPerformanceStyle['bottom-btn-box']}>
-                    <div className={AthleticPerformanceStyle['qtc-btn']} onClick={this.gotoTcFun}>
-                        去体测
+                {isShare === 1 ? null : (
+                    <div className={AthleticPerformanceStyle['bottom-btn-box']}>
+                        <div className={AthleticPerformanceStyle['qtc-btn']} onClick={this.gotoTcFun}>
+                            去体测
+                        </div>
+                        <div
+                            className={`${AthleticPerformanceStyle['share-report-btn']} ${
+                                imgHandleing ? AthleticPerformanceStyle['dis'] : ''
+                            }`}
+                            onClick={this.toImg}
+                        >
+                            {shareBtnTxt}
+                        </div>
                     </div>
-                    <div className={AthleticPerformanceStyle['share-report-btn']} onClick={this.toImg}>
-                        分享报告图片
-                    </div>
-                </div>
+                )}
                 {/* 分享图片 */}
                 <div className={AthleticPerformanceStyle['share-box']} ref='fitShareBox'>
                     {/* 分享标题 */}

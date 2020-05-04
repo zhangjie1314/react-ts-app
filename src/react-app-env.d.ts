@@ -67,6 +67,9 @@ declare module '@antv/f2'
 declare module '@antv/f2/lib/core'
 declare module 'body-scroll-lock'
 declare module 'qrcode.react'
+declare module 'mobx-react'
+declare module 'html2canvas'
+declare module 'react-photo-view'
 
 interface Window {
     // ios app端调用方法使用

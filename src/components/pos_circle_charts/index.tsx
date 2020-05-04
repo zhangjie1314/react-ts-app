@@ -17,10 +17,14 @@ export default class PosCircleCharts extends React.Component<any, any> {
     static defaultProps = {
         chartData: [],
         chartId: '',
+        score: 0,
+        creatTime: '',
     }
     static propTypes = {
         chartData: PropTypes.array,
         chartId: PropTypes.string,
+        score: PropTypes.number,
+        creatTime: PropTypes.string,
     }
     static getDerivedStateFromProps(nextProps: any, prevState: any) {
         const newData = JSON.stringify(nextProps.chartData)
@@ -179,8 +183,7 @@ export default class PosCircleCharts extends React.Component<any, any> {
                     easing: 'elasticOut',
                 },
             })
-        // 图例items
-        // const legendItem: any[] = []
+        circleChart.tooltip(false)
         data.forEach(function (obj) {
             // 背景
             circleChart.guide().arc({
@@ -192,37 +195,19 @@ export default class PosCircleCharts extends React.Component<any, any> {
                     stroke: obj.bgColor,
                 },
             })
-            // 处理图例items
-            // legendItem.push({
-            //     name: `${obj.name}类`,
-            //     marker: {
-            //         symbol: 'square',
-            //         fill: obj.color,
-            //         radius: 3
-            //     }
-            // })
         })
         // 图例
         circleChart.legend(false)
-        // circleChart.legend({
-        //     position: 'bottom',
-        //     align: 'center',
-        //     custom: true,
-        //     items: legendItem,
-        //     nameStyle: {
-        //         fill: '#fff'
-        //     },
-        //     offsetY: 24
-        // })
+        const { score, creatTime } = this.props
         // 添加中间总分数
         circleChart.guide().html({
             position: ['50%', '50%'],
-            html: `<div class='circle-chart-number-box'><span class='number'>100</span><span class='util'>分</span></div>`,
+            html: `<div class='circle-chart-number-box'><span class='number'>${score}</span><span class='util'>分</span></div>`,
         })
         // 添加时间
         circleChart.guide().html({
             position: ['50%', '110%'],
-            html: `<div class='circle-chart-time-box'>2020.02.18</div>`,
+            html: `<div class='circle-chart-time-box'>${creatTime}</div>`,
         })
         // 渲染
         circleChart.render()
