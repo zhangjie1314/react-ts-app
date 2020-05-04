@@ -3,6 +3,11 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Carousel, WingBlank } from 'antd-mobile'
 import BfStyle from './index.module.scss'
+<<<<<<< HEAD
+=======
+// import swiper from 'swiper/dist/js/swiper.min.js'
+// import swStyle from 'swiper/dist/css/swiper.min.css'
+>>>>>>> 8a710b0b58a7c42bcfc41599f2bba99cc8d13dde
 import frontImg from '@assets/img/front3.0.png'
 import backImg from '@assets/img/back3.0.png'
 import { relative } from 'path'
@@ -49,7 +54,19 @@ export default class BodyFigure extends Component<any, any> {
         frontIdx = null
         backIdx = null
         isShow = null
+<<<<<<< HEAD
         this.setState({ isShow, frontIdx, backIdx })
+=======
+        this.setState({ isShow })
+    }
+    componentDidMount() {
+        // var mySwiper: any = new swiper('.swiper-container', {
+        //     // autoplay: true,
+        //     pagination: {
+        //         el: '.swiper-pagination',
+        //     },
+        // })
+>>>>>>> 8a710b0b58a7c42bcfc41599f2bba99cc8d13dde
     }
     componentDidMount() {}
     render() {
@@ -74,7 +91,7 @@ export default class BodyFigure extends Component<any, any> {
                                       <div
                                           key={idx}
                                           className={`${BfStyle.dots} ${BfStyle[item.className]}`}
-                                          onClick={(e) => {
+                                          onClick={e => {
                                               this.clickDomFn(e, item, idx, 'front')
                                           }}
                                       >
@@ -108,7 +125,7 @@ export default class BodyFigure extends Component<any, any> {
                                       <div
                                           key={idx}
                                           className={`${BfStyle.dots} ${BfStyle[item.className]}`}
-                                          onClick={(e) => {
+                                          onClick={e => {
                                               this.clickDomFn(e, item, idx, 'back')
                                           }}
                                       >

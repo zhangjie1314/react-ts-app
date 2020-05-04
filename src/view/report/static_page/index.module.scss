@@ -1,0 +1,26 @@
+.detail-box {
+    padding: 32px;
+    background: #18191d;
+    color: #fff;
+    min-height: calc(100vh - 64px);
+    .title {
+        position: relative;
+        font-size: 32px;
+        padding-left: 32px;
+        padding-bottom: 20px;
+        &::before {
+            position: absolute;
+            top: 16px;
+            left: 0;
+            content: '';
+            width: 16px;
+            height: 16px;
+            display: block;
+            border-radius: 50%;
+            background: #fff;
+        }
+    }
+    .content {
+        margin-bottom: 30px;
+    }
+}

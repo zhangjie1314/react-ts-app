@@ -201,7 +201,7 @@ export default class PerfectCircumference extends Component<any, any> {
             value: resultData.jcdx,
             diffValue: Math.abs(resultData.jcdxV).toFixed(1),
             idealValue: resultData.jcdxS,
-            status: resultData.jcdxV == 0 ? 1 : resultData.jcdxV > 0 ? 0 : 2,
+            status: resultData.jcdxV === 0 ? 1 : resultData.jcdxV > 0 ? 0 : 2,
         })
         // 赋值
         this.setState({
@@ -287,7 +287,7 @@ export default class PerfectCircumference extends Component<any, any> {
                 {isShare === 1 ? null : (
                     <div className={PcStyle['share-box']} ref='bodyShareBox'>
                         {/* 分享标题 */}
-                        <div className={PcStyle['share-title']}>人体成分报告</div>
+                        <div className={PcStyle['share-title']}>完美围度报告</div>
                         {/* 用户信息 */}
                         <div className={PcStyle['user-info-box']}>
                             <img className={PcStyle['uib-avatar']} src={userInfos.headPath} alt='头像' />

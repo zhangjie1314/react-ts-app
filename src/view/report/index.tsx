@@ -204,7 +204,7 @@ export default class Report extends Component<any, any> {
                 // 静态评估
                 return <StaticEvaluation chartData={chartData} fiancoData={fiancoData} coachInfo={coachInfo} />
             case 3:
-                // 运动评估
+                // 动作评估
                 return <ActionEvaluation chartData={chartData} fiancoData={fiancoData} coachInfo={coachInfo} />
             case 4:
                 // 体适能评估
