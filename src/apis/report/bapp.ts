@@ -53,3 +53,8 @@ export function getStaticEvaluationResult(params = {}) {
     const url = `${process.env.REACT_APP_BWEBAPP_API_URL}/coach/side/fuzzy/getTyValue`
     return fetchGet(url, params, 'bapp')
 }
+// 获取运动表现数据
+export function getActionPerformanceResult(params = {}) {
+    const url = `${process.env.REACT_APP_BWEBAPP_API_URL}/coach/side/fuzzy/getYDValue`
+    return fetchGet(url, params, 'bapp')
+}

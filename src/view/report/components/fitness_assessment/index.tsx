@@ -182,7 +182,7 @@ export default class FitnessAssessment extends Component<any, any> {
         Html2canvas(shareRef, {
             useCORS: true,
             scale: 2,
-        }).then(res => {
+        }).then((res: any) => {
             const ctx: any = res.getContext('2d')
             // 关闭抗锯齿
             ctx.mozImageSmoothingEnabled = false

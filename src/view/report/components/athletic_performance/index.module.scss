@@ -21,6 +21,7 @@
         padding: 80px 32px 32px;
         display: flex;
         flex-wrap: wrap;
+        border-bottom: 1px solid #292929;
         .item {
             width: calc(50% - 70px);
             padding-bottom: 48px;
@@ -50,6 +51,41 @@
                         }
                     }
                 }
+            }
+        }
+    }
+    .dump-box {
+        height: 208px;
+        .dump-inline-box {
+            padding: 48px 32px;
+            display: flex;
+            align-items: center;
+            background: #18191d;
+            .dib-item {
+                flex: 1 0 0%;
+                height: 112px;
+                text-align: center;
+                border-radius: 112px;
+                background: #515151;
+                margin-right: 24px;
+                font-size: 32px;
+                &.active {
+                    background: #52dea4;
+                    color: #fff;
+                }
+                &:last-child {
+                    margin-right: 0;
+                }
+                .di-title {
+                    padding-top: 10px;
+                }
+            }
+            &.fixed-box {
+                position: fixed;
+                top: 268px;
+                left: 0;
+                right: 0;
+                z-index: 999;
             }
         }
     }
