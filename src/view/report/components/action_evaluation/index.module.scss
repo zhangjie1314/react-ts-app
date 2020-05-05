@@ -32,24 +32,19 @@
         margin: auto;
         display: flex;
         justify-content: space-around;
-        padding: 0 48px;
+        padding: 0 32px;
         div {
             height: 96px;
             line-height: 96px;
             text-align: center;
             border-radius: 48px;
-            font-size: 36px;
-        }
-        .shareBtn {
-            width: 416px;
-            background: #23cfe2;
-            color: #fff;
+            font-size: 32px;
         }
         .goToTest {
+            flex: 1 0 auto;
             width: 214px;
             background: #fff;
             color: #0c0c0c;
-            margin-right: 30px;
         }
     }
 }

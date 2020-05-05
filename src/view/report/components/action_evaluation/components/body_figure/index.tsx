@@ -6,13 +6,6 @@ import BfStyle from './index.module.scss'
 import frontImg from '@assets/img/front3.0.png'
 import backImg from '@assets/img/back3.0.png'
 
-interface fblObjType {
-    num?: number
-    pj?: string
-    bmi?: string
-    jb?: number
-    photo?: string
-}
 export default class BodyFigure extends Component<any, any> {
     constructor(props: any) {
         super(props)
@@ -27,30 +20,39 @@ export default class BodyFigure extends Component<any, any> {
     }
     static defaultProps = { params: {} }
     static propType = { params: PropTypes.object }
-
+    // 点击节点
     clickDomFn(e: any, obj: any, idx: number, type: string) {
         e.stopPropagation()
         const { params } = this.props
-        let { frontIdx, backIdx, mascles, isShow } = this.state
-        if (type === 'front') {
-            isShow = 'front'
-            frontIdx = idx
-            mascles = [...params.front[idx].imglist]
-        } else {
-            isShow = 'back'
-            backIdx = idx
-            mascles = [...params.back[idx].imglist]
+        let { frontIdx, backIdx, mascles, masclesIdx, isShow } = this.state
+        switch (type) {
+            case 'front':
+                isShow = 'front'
+                frontIdx = idx
+                mascles = [...params.front[idx].imglist]
+                break
+            case 'back':
+                isShow = 'back'
+                backIdx = idx
+                mascles = [...params.back[idx].imglist]
+                break
+            default:
+                frontIdx = null
+                backIdx = null
+                masclesIdx = 0
+                mascles = []
+                isShow = null
+                break
         }
-        this.setState({ frontIdx, backIdx, mascles, isShow })
+        this.setState({ frontIdx, backIdx, mascles, masclesIdx, isShow })
     }
+    // 点击取消
     clickCancelFn = () => {
-        let { isShow, frontIdx, backIdx } = this.state
-        frontIdx = null
-        backIdx = null
-        isShow = null
-        this.setState({ isShow, frontIdx, backIdx })
+        this.setState({ isShow: null, frontIdx: null, backIdx: null })
     }
-    componentDidMount() {}
+    componentDidMount() {
+        this.props.onRef('bodyFigure', this)
+    }
     render() {
         const { params } = this.props
         return (
@@ -58,11 +60,11 @@ export default class BodyFigure extends Component<any, any> {
                 {/* 正面 */}
                 <div
                     className={`${BfStyle.front} ${BfStyle.modules} ${
-                        this.state.isShow === null
-                            ? ''
-                            : this.state.isShow === 'front'
+                        this.state.isShow === 'front'
                             ? BfStyle.toFace
-                            : BfStyle.outFace
+                            : this.state.isShow === 'back'
+                            ? BfStyle.outFace
+                            : ''
                     }`}
                 >
                     <div className={BfStyle.figureImg}>
@@ -92,11 +94,11 @@ export default class BodyFigure extends Component<any, any> {
                 {/* 背面 */}
                 <div
                     className={`${BfStyle.back} ${BfStyle.modules} ${
-                        this.state.isShow === null
-                            ? ''
-                            : this.state.isShow === 'back'
+                        this.state.isShow === 'back'
                             ? BfStyle.toFace
-                            : BfStyle.outFace
+                            : this.state.isShow === 'front'
+                            ? BfStyle.outFace
+                            : ''
                     }`}
                 >
                     <div className={BfStyle.figureImg}>
@@ -124,7 +126,11 @@ export default class BodyFigure extends Component<any, any> {
                     </div>
                 </div>
                 {/* 肌肉图 */}
-                <div className={`${BfStyle.mascles} ${this.state.isShow !== null ? BfStyle.show : ''}`}>
+                <div
+                    className={`${BfStyle.mascles} ${
+                        this.state.isShow === 'front' || this.state.isShow === 'back' ? BfStyle.show : ''
+                    }`}
+                >
                     <WingBlank style={{ height: '100%', position: 'relative' }}>
                         <Carousel
                             style={{ touchAction: 'none', paddingTop: '10px' }}
