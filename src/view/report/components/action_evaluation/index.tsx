@@ -9,7 +9,7 @@ import BodyResult from './components/body_result'
 import { getActionEvaluationInfo } from '../../../../apis/report/bapp'
 import AeStyle from './index.module.scss'
 import { figureData } from './components/body_figure/figure_data'
-
+import { callAppMenthd } from '@utils/index'
 interface fblObjType {
     num?: number
     pj?: string
@@ -126,6 +126,9 @@ export default class ActionEvaluation extends Component<any, any> {
             }
         }
         this.bodyFigure.clickCancelFn()
+        obj.map((el: any) => {
+            return (el.isShow = false)
+        })
         bodyResultData = obj
         this.getBodyFigure(obj, idx)
         this.setState({ tabsIdx: idx, bodyResultData })
@@ -143,6 +146,9 @@ export default class ActionEvaluation extends Component<any, any> {
                 if (el.type === 'jhhl') el.num = res.data.jhhlNum
             })
             this.getBodyFigure(res.data.jhgdDate, 0)
+            res.data.jhgdDate.forEach((el: any) => {
+                el.isShow = false
+            })
             bodyResultData = res.data.jhgdDate
             this.setState({
                 bodyResultData,
@@ -151,9 +157,22 @@ export default class ActionEvaluation extends Component<any, any> {
             })
         })
     }
-
+    // 去体测
+    private gotoTcFun = () => {
+        const { userInfos } = this.props.reportStore
+        callAppMenthd('gotoTestTool', {
+            age: userInfos.age,
+            birthday: userInfos.birthday,
+            gender: userInfos.gender,
+            height: userInfos.height,
+            memberId: userInfos.memberId,
+            name: userInfos.name,
+            weight: userInfos.weight,
+            headPath: userInfos.headPath,
+        })
+    }
     render() {
-        const { userInfos, isShare } = this.props.reportStore
+        const { isShare } = this.props.reportStore
         return (
             <div className={AeStyle.wrapper}>
                 {/* 图表 */}
@@ -186,13 +205,13 @@ export default class ActionEvaluation extends Component<any, any> {
                 <BodyResult onRef={this.onRef} bodyResultData={this.state.bodyResultData}></BodyResult>
                 <div style={{ height: '100px' }}></div>
                 {/* 底部按钮 */}
-                {/* {isShare === 1 ? null : (
-                    <div className={AeStyle['bottom-btn-box']}>
-                        <div className={AeStyle['qtc-btn']} onClick={this.gotoTcFun}>
+                {isShare === 1 ? null : (
+                    <div className={AeStyle.footerBtn}>
+                        <div className={AeStyle.goToTest} onClick={this.gotoTcFun}>
                             去体测
                         </div>
                     </div>
-                )} */}
+                )}
             </div>
         )
     }
