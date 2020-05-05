@@ -22,7 +22,6 @@ export default class PosCharts extends React.Component<any, any> {
         this.state = {
             lineChart: null,
             lineChartXTicks: [],
-            lineChartYTicks: [],
             chartTooltipText: '',
             pointsObj: null,
             listData: [],
@@ -64,12 +63,10 @@ export default class PosCharts extends React.Component<any, any> {
     // 处理图表数据
     handleChartData(data: ChartItemRules[]) {
         let lcxt: string[] = []
-        let lcyt: any[] = []
         let { chartId } = this.props
         let chart = null
         this.state.listData.forEach((el: any, idx: number) => {
             lcxt.push(el.time)
-            lcyt.push(el.grade)
         })
         // 判断是否存在linechart 对象 无则 创建一个
         if (this.state.lineChart) {
@@ -86,13 +83,12 @@ export default class PosCharts extends React.Component<any, any> {
         this.setState(
             {
                 lineChartXTicks: lcxt,
-                lineChartYTicks: lcyt,
                 lineChart: chart ? chart : this.state.lineChart,
                 curPoint: data[data.length - 1],
             },
             () => {
                 this.changeMainChart()
-            }
+            },
         )
     }
 
@@ -115,6 +111,7 @@ export default class PosCharts extends React.Component<any, any> {
                 lineWidth: 1,
             },
             line: null,
+            startOnZero: true,
         })
         // 设置时间轴的样式
         lineChart.axis('sort', {

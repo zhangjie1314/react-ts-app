@@ -72,7 +72,7 @@ export default class AthleticPerformance extends Component<any, any> {
     }
     componentDidUpdate(prevProps: any, prevState: any) {
         if (!_.isEqual(this.state.chartData, prevState.chartData) && !_.isEmpty(this.state.chartData)) {
-            this.handleClickPointFunc(this.state.chartData[0])
+            this.handleClickPointFunc(this.state.chartData[this.state.chartData - 1])
         }
     }
     // 点击图表点

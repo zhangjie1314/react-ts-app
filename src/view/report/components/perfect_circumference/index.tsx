@@ -105,7 +105,7 @@ export default class PerfectCircumference extends Component<any, any> {
         const oldChartData = JSON.stringify(prevState.chartData)
         const newChartData = JSON.stringify(this.state.chartData)
         if (oldChartData !== newChartData && newChartData !== '[]') {
-            this.handleClickPointFunc(this.state.chartData[0])
+            this.handleClickPointFunc(this.state.chartData[this.state.chartData.length - 1])
         }
     }
     // 点击图表点
@@ -120,7 +120,9 @@ export default class PerfectCircumference extends Component<any, any> {
     handleDataFunc(data: any) {
         const { isFromStudio } = this.props.reportStore
         // 图片路径处理
-        data.data.memberSideWdAllDTO.url1 = handleHandImg(data.data.memberSideWdAllDTO.url1, isFromStudio)
+        data.data.memberSideWdAllDTO.url1 = data.data.memberSideWdAllDTO.url1
+            ? handleHandImg(data.data.memberSideWdAllDTO.url1, isFromStudio)
+            : ''
         const resultData = data.data.memberSideWdAllDTO
         const standardData = data.data.memberSideWddateDTO
         // 完美数据处理
