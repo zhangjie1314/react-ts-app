@@ -1,7 +1,12 @@
 .wrapper {
     color: #fff;
     font-size: 28px;
-    padding-bottom: 70px;
+    height: 100%;
+    overflow-y: auto;
+    transition: all 0.5s;
+    .inline-wrapper {
+        padding-bottom: 70px;
+    }
     .score-box {
         padding: 80px 0;
         text-align: center;
@@ -21,7 +26,6 @@
         padding: 80px 32px 32px;
         display: flex;
         flex-wrap: wrap;
-        border-bottom: 1px solid #292929;
         .item {
             width: calc(50% - 70px);
             padding-bottom: 48px;
@@ -57,6 +61,7 @@
     .dump-box {
         height: 208px;
         .dump-inline-box {
+            border-top: 1px solid #292929;
             padding: 48px 32px;
             display: flex;
             align-items: center;
@@ -82,7 +87,7 @@
             }
             &.fixed-box {
                 position: fixed;
-                top: 268px;
+                top: 264px;
                 left: 0;
                 right: 0;
                 z-index: 999;
@@ -91,6 +96,23 @@
     }
     .content-box {
         padding: 0 32px 80px;
+        .big-title {
+            font-size: 36px;
+            text-align: center;
+            color: #707070;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            &::after,
+            &::before {
+                content: '';
+                display: inline-block;
+                height: 4px;
+                width: 60px;
+                background: #535353;
+            }
+        }
         .title {
             position: relative;
             font-size: 32px;
@@ -151,42 +173,30 @@
                                         border-right: 0;
                                     }
                                 }
-                                &.il-selected-zd {
-                                    color: #f75944;
+                                &.active {
+                                    color: #23cfe2;
                                     .ii-line {
-                                        background: #f75944;
-                                    }
-                                    .ii-txt {
-                                        color: #f75944;
+                                        background: #23cfe2;
                                     }
                                 }
-                                &.il-selected-zdu {
-                                    color: #f78644;
-                                    .ii-line {
-                                        background: #f78644;
-                                    }
-                                    .ii-txt {
-                                        color: #f78644;
-                                    }
-                                }
-                                &.il-selected-qw {
-                                    color: #ffc701;
-                                    .ii-line {
-                                        background: #ffc701;
-                                    }
-                                    .ii-txt {
-                                        color: #ffc701;
-                                    }
-                                }
-                                &.il-selected-zc {
-                                    color: #21b8c5;
-                                    .ii-line {
-                                        background: #21b8c5;
-                                    }
-                                    .ii-txt {
-                                        color: #21b8c5;
-                                    }
-                                }
+                                // &.il-selected-zdu {
+                                //     color: #23cfe2;
+                                //     .ii-line {
+                                //         background: #23cfe2;
+                                //     }
+                                // }
+                                // &.il-selected-qw {
+                                //     color: #23cfe2;
+                                //     .ii-line {
+                                //         background: #23cfe2;
+                                //     }
+                                // }
+                                // &.il-selected-zc {
+                                //     color: #23cfe2;
+                                //     .ii-line {
+                                //         background: #23cfe2;
+                                //     }
+                                // }
                             }
                         }
                     }
@@ -210,23 +220,13 @@
         justify-content: center;
         padding: 0 48px;
         .qtc-btn {
-            width: 200px;
+            flex: 1 0 0%;
             height: 96px;
             line-height: 96px;
             text-align: center;
             border-radius: 96px;
             background: #fff;
-            margin-right: 30px;
             color: #0c0c0c;
-        }
-        .share-report-btn {
-            flex: 1 0 0%;
-            height: 96px;
-            line-height: 96px;
-            border-radius: 96px;
-            text-align: center;
-            color: #fff;
-            background: #23cfe2;
         }
     }
     .share-box {

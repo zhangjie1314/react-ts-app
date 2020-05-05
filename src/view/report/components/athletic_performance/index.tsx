@@ -1,16 +1,12 @@
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
 import PropTypes from 'prop-types'
-import Html2canvas from 'html2canvas'
 import _ from 'lodash'
-import { callAppMenthd, callAppShareImgMenthd } from '@utils/index'
-import QRCode from 'qrcode.react'
-import { PhotoProvider, PhotoConsumer } from 'react-photo-view'
+import { callAppMenthd } from '@utils/index'
 import AthleticPerformanceStyle from './index.module.scss'
 import PosCharts from '@comps/pos_charts'
 import PosCircleCharts from '@comps/pos_circle_charts'
 import FiancoContrast from '@comps/fianco_contrast'
-import DefUserAvatar from '@assets/img/normal.png'
 import { ChartItemRules } from '@ctypes/components/pos_charts'
 import { getActionPerformanceResult } from '@apis/report/bapp'
 import Util from './util'
@@ -18,17 +14,30 @@ import Util from './util'
 @inject('reportStore')
 @observer
 export default class AthleticPerformance extends Component<any, any> {
-    state = {
-        chartData: [],
-        fiancoData: [],
-        coachInfo: {},
-        circleData: [],
-        imgHandleing: false,
-        shareBtnTxt: '分享报告图片',
-        athleticPerformanceData: {},
-        score: 0,
-        creatTime: '',
-        typesData: [],
+    constructor(props: any) {
+        super(props)
+        this.state = {
+            chartData: [],
+            fiancoData: [],
+            coachInfo: {},
+            circleData: [],
+            athleticPerformanceData: {},
+            score: 0,
+            creatTime: '',
+            listData: [],
+            typesData: [],
+            countCompany: [
+                //测试描述单位:1:次数,2:距离,3:时间,4:角度
+                '无',
+                '次',
+                'cm',
+                '秒',
+                '度',
+                'kg',
+            ],
+            dumpFixed: false,
+            curSelectTabIdx: 0,
+        }
     }
     static defaultProps = {
         chartData: [],
@@ -46,31 +55,6 @@ export default class AthleticPerformance extends Component<any, any> {
             fiancoData: nextProps.fiancoData,
             coachInfo: nextProps.coachInfo,
         }
-    }
-    // html转图片
-    private toImg = () => {
-        const shareRef = this.refs.fitShareBox as HTMLElement
-        this.setState({
-            imgHandleing: true,
-            shareBtnTxt: '正在处理图片中...',
-        })
-        Html2canvas(shareRef, {
-            useCORS: true,
-            scale: 2,
-        }).then((res: any) => {
-            const ctx: any = res.getContext('2d')
-            // 关闭抗锯齿
-            ctx.mozImageSmoothingEnabled = false
-            ctx.webkitImageSmoothingEnabled = false
-            ctx.msImageSmoothingEnabled = false
-            ctx.imageSmoothingEnabled = false
-            const data = ctx.canvas.toDataURL('image/png')
-            callAppShareImgMenthd(data, this.props.reportStore.tabsId)
-            this.setState({
-                imgHandleing: false,
-                shareBtnTxt: '分享报告图片',
-            })
-        })
     }
     // 去体测
     private gotoTcFun = () => {
@@ -130,6 +114,8 @@ export default class AthleticPerformance extends Component<any, any> {
         let resultArr = []
         // 倒序数据使其能匹配另个对象的数据顺序
         const typesObj = circleData.reverse()
+        // 处理类别条目数据
+        let typesArr = Util.handleTypesListFunc(data.ldDataVo, typesObj)
         // 处理版本兼容
         if (baseData.ver) {
             const verArr = baseData.ver.split('.')
@@ -151,405 +137,277 @@ export default class AthleticPerformance extends Component<any, any> {
             resultArr = Util.handleOldDataFunc(baseData, typesObj)
         }
         this.setState({
-            typesData: resultArr,
+            typesData: typesArr,
+            listData: resultArr,
         })
     }
-
+    // 页面滚动
+    // 最外层盒子
+    atchleticBox: any | null = null
+    // 需要浮动的盒子
+    dumpRefBox: any | null = null
+    pageScrollFunc() {
+        const scrollTopVal = this.atchleticBox.scrollTop
+        const domTopVal = this.dumpRefBox.offsetTop - this.atchleticBox.offsetTop
+        this.setState({
+            dumpFixed: scrollTopVal >= domTopVal,
+        })
+        this.handleFixedBtn(scrollTopVal)
+    }
+    // 处理滚动按钮样式
+    handleFixedBtn(scrollTopVal: number) {
+        let showIdx: number = 0
+        // 标题节点
+        const title1 = this.refs.title_0 as HTMLElement
+        const title2 = this.refs.title_1 as HTMLElement
+        const title3 = this.refs.title_2 as HTMLElement
+        // 标题距离顶部距离
+        const title1TopVal = title1.offsetTop - this.atchleticBox.offsetTop - this.dumpRefBox.offsetHeight
+        const title2TopVal = title2.offsetTop - this.atchleticBox.offsetTop - this.dumpRefBox.offsetHeight
+        const title3TopVal = title3.offsetTop - this.atchleticBox.offsetTop - this.dumpRefBox.offsetHeight
+        // 判断选中哪个按钮
+        if (scrollTopVal >= title1TopVal) {
+            showIdx = 0
+        }
+        if (scrollTopVal >= title2TopVal) {
+            showIdx = 1
+        }
+        if (scrollTopVal >= title3TopVal) {
+            showIdx = 2
+        }
+        this.setState({
+            curSelectTabIdx: showIdx,
+        })
+    }
+    // 处理点击tab按钮事件
+    handleTabClick(idx: number) {
+        const stVal: number =
+            (this.refs[`title_${idx}`] as HTMLElement).offsetTop -
+            this.atchleticBox.offsetTop -
+            this.dumpRefBox.offsetHeight
+        this.atchleticBox.scrollTop = stVal
+        this.setState({
+            curSelectTabIdx: idx,
+        })
+    }
+    // 列表内数据
+    listInlineDomFunc(itm: any, idx: number) {
+        const { countCompany } = this.state
+        return (
+            <div key={idx}>
+                {itm.title ? <div className={AthleticPerformanceStyle['title']}>{itm.title}</div> : null}
+                {itm.warning ? <div className={AthleticPerformanceStyle['sub-title']}>{itm.warning}</div> : null}
+                <div className={AthleticPerformanceStyle['content']}>
+                    <div className={AthleticPerformanceStyle['data-item']}>
+                        <div className={AthleticPerformanceStyle['item-top-box']}>
+                            <div className={AthleticPerformanceStyle['itb-title']}>{itm.content}</div>
+                            <div className={AthleticPerformanceStyle['itb-sub-title']}>
+                                {itm.zl ? `${itm.zl}kg ` : ''}
+                                {`${itm.count.number}${countCompany[itm.count.type]}`}
+                            </div>
+                            <div className={AthleticPerformanceStyle['itb-inline-box']}>
+                                <div className={AthleticPerformanceStyle['itb-data-box']}>
+                                    <div className={AthleticPerformanceStyle['itbd-line']}>
+                                        <div
+                                            className={`${AthleticPerformanceStyle['il-item']} ${
+                                                itm.level === '很差' ? AthleticPerformanceStyle['active'] : ''
+                                            }`}
+                                        >
+                                            <div className={AthleticPerformanceStyle['ii-line']}>
+                                                <div className={AthleticPerformanceStyle['ii-cur-val']}></div>
+                                            </div>
+                                            <div className={AthleticPerformanceStyle['ii-txt']}>很差</div>
+                                        </div>
+                                        <div
+                                            className={`${AthleticPerformanceStyle['il-item']} ${
+                                                itm.level === '较差' ? AthleticPerformanceStyle['active'] : ''
+                                            }`}
+                                        >
+                                            <div className={AthleticPerformanceStyle['ii-line']}>
+                                                <div className={AthleticPerformanceStyle['ii-cur-val']}></div>
+                                            </div>
+                                            <div className={AthleticPerformanceStyle['ii-txt']}>较差</div>
+                                        </div>
+                                        <div
+                                            className={`${AthleticPerformanceStyle['il-item']} ${
+                                                itm.level === '合格' ? AthleticPerformanceStyle['active'] : ''
+                                            }`}
+                                        >
+                                            <div className={AthleticPerformanceStyle['ii-line']}></div>
+                                            <div className={AthleticPerformanceStyle['ii-txt']}>合格</div>
+                                        </div>
+                                        <div
+                                            className={`${AthleticPerformanceStyle['il-item']} ${
+                                                itm.level === '较好' ? AthleticPerformanceStyle['active'] : ''
+                                            }`}
+                                        >
+                                            <div className={AthleticPerformanceStyle['ii-line']}>
+                                                <div className={AthleticPerformanceStyle['ii-cur-val']}></div>
+                                            </div>
+                                            <div className={AthleticPerformanceStyle['ii-txt']}>较好</div>
+                                        </div>
+                                        <div
+                                            className={`${AthleticPerformanceStyle['il-item']} ${
+                                                itm.level === '优秀' ? AthleticPerformanceStyle['active'] : ''
+                                            }`}
+                                        >
+                                            <div className={AthleticPerformanceStyle['ii-line']}>
+                                                <div className={AthleticPerformanceStyle['ii-cur-val']}></div>
+                                            </div>
+                                            <div className={AthleticPerformanceStyle['ii-txt']}>优秀</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className={AthleticPerformanceStyle['item-bottom-box']}>{itm.desc}</div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+    // 列表
+    listDomFunc(item: any, idx: number) {
+        return (
+            <div className={AthleticPerformanceStyle['c-inline-box']} key={idx}>
+                <div className={AthleticPerformanceStyle['big-title']} ref={`title_${idx}`}>
+                    {item.name}类
+                </div>
+                {item.list.map((itm: any, idx: number) => {
+                    return this.listInlineDomFunc(itm, idx)
+                })}
+            </div>
+        )
+    }
     render() {
-        const { chartData, fiancoData, circleData, imgHandleing, shareBtnTxt, score, creatTime } = this.state
+        const {
+            chartData,
+            fiancoData,
+            circleData,
+            score,
+            creatTime,
+            listData,
+            typesData,
+            dumpFixed,
+            curSelectTabIdx,
+        } = this.state
         const { isShare } = this.props.reportStore
         return (
-            <div className={AthleticPerformanceStyle['wrapper']}>
-                {/* 图表 */}
-                {chartData.length > 0 && (
-                    <PosCharts
-                        chartId='athletic-performance-chart'
-                        chartData={chartData}
-                        clickPointCallback={this.handleClickPointFunc.bind(this)}
-                    />
-                )}
-                {/* 对比 */}
-                <FiancoContrast fiancoArr={fiancoData} />
-                {/* 圆环图表 */}
-                {circleData.length > 0 && (
-                    <PosCircleCharts
-                        chartId='athletic-performance-circle-chart'
-                        chartData={circleData}
-                        score={score}
-                        creatTime={creatTime}
-                    />
-                )}
-                {/* 数据 */}
-                <div className={AthleticPerformanceStyle['data-box']}>
-                    <div className={AthleticPerformanceStyle['item']}>
-                        <div className={AthleticPerformanceStyle['title']}>力量类</div>
-                        <div className={AthleticPerformanceStyle['dbi-box']}>
-                            <div className={AthleticPerformanceStyle['dbib-item']}>
-                                <div className={AthleticPerformanceStyle['dbib-txt']}>最大肌耐力</div>
-                                <div className={AthleticPerformanceStyle['dbib-progress-bar']}>
-                                    <div
-                                        className={AthleticPerformanceStyle['dpb-num']}
-                                        style={{ width: '50%', backgroundColor: '#52DEA4' }}
-                                    ></div>
-                                </div>
-                            </div>
-                            <div className={AthleticPerformanceStyle['dbib-item']}>
-                                <div className={AthleticPerformanceStyle['dbib-txt']}>最大肌力</div>
-                                <div className={AthleticPerformanceStyle['dbib-progress-bar']}>
-                                    <div
-                                        className={AthleticPerformanceStyle['dpb-num']}
-                                        style={{ width: '50%', backgroundColor: '#32A7E7' }}
-                                    ></div>
-                                </div>
-                            </div>
-                            <div className={AthleticPerformanceStyle['dbib-item']}>
-                                <div className={AthleticPerformanceStyle['dbib-txt']}>爆发力</div>
-                                <div className={AthleticPerformanceStyle['dbib-progress-bar']}>
-                                    <div
-                                        className={AthleticPerformanceStyle['dpb-num']}
-                                        style={{ width: '50%', backgroundColor: '#5260DE' }}
-                                    ></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className={AthleticPerformanceStyle['item']}>
-                        <div className={AthleticPerformanceStyle['title']}>敏捷类</div>
-                        <div className={AthleticPerformanceStyle['dbi-box']}>
-                            <div className={AthleticPerformanceStyle['dbib-item']}>
-                                <div className={AthleticPerformanceStyle['dbib-txt']}>协调能力</div>
-                                <div className={AthleticPerformanceStyle['dbib-progress-bar']}>
-                                    <div className={AthleticPerformanceStyle['dpb-num']} style={{ width: '50%' }}></div>
-                                </div>
-                            </div>
-                            <div className={AthleticPerformanceStyle['dbib-item']}>
-                                <div className={AthleticPerformanceStyle['dbib-txt']}>平衡能力</div>
-                                <div className={AthleticPerformanceStyle['dbib-progress-bar']}>
-                                    <div className={AthleticPerformanceStyle['dpb-num']} style={{ width: '50%' }}></div>
-                                </div>
-                            </div>
-                            <div className={AthleticPerformanceStyle['dbib-item']}>
-                                <div className={AthleticPerformanceStyle['dbib-txt']}>反应能力</div>
-                                <div className={AthleticPerformanceStyle['dbib-progress-bar']}>
-                                    <div className={AthleticPerformanceStyle['dpb-num']} style={{ width: '50%' }}></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className={AthleticPerformanceStyle['item']}>
-                        <div className={AthleticPerformanceStyle['title']}>柔韧类</div>
-                        <div className={AthleticPerformanceStyle['dbi-box']}>
-                            <div className={AthleticPerformanceStyle['dbib-item']}>
-                                <div className={AthleticPerformanceStyle['dbib-txt']}>关节灵活度</div>
-                                <div className={AthleticPerformanceStyle['dbib-progress-bar']}>
-                                    <div className={AthleticPerformanceStyle['dpb-num']} style={{ width: '50%' }}></div>
-                                </div>
-                            </div>
-                            <div className={AthleticPerformanceStyle['dbib-item']}>
-                                <div className={AthleticPerformanceStyle['dbib-txt']}>柔韧性</div>
-                                <div className={AthleticPerformanceStyle['dbib-progress-bar']}>
-                                    <div className={AthleticPerformanceStyle['dpb-num']} style={{ width: '50%' }}></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {/* 跳转按钮 */}
-                <div className={AthleticPerformanceStyle['dump-box']}>
-                    <div
-                        className={`${AthleticPerformanceStyle['dump-inline-box']} ${AthleticPerformanceStyle['fixed-box']}`}
-                    >
-                        <div
-                            className={`${AthleticPerformanceStyle['dib-item']} ${AthleticPerformanceStyle['active']}`}
-                        >
-                            <div className={AthleticPerformanceStyle['di-title']}>力量类</div>
-                            <div className={AthleticPerformanceStyle['di-count']}>(8项)</div>
-                        </div>
-                        <div className={AthleticPerformanceStyle['dib-item']}>
-                            <div className={AthleticPerformanceStyle['di-title']}>敏捷类</div>
-                            <div className={AthleticPerformanceStyle['di-count']}>(8项)</div>
-                        </div>
-                        <div className={AthleticPerformanceStyle['dib-item']}>
-                            <div className={AthleticPerformanceStyle['di-title']}>柔韧类</div>
-                            <div className={AthleticPerformanceStyle['di-count']}>(8项)</div>
-                        </div>
-                    </div>
-                </div>
-                {/* 体适能数据 */}
-                <div className={AthleticPerformanceStyle['content-box']}>
-                    <div className={AthleticPerformanceStyle['title']}>最大肌耐力</div>
-                    <div className={AthleticPerformanceStyle['sub-title']}>肌耐力是指人体对抗疲劳的能力</div>
-                    <div className={AthleticPerformanceStyle['content']}>
-                        <div className={AthleticPerformanceStyle['data-item']}>
-                            <div className={AthleticPerformanceStyle['item-top-box']}>
-                                <div className={AthleticPerformanceStyle['itb-title']}>腹部</div>
-                                <div className={AthleticPerformanceStyle['itb-sub-title']}>腹部 20次</div>
-                                <div className={AthleticPerformanceStyle['itb-inline-box']}>
-                                    <div className={AthleticPerformanceStyle['itb-data-box']}>
-                                        <div className={AthleticPerformanceStyle['itbd-line']}>
-                                            <div className={AthleticPerformanceStyle['il-item']}>
-                                                <div className={AthleticPerformanceStyle['ii-line']}>
-                                                    <div className={AthleticPerformanceStyle['ii-cur-val']}></div>
+            <div
+                className={AthleticPerformanceStyle['wrapper']}
+                ref={c => (this.atchleticBox = c)}
+                onScrollCapture={this.pageScrollFunc.bind(this)}
+            >
+                <div className={AthleticPerformanceStyle['inline-wrapper']}>
+                    {/* 图表 */}
+                    {chartData.length > 0 && (
+                        <PosCharts
+                            chartId='athletic-performance-chart'
+                            chartData={chartData}
+                            clickPointCallback={this.handleClickPointFunc.bind(this)}
+                        />
+                    )}
+                    {/* 对比 */}
+                    <FiancoContrast fiancoArr={fiancoData} />
+                    {/* 圆环图表 */}
+                    {circleData.length > 0 && (
+                        <PosCircleCharts
+                            chartId='athletic-performance-circle-chart'
+                            chartData={circleData}
+                            score={score}
+                            creatTime={creatTime}
+                        />
+                    )}
+                    {/* 数据 */}
+                    <div className={AthleticPerformanceStyle['data-box']}>
+                        {typesData.map((item: any, idx: number) => {
+                            return (
+                                <div className={AthleticPerformanceStyle['item']} key={idx}>
+                                    <div className={AthleticPerformanceStyle['title']} style={{ color: item.color }}>
+                                        {item.name}类
+                                    </div>
+                                    <div className={AthleticPerformanceStyle['dbi-box']}>
+                                        {item.list.map((itm: any, index: number) => {
+                                            return (
+                                                <div
+                                                    className={AthleticPerformanceStyle['dbib-item']}
+                                                    key={`${idx}${index}`}
+                                                >
+                                                    <div className={AthleticPerformanceStyle['dbib-txt']}>
+                                                        {itm.name}
+                                                    </div>
+                                                    <div className={AthleticPerformanceStyle['dbib-progress-bar']}>
+                                                        <div
+                                                            className={AthleticPerformanceStyle['dpb-num']}
+                                                            style={{
+                                                                width: `${
+                                                                    (itm.val / 100) * 100 > 100
+                                                                        ? 100
+                                                                        : (itm.val / 100) * 100 < 0
+                                                                        ? 0
+                                                                        : (itm.val / 100) * 100
+                                                                }%`,
+                                                                backgroundColor: item.color,
+                                                            }}
+                                                        ></div>
+                                                    </div>
                                                 </div>
-                                                <div className={AthleticPerformanceStyle['ii-txt']}>很差</div>
-                                            </div>
-                                            <div className={AthleticPerformanceStyle['il-item']}>
-                                                <div className={AthleticPerformanceStyle['ii-line']}>
-                                                    <div className={AthleticPerformanceStyle['ii-cur-val']}></div>
-                                                </div>
-                                                <div className={AthleticPerformanceStyle['ii-txt']}>较差</div>
-                                            </div>
-                                            <div
-                                                className={`${AthleticPerformanceStyle['il-item']} ${AthleticPerformanceStyle['il-selected-zdu']}`}
-                                            >
-                                                <div className={AthleticPerformanceStyle['ii-line']}></div>
-                                                <div className={AthleticPerformanceStyle['ii-txt']}>合格</div>
-                                            </div>
-                                            <div className={AthleticPerformanceStyle['il-item']}>
-                                                <div className={AthleticPerformanceStyle['ii-line']}>
-                                                    <div className={AthleticPerformanceStyle['ii-cur-val']}></div>
-                                                </div>
-                                                <div className={AthleticPerformanceStyle['ii-txt']}>较好</div>
-                                            </div>
-                                            <div className={AthleticPerformanceStyle['il-item']}>
-                                                <div className={AthleticPerformanceStyle['ii-line']}>
-                                                    <div className={AthleticPerformanceStyle['ii-cur-val']}></div>
-                                                </div>
-                                                <div className={AthleticPerformanceStyle['ii-txt']}>优秀</div>
-                                            </div>
-                                        </div>
+                                            )
+                                        })}
                                     </div>
                                 </div>
-                            </div>
-                            <div className={AthleticPerformanceStyle['item-bottom-box']}>
-                                但是看了放假啦绝对是风口浪尖啊死了都快放假啊了
-                            </div>
-                        </div>
-                        <div className={AthleticPerformanceStyle['data-item']}>
-                            <div className={AthleticPerformanceStyle['item-top-box']}>
-                                <div className={AthleticPerformanceStyle['itb-title']}>腹部</div>
-                                <div className={AthleticPerformanceStyle['itb-sub-title']}>腹部 20次</div>
-                                <div className={AthleticPerformanceStyle['itb-inline-box']}>
-                                    <div className={AthleticPerformanceStyle['itb-data-box']}>
-                                        <div className={AthleticPerformanceStyle['itbd-line']}>
-                                            <div className={AthleticPerformanceStyle['il-item']}>
-                                                <div className={AthleticPerformanceStyle['ii-line']}>
-                                                    <div className={AthleticPerformanceStyle['ii-cur-val']}></div>
-                                                </div>
-                                                <div className={AthleticPerformanceStyle['ii-txt']}>很差</div>
-                                            </div>
-                                            <div className={AthleticPerformanceStyle['il-item']}>
-                                                <div className={AthleticPerformanceStyle['ii-line']}>
-                                                    <div className={AthleticPerformanceStyle['ii-cur-val']}></div>
-                                                </div>
-                                                <div className={AthleticPerformanceStyle['ii-txt']}>较差</div>
-                                            </div>
-                                            <div
-                                                className={`${AthleticPerformanceStyle['il-item']} ${AthleticPerformanceStyle['il-selected-zdu']}`}
-                                            >
-                                                <div className={AthleticPerformanceStyle['ii-line']}></div>
-                                                <div className={AthleticPerformanceStyle['ii-txt']}>合格</div>
-                                            </div>
-                                            <div className={AthleticPerformanceStyle['il-item']}>
-                                                <div className={AthleticPerformanceStyle['ii-line']}>
-                                                    <div className={AthleticPerformanceStyle['ii-cur-val']}></div>
-                                                </div>
-                                                <div className={AthleticPerformanceStyle['ii-txt']}>较好</div>
-                                            </div>
-                                            <div className={AthleticPerformanceStyle['il-item']}>
-                                                <div className={AthleticPerformanceStyle['ii-line']}>
-                                                    <div className={AthleticPerformanceStyle['ii-cur-val']}></div>
-                                                </div>
-                                                <div className={AthleticPerformanceStyle['ii-txt']}>优秀</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className={AthleticPerformanceStyle['item-bottom-box']}>
-                                但是看了放假啦绝对是风口浪尖啊死了都快放假啊了
-                            </div>
-                        </div>
+                            )
+                        })}
                     </div>
-                </div>
-                {/* 底部按钮 */}
-                {isShare === 1 ? null : (
-                    <div className={AthleticPerformanceStyle['bottom-btn-box']}>
-                        <div className={AthleticPerformanceStyle['qtc-btn']} onClick={this.gotoTcFun}>
-                            去体测
-                        </div>
+                    {/* 跳转按钮 */}
+                    <div className={AthleticPerformanceStyle['dump-box']} ref={c => (this.dumpRefBox = c)}>
                         <div
-                            className={`${AthleticPerformanceStyle['share-report-btn']} ${
-                                imgHandleing ? AthleticPerformanceStyle['dis'] : ''
+                            className={`${AthleticPerformanceStyle['dump-inline-box']} ${
+                                dumpFixed ? AthleticPerformanceStyle['fixed-box'] : ''
                             }`}
-                            onClick={this.toImg}
                         >
-                            {shareBtnTxt}
+                            {listData.map((item: any, index: number) => {
+                                return (
+                                    <div
+                                        key={index}
+                                        className={`${AthleticPerformanceStyle['dib-item']} ${
+                                            curSelectTabIdx === index ? AthleticPerformanceStyle['active'] : ''
+                                        }`}
+                                        onClick={this.handleTabClick.bind(this, index)}
+                                        style={{
+                                            background:
+                                                curSelectTabIdx === 0 && curSelectTabIdx === index
+                                                    ? listData[0].color
+                                                    : curSelectTabIdx === 1 && curSelectTabIdx === index
+                                                    ? listData[1].color
+                                                    : curSelectTabIdx === 2 && curSelectTabIdx === index
+                                                    ? listData[2].color
+                                                    : '',
+                                        }}
+                                    >
+                                        <div className={AthleticPerformanceStyle['di-title']}>{item.name}类</div>
+                                        <div className={AthleticPerformanceStyle['di-count']}>
+                                            ({item.list.length}项)
+                                        </div>
+                                    </div>
+                                )
+                            })}
                         </div>
-                    </div>
-                )}
-                {/* 分享图片 */}
-                <div className={AthleticPerformanceStyle['share-box']} ref='fitShareBox'>
-                    {/* 分享标题 */}
-                    <div className={AthleticPerformanceStyle['share-title']}>人体成分报告</div>
-                    {/* 用户信息 */}
-                    <div className={AthleticPerformanceStyle['user-info-box']}>
-                        <img className={AthleticPerformanceStyle['uib-avatar']} src={DefUserAvatar} alt='头像' />
-                        <div className={AthleticPerformanceStyle['uib-name']}>哈哈</div>
-                        <div className={AthleticPerformanceStyle['uib-time']}>测试时：2020-04-20 14:54:32</div>
-                    </div>
-                    {/* 分数 */}
-                    <div className={AthleticPerformanceStyle['score-box']}>
-                        <div className={AthleticPerformanceStyle['score']}>
-                            <span className={AthleticPerformanceStyle['num']}>80</span>
-                            <span className={AthleticPerformanceStyle['txt']}>分</span>
-                        </div>
-                        <div className={AthleticPerformanceStyle['beat']}>击败了90%的地球人</div>
-                    </div>
-                    {/* 图片 */}
-                    <div className={AthleticPerformanceStyle['imgs-box']}>
-                        <PhotoProvider photoClosable={true}>
-                            <PhotoConsumer
-                                src={
-                                    'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3491454693,907424556&fm=11&gp=0.jpg'
-                                }
-                                intro='正面照'
-                            >
-                                <div className={AthleticPerformanceStyle['img-item']}>
-                                    <img
-                                        src='https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3491454693,907424556&fm=11&gp=0.jpg'
-                                        alt=''
-                                    />
-                                </div>
-                            </PhotoConsumer>
-                            <PhotoConsumer
-                                src={
-                                    'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2974784464,2072557815&fm=15&gp=0.jpg'
-                                }
-                                intro='侧面照'
-                            >
-                                <div className={AthleticPerformanceStyle['img-item']}>
-                                    <img
-                                        src='https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2974784464,2072557815&fm=15&gp=0.jpg'
-                                        alt=''
-                                    />
-                                </div>
-                            </PhotoConsumer>
-                        </PhotoProvider>
                     </div>
                     {/* 体适能数据 */}
                     <div className={AthleticPerformanceStyle['content-box']}>
-                        <div className={AthleticPerformanceStyle['title']}>重度(3项)</div>
-                        <div className={AthleticPerformanceStyle['content']}>
-                            <div className={AthleticPerformanceStyle['data-item']}>
-                                <div className={AthleticPerformanceStyle['item-top-box']}>
-                                    <div className={AthleticPerformanceStyle['itb-title']}>高低肩</div>
-                                    <div className={AthleticPerformanceStyle['itb-inline-box']}>
-                                        <img className={AthleticPerformanceStyle['comp-img']} src='' alt='' />
-                                        <img className={AthleticPerformanceStyle['comp-img']} src='' alt='' />
-                                        <div className={AthleticPerformanceStyle['itb-data-box']}>
-                                            <div className={AthleticPerformanceStyle['itbd-line']}>
-                                                <div className={AthleticPerformanceStyle['il-item']}>
-                                                    <div className={AthleticPerformanceStyle['ii-line']}>
-                                                        <div className={AthleticPerformanceStyle['ii-cur-val']}></div>
-                                                    </div>
-                                                    <div className={AthleticPerformanceStyle['ii-txt']}>轻度</div>
-                                                </div>
-                                                <div className={AthleticPerformanceStyle['il-item']}>
-                                                    <div className={AthleticPerformanceStyle['ii-line']}>
-                                                        <div className={AthleticPerformanceStyle['ii-cur-val']}></div>
-                                                    </div>
-                                                    <div className={AthleticPerformanceStyle['ii-txt']}>轻微</div>
-                                                </div>
-                                                <div
-                                                    className={`${AthleticPerformanceStyle['il-item']} ${AthleticPerformanceStyle['il-selected-zdu']}`}
-                                                >
-                                                    <div className={AthleticPerformanceStyle['ii-line']}>
-                                                        <div className={AthleticPerformanceStyle['ii-cur-val']}>
-                                                            15°
-                                                        </div>
-                                                    </div>
-                                                    <div className={AthleticPerformanceStyle['ii-txt']}>中度</div>
-                                                </div>
-                                                <div className={AthleticPerformanceStyle['il-item']}>
-                                                    <div className={AthleticPerformanceStyle['ii-line']}>
-                                                        <div className={AthleticPerformanceStyle['ii-cur-val']}></div>
-                                                    </div>
-                                                    <div className={AthleticPerformanceStyle['ii-txt']}>重度</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className={AthleticPerformanceStyle['item-bottom-box']}>
-                                    但是看了放假啦绝对是风口浪尖啊死了都快放假啊了
-                                </div>
-                            </div>
-                            <div className={AthleticPerformanceStyle['data-item']}>
-                                <div className={AthleticPerformanceStyle['item-top-box']}>
-                                    <div className={AthleticPerformanceStyle['itb-title']}>高低肩</div>
-                                    <div className={AthleticPerformanceStyle['itb-inline-box']}>
-                                        <img className={AthleticPerformanceStyle['comp-img']} src='' alt='' />
-                                        <img className={AthleticPerformanceStyle['comp-img']} src='' alt='' />
-                                        <div className={AthleticPerformanceStyle['itb-data-box']}>
-                                            <div className={AthleticPerformanceStyle['itbd-line']}>
-                                                <div className={AthleticPerformanceStyle['il-item']}>
-                                                    <div className={AthleticPerformanceStyle['ii-line']}>
-                                                        <div className={AthleticPerformanceStyle['ii-cur-val']}></div>
-                                                    </div>
-                                                    <div className={AthleticPerformanceStyle['ii-txt']}>轻度</div>
-                                                </div>
-                                                <div className={AthleticPerformanceStyle['il-item']}>
-                                                    <div className={AthleticPerformanceStyle['ii-line']}>
-                                                        <div className={AthleticPerformanceStyle['ii-cur-val']}></div>
-                                                    </div>
-                                                    <div className={AthleticPerformanceStyle['ii-txt']}>轻微</div>
-                                                </div>
-                                                <div
-                                                    className={`${AthleticPerformanceStyle['il-item']} ${AthleticPerformanceStyle['il-selected-zdu']}`}
-                                                >
-                                                    <div className={AthleticPerformanceStyle['ii-line']}>
-                                                        <div className={AthleticPerformanceStyle['ii-cur-val']}>
-                                                            15°
-                                                        </div>
-                                                    </div>
-                                                    <div className={AthleticPerformanceStyle['ii-txt']}>中度</div>
-                                                </div>
-                                                <div className={AthleticPerformanceStyle['il-item']}>
-                                                    <div className={AthleticPerformanceStyle['ii-line']}>
-                                                        <div className={AthleticPerformanceStyle['ii-cur-val']}></div>
-                                                    </div>
-                                                    <div className={AthleticPerformanceStyle['ii-txt']}>重度</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className={AthleticPerformanceStyle['item-bottom-box']}>
-                                    但是看了放假啦绝对是风口浪尖啊死了都快放假啊了
-                                </div>
-                            </div>
-                        </div>
+                        {listData.map((item: any, index: number) => {
+                            return this.listDomFunc(item, index)
+                        })}
                     </div>
-                    {/* 教练card */}
-                    <div className={AthleticPerformanceStyle['coach-warp-box']}>
-                        <div className={AthleticPerformanceStyle['coach-img-box']}>
-                            <img src='coachInfo.headPath' alt='头像' />
-                        </div>
-                        <div className={AthleticPerformanceStyle['coach-info-box']}>
-                            <div className={AthleticPerformanceStyle['coach-name-tag']}>
-                                <div className={AthleticPerformanceStyle['coach-name']}>教练名称</div>
-                                <div className={AthleticPerformanceStyle['coach-tag']}>私人教练</div>
+                    {/* 底部按钮 */}
+                    {isShare === 1 ? null : (
+                        <div className={AthleticPerformanceStyle['bottom-btn-box']}>
+                            <div className={AthleticPerformanceStyle['qtc-btn']} onClick={this.gotoTcFun}>
+                                去体测
                             </div>
-                            <div className={AthleticPerformanceStyle['coach-service']}>团课 已服务10人</div>
                         </div>
-                        <div className={AthleticPerformanceStyle['coach-qrcode']}>
-                            <div className={AthleticPerformanceStyle['coach-qrcode-img']}>
-                                <QRCode value='https://img-dev-club.ejoyst.com/promotion' />
-                            </div>
-                            <div className='coach-qrcode-text'>长按识别我的名片</div>
-                        </div>
-                    </div>
+                    )}
                 </div>
             </div>
         )
