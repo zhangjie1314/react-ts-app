@@ -105,7 +105,8 @@ class StaticEvaluation extends Component<any, any> {
         const oldChartData = JSON.stringify(prevState.chartData)
         const newChartData = JSON.stringify(this.state.chartData)
         if (oldChartData !== newChartData && newChartData !== '[]') {
-            this.handleClickPointFunc(this.state.chartData[0])
+            const ln = this.state.chartData.length
+            ln > 0 && this.handleClickPointFunc(this.state.chartData[ln - 1])
         }
     }
     // 点击图表点

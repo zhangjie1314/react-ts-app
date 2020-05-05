@@ -45,11 +45,14 @@ export default class FitnessAssessment extends Component<any, any> {
         const oldChartData = JSON.stringify(prevState.chartData)
         const newChartData = JSON.stringify(this.state.chartData)
         if (oldChartData !== newChartData && newChartData !== '[]') {
-            this.handleClickPointFunc(this.state.chartData[this.state.chartData.length - 1])
+            const ln = this.state.chartData.length
+            console.log(ln)
+            ln > 0 && this.handleClickPointFunc(this.state.chartData[ln - 1])
         }
     }
     // 点击图表点
     handleClickPointFunc(item: ChartItemRules) {
+        console.log(item)
         getfitnessAssessmentResult({
             wdId: item.id,
         }).then((res: any) => {

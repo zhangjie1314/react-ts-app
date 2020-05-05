@@ -87,7 +87,7 @@ export default class BodyComposition extends Component<any, any> {
         const newChartData = JSON.stringify(this.state.chartData)
         if (oldChartData !== newChartData && newChartData !== '[]') {
             let lg = this.state.chartData.length
-            this.handleClickPointFunc(this.state.chartData[lg - 1])
+            lg > 0 && this.handleClickPointFunc(this.state.chartData[lg - 1])
         }
     }
     // 点击图表点
