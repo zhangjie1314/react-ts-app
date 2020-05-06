@@ -1,3 +1,4 @@
+// 静态评估详情
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import StaticDetailPageStyle from './index.module.scss'

@@ -1,0 +1,22 @@
+@import '../../../../assets/fonts/index.css';
+
+.wrapper {
+    .headText {
+        display: flex;
+        align-items: center;
+        background: #393c3d;
+        border-radius: 16px;
+        padding: 28px 0;
+        margin-bottom: 20px;
+        .item {
+            flex: 1 0 auto;
+            text-align: center;
+            color: #fff;
+            .num {
+                font-family: DINCond-Black;
+                font-size: 56px;
+                margin-bottom: 10px;
+            }
+        }
+    }
+}

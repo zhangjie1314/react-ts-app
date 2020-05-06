@@ -1,16 +1,22 @@
 // 体测对比
 import React from 'react'
+import { withRouter } from 'react-router-dom'
+import { observer, inject } from 'mobx-react'
 import FCStyle from './index.module.scss'
+import { Toast } from 'antd-mobile'
 // import PropTypes from 'prop-types'
-
+import { delFiancoContrast } from '@apis/report/bapp'
 import { FiancoRules } from '@ctypes/components/fianco_contrast'
 
-export default class FiancoContrast extends React.Component<any, any> {
+@inject('reportStore')
+@observer
+class FiancoContrast extends React.Component<any, any> {
     constructor(props: any) {
         super(props)
         this.state = {
             isShow: false,
             fiancoArr: [],
+            selected: [],
         }
     }
     static defaultProps = {
@@ -30,35 +36,63 @@ export default class FiancoContrast extends React.Component<any, any> {
     }
     // 选中
     selectFn(e: any, idx: number) {
-        let fiancoArr: FiancoRules[] = this.state.fiancoArr
-        let arr: any[] = []
-        fiancoArr.forEach((el, idx) => {
-            if (el.selected === 1) arr.push(String(idx))
-        })
-        if (arr.length > 1) {
-            fiancoArr[Number(arr[0])].selected = 0
+        let { selected } = this.state
+        if (selected.indexOf(idx) === -1) {
+            selected.push(idx)
+            if (selected.length > 2) selected.shift()
+        } else {
+            selected.splice(selected.indexOf(idx), 1)
         }
-        fiancoArr[idx].selected = fiancoArr[idx].selected === 1 ? 0 : 1
-        this.setState({
-            fiancoArr,
-        })
+        this.setState({ selected })
     }
     // 删除
-    removeFn = () => {}
+    removeFn() {
+        const { fiancoArr, selected } = this.state
+        let arr: any[] = []
+        selected.forEach((el: any, idx: number) => {
+            arr.push(fiancoArr[el])
+        })
+        if (arr.length === 1) {
+            delFiancoContrast({
+                types: arr[0].type,
+                id: arr[0].id,
+            }).then((res) => {
+                if (res.code !== 0) return
+                // 处理本地数据
+                Toast.info(`删除成功！`, 2)
+                window.location.reload()
+            })
+        } else {
+            Toast.info(`请勾选一项数据进行操作`, 1.5)
+        }
+    }
     // 开始对比
-    beginContrast = () => {
-        console.log(this.props.fiancoArr)
+    beginContrast() {
+        const { fiancoArr, selected } = this.state
+        let arr: any[] = []
+        selected.forEach((el: any, idx: number) => {
+            arr.push(fiancoArr[el])
+        })
+        if (arr.length === 2) {
+            this.props.history.push({
+                pathname: `/contrast/${this.props.reportStore.tabsId}`,
+                state: { arr },
+            })
+        } else {
+            Toast.info(`请勾选两项数据进行操作`, 1.5)
+        }
     }
     // 页面渲染之前 将父的props传个子的state
-    componentWillReceiveProps = (nextProps: any) => {
-        this.setState({
+    static getDerivedStateFromProps(nextProps: any, prevState: any) {
+        return {
             fiancoArr: nextProps.fiancoArr,
-        })
+        }
     }
 
     render() {
         let lg: number = this.state.fiancoArr.length
         let arr: FiancoRules[] = this.state.fiancoArr
+        let { selected } = this.state
         let times = arr.length > 0 ? arr[lg - 1].times : ''
         return (
             <div className={FCStyle.App}>
@@ -91,10 +125,10 @@ export default class FiancoContrast extends React.Component<any, any> {
                                         体侧：<span className={FCStyle.fs40}>{itm.score}</span>分
                                     </div>
                                     <input
-                                        onChange={e => this.selectFn(e, idx)}
+                                        onChange={(e) => this.selectFn(e, idx)}
                                         className={FCStyle.checkboxs}
                                         type='checkbox'
-                                        checked={itm.selected === 0 ? false : true}
+                                        checked={selected.indexOf(idx) !== -1 ? true : false}
                                     />
                                 </div>
                             )
@@ -102,10 +136,10 @@ export default class FiancoContrast extends React.Component<any, any> {
                         <div className={FCStyle.empBlock}></div>
                     </div>
                     <div className={FCStyle.footer}>
-                        <div className={FCStyle.remove} onClick={this.removeFn}>
+                        <div className={FCStyle.remove} onClick={this.removeFn.bind(this)}>
                             删除
                         </div>
-                        <div className={FCStyle.confirm} onClick={this.beginContrast}>
+                        <div className={FCStyle.confirm} onClick={this.beginContrast.bind(this)}>
                             开始对比
                         </div>
                     </div>
@@ -114,3 +148,4 @@ export default class FiancoContrast extends React.Component<any, any> {
         )
     }
 }
+export default withRouter(FiancoContrast)

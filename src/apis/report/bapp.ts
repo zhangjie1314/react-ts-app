@@ -58,3 +58,8 @@ export function getActionPerformanceResult(params = {}) {
     const url = `${process.env.REACT_APP_BWEBAPP_API_URL}/coach/side/fuzzy/getYDValue`
     return fetchGet(url, params, 'bapp')
 }
+// 删除体侧对比
+export function delFiancoContrast(params = {}) {
+    const url = `${process.env.REACT_APP_BWEBAPP_API_URL}/coach/side/fuzzy/delSide`
+    return fetchGet(url, params, 'bapp')
+}
