@@ -35,7 +35,7 @@ export const getUserInfos = (params: getUserInfosType) => {
     return new Promise((res, rej) => {
         if (isshare === 1) {
             // 分享
-            getUserInfoByShare(memberId, isFromStudio).then(resl => {
+            getUserInfoByShare(memberId, isFromStudio).then((resl) => {
                 // 处理用户数据
                 resl.data.headPath = handleHandImg(resl.data.headPath, isFromStudio)
                 res(resl)
@@ -44,7 +44,9 @@ export const getUserInfos = (params: getUserInfosType) => {
             // 非分享
             getUserInfo(memberId, isFromStudio).then((resl: any) => {
                 // 处理用户数据
-                resl.data.headPath = handleHandImg(resl.data.headPath, isFromStudio)
+                if (resl.data.headPath) {
+                    resl.data.headPath = handleHandImg(resl.data.headPath, isFromStudio)
+                }
                 res(resl)
             })
         }
