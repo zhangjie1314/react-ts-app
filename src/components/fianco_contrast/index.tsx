@@ -56,7 +56,7 @@ class FiancoContrast extends React.Component<any, any> {
             delFiancoContrast({
                 types: arr[0].type,
                 id: arr[0].id,
-            }).then((res) => {
+            }).then(res => {
                 if (res.code !== 0) return
                 // 处理本地数据
                 Toast.info(`删除成功！`, 2)
@@ -75,7 +75,8 @@ class FiancoContrast extends React.Component<any, any> {
         })
         if (arr.length === 2) {
             this.props.history.push({
-                pathname: `/contrast/${this.props.reportStore.tabsId}${this.props.location.search}&id1=${arr[0].id}&id2=${arr[1].id}`,
+                pathname: `/contrast/${this.props.reportStore.tabsId}`,
+                search: `${this.props.location.search}&id1=${arr[0].id}&id2=${arr[1].id}`,
             })
         } else {
             Toast.info(`请勾选两项数据进行操作`, 1.5)
@@ -124,7 +125,7 @@ class FiancoContrast extends React.Component<any, any> {
                                         体侧：<span className={FCStyle.fs40}>{itm.score}</span>分
                                     </div>
                                     <input
-                                        onChange={(e) => this.selectFn(e, idx)}
+                                        onChange={e => this.selectFn(e, idx)}
                                         className={FCStyle.checkboxs}
                                         type='checkbox'
                                         checked={selected.indexOf(idx) !== -1 ? true : false}

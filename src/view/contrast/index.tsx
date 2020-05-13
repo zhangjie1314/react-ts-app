@@ -22,16 +22,6 @@ export default class Contrast extends React.Component<any, any> {
     constructor(props: any) {
         super(props)
         this.state = {
-            tabs: [],
-            tabsId: 0,
-            chartData: [],
-            fiancoData: [],
-            coachInfo: {},
-            circleData: [
-                { name: '平衡', val: 100, index: 0, bgColor: '#242630', color: '#21b8c5' },
-                { name: '敏捷', val: 100, index: 1, bgColor: '#242630', color: '#eab807' },
-                { name: '力量', val: 50, index: 2, bgColor: '#242630', color: '#fe5d47' },
-            ],
             params: {},
             constrastArr: [],
             id1: '',
@@ -70,14 +60,14 @@ export default class Contrast extends React.Component<any, any> {
             case '5':
                 // 人体成分
                 if (id1 && id2) {
-                    this.getHttpReqFn(getBodyCompositionResult, id1, id2)
+                    // this.getHttpReqFn(getBodyCompositionResult, id1, id2)
                 }
                 console.log(1111111111111)
                 return <BodyComposition params={params} />
             default:
                 // 人体成分
                 if (id1 && id2) {
-                    this.getHttpReqFn(getBodyCompositionResult, id1, id2)
+                    // this.getHttpReqFn(getBodyCompositionResult, id1, id2)
                 }
                 return <BodyComposition params={params} />
         }
@@ -98,16 +88,16 @@ export default class Contrast extends React.Component<any, any> {
             details: `快去查看${params.name.slice(0, 1)}${params.grander === 1 ? '先生' : '女士'}的详细报告吧`, // 分享内容
             pic: `${process.env.REACT_APP_FILE_URL}/app/pos/pos_logo.png`, // 分享图片
             url: `${this.getShareContentUrl(params.urlParams)}`, // 分享链接
-        }).then((res) => {
+        }).then(res => {
             alert(JSON.stringify(res))
         })
     }
     componentDidMount() {
         disableBodyScroll(this.refs.reportContentBox) // 禁止body滚动
-        const queryParams = new URLSearchParams(this.props.location.search)
+        console.log(this.props, cbh)
+        const queryParams = new URLSearchParams(this.props.history.location.search)
         const tabsId = this.props.location.pathname.split('contrast/')[1]
         const type = Number(queryParams.get('type'))
-        console.log(this.props.history.location.search)
         const memberId: any = queryParams.get('memberId')
         const isDlCoach = Number(queryParams.get('isDlCoach'))
         const isFromStudio = Number(queryParams.get('fromstudio'))
