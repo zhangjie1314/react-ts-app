@@ -13,7 +13,7 @@ import BodyComposition from './components/body_composition'
 import FitnessAssessment from './components/fitness_assessment'
 import StaticEvaluation from './components/static_evaluation'
 import AthleticPerformance from './components/athletic_performance'
-import { getBodyCompositionResult } from '@apis/report/bapp'
+import { getBodyCompositionResult, getPerfectCircumferenceResult } from '@apis/report/bapp'
 
 const cbh = createBrowserHistory()
 @inject('reportStore')
@@ -26,50 +26,7 @@ export default class Contrast extends React.Component<any, any> {
             constrastArr: [],
             id1: '',
             id2: '',
-        }
-    }
-    // 获取接口
-    async getHttpReqFn(fn: Function, id1: string, id2: string) {
-        try {
-            let h1 = (await fn({ rtcfId: id1 })).data
-            let h2 = (await fn({ rtcfId: id2 })).data
-            this.setState({ params: { h1, h2 } })
-        } catch (err) {
-            console.log(err)
-        }
-    }
-    // 显示对应的页面
-    showPageFn(type: string) {
-        const { id1, id2, params } = this.state
-        switch (type) {
-            case '0':
-                // 完美围度
-                return <div>运动表现</div>
-            case '1':
-                // 运动表现
-                return <div>运动表现</div>
-            case '2':
-                // 静态评估
-                return <div>静态评估</div>
-            case '3':
-                // 动作评估
-                return <div>动作评估</div>
-            case '4':
-                // 体适能评估
-                return <div>体适能评估</div>
-            case '5':
-                // 人体成分
-                if (id1 && id2) {
-                    // this.getHttpReqFn(getBodyCompositionResult, id1, id2)
-                }
-                console.log(1111111111111)
-                return <BodyComposition params={params} />
-            default:
-                // 人体成分
-                if (id1 && id2) {
-                    // this.getHttpReqFn(getBodyCompositionResult, id1, id2)
-                }
-                return <BodyComposition params={params} />
+            userInfos: {},
         }
     }
     // 整理微信返回url
@@ -120,6 +77,9 @@ export default class Contrast extends React.Component<any, any> {
                     grander: res.data.grander,
                     urlParams: { tabsId, memberId, isDlCoach, fromstudio: isFromStudio, version, isshare },
                 }
+                this.setState({
+                    userInfos: res.data,
+                })
                 this.configRegisterShare(pm)
             })
         }
@@ -128,13 +88,43 @@ export default class Contrast extends React.Component<any, any> {
         clearAllBodyScrollLocks() //释放body滚动
     }
     render() {
+        const { id1, id2, userInfos } = this.state
         const { type } = this.props.match.params
-        const { userInfos } = this.props.reportStore
         return (
             <div className={ContrastStyle.App} ref='reportContentBox'>
                 <UserInfos params={userInfos} />
-                <div className={ContrastStyle.appContent}>{this.showPageFn(type)}</div>
+                <div className={ContrastStyle.appContent}>
+                    <ContrastComps type={type} id1={id1} id2={id2}></ContrastComps>
+                </div>
             </div>
         )
+    }
+}
+
+// 对比组件
+function ContrastComps(props: any) {
+    const { type, id1, id2 } = props
+    // 判断当前是哪个对比
+    switch (type) {
+        case '0':
+            // 完美围度
+            return <PerfectCircumference id1={id1} id2={id2} />
+        case '1':
+            // 运动表现
+            return <div>运动表现</div>
+        case '2':
+            // 静态评估
+            return <div>静态评估</div>
+        case '3':
+            // 动作评估
+            return <div>动作评估</div>
+        case '4':
+            // 体适能评估
+            return <div>体适能评估</div>
+        case '5':
+            return <BodyComposition id1={id1} id2={id2} />
+        default:
+            // 人体成分
+            return <BodyComposition id1={id1} id2={id2} />
     }
 }

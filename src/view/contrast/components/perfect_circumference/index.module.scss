@@ -1,222 +1,50 @@
+@import '../../../../assets/fonts/index.css';
 .wrapper {
-    .fractionBox {
-        width: 510px;
-        margin: auto;
-        padding: 90px 0 100px;
+    border-top: 1px solid rgba($color: #f2f2f2, $alpha: 0.2);
+    padding: 50px 32px 0;
+    .title {
+        font-size: 32px;
+        color: #fff;
+    }
+    .grade-box {
         display: flex;
-        .fbLeft {
-            padding-right: 50px;
-            .fblNumBox {
-                display: flex;
-                align-items: baseline;
+        align-items: center;
+        text-align: center;
+        padding: 32px 0;
+        .grade-item {
+            flex: 1 0 0%;
+            background: #000;
+            margin-right: 20px;
+            font-size: 24px;
+            padding: 0 0 32px 0;
+            color: rgba($color: #fff, $alpha: 0.5);
+            &:last-child {
+                margin-right: 0;
             }
             .num {
+                color: #fff;
                 font-size: 100px;
-                line-height: 1;
-                color: #23cfe2;
-            }
-            .util {
-                font-size: 60px;
-                line-height: 1;
-                color: #23cfe2;
-            }
-            .fblTxt {
-                margin-top: 10px;
-                color: rgba(255, 255, 255, 0.5);
-                font-size: 24px;
-            }
-        }
-        .fbRight {
-            padding-top: 15px;
-            color: #fff;
-            font-size: 28px;
-        }
-    }
-    .photo {
-        width: 498px;
-        height: 440px;
-        margin: 0 auto 102px;
-        background-color: #121212;
-        text-align: center;
-        img {
-            width: auto;
-            height: 100%;
-        }
-    }
-    .FractionDetail {
-        padding: 0 30px 140px;
-        .title {
-            font-size: 32px;
-            color: #fff;
-            margin-bottom: 20px;
-        }
-        .content {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            .itm {
-                border-radius: 8px;
-                background-color: #fff;
-                width: calc(48% - 76px);
-                height: 212px;
-                padding: 28px 38px 32px;
-                margin-bottom: 20px;
-                color: #000;
-                .line {
-                    width: 100%;
-                    height: 1px;
-                    background-color: #cacaca;
-                    margin: 24px 0 18px;
-                }
-                .fs32 {
-                    font-size: 32px;
-                }
-                .fs48 {
-                    font-size: 56px;
-                    line-height: 1;
-                }
-                .fs24 {
-                    font-size: 24px;
-                }
-                .gc {
-                    color: rgba(0, 0, 0, 0.5);
-                }
-                .oc {
-                    color: #ff6b57;
-                }
+                font-family: DINCond-Black;
+                margin-right: 10px;
             }
         }
     }
-    .footerBtn {
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        right: 0;
-        bottom: calc(env(safe-area-inset-bottom) +20px);
-        margin: auto;
+    .photo-box {
         display: flex;
-        justify-content: space-around;
-        padding: 0 48px;
-        div {
-            height: 96px;
-            line-height: 96px;
+        align-items: center;
+        padding: 32px 0;
+        .photo-item {
+            flex: 1 0 0%;
+            margin-right: 20px;
             text-align: center;
-            border-radius: 48px;
-            font-size: 36px;
-        }
-        .shareBtn {
-            width: 416px;
-            background: #23cfe2;
-            color: #fff;
-            &.dis {
-                background: #ccc;
-                color: #fff;
+            background: #000;
+            height: 442px;
+            &:last-child {
+                margin-right: 0;
             }
-        }
-        .goToTest {
-            width: 214px;
-            background: #fff;
-            color: #0c0c0c;
-            margin-right: 30px;
-        }
-    }
-    .share-box {
-        position: fixed;
-        bottom: -5000px;
-        // bottom: 50px;
-        left: 0;
-        right: 0;
-        z-index: 999;
-        background: #18191d;
-        .share-title {
-            font-size: 42px;
-            padding: 50px 0 30px;
-            text-align: center;
-            color: #fff;
-            font-weight: bold;
-        }
-        .user-info-box {
-            text-align: center;
-            .uib-avatar {
-                width: 90px;
-                height: 90px;
-                border-radius: 50%;
-                margin-bottom: 20px;
-            }
-            .uib-name {
-                font-size: 28px;
-                color: #fff;
-            }
-        }
-        .one-photo-box {
-            padding-bottom: 40px;
-        }
-        .coach-warp-box {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #262833;
-            color: #fff;
-            padding: 30px;
-            .coach-img-box {
-                width: 112px;
-                height: 112px;
-                border-radius: 50%;
-                background: #fff;
-                overflow: hidden;
-                img {
-                    width: 100%;
-                    height: 100%;
-                    display: block;
-                }
-            }
-            .coach-info-box {
-                padding-left: 10px;
-                flex: 1 0 0%;
-                text-align: left;
-                .coach-name-tag {
-                    display: flex;
-                    align-items: center;
-                    margin-bottom: 10px;
-                    .coach-name {
-                        font-size: 36px;
-                        font-weight: bold;
-                        margin-right: 20px;
-                    }
-                    .coach-tag {
-                        height: 40px;
-                        line-height: 40px;
-                        background: #21b8c5;
-                        padding: 0 10px;
-                        color: #313340;
-                        border-radius: 5px;
-                        font-size: 24px;
-                    }
-                }
-                .coach-service {
-                    font-size: 24px;
-                }
-            }
-            .coach-qrcode {
-                font-size: 20px;
-                text-align: center;
-                .coach-qrcode-img {
-                    width: 140px;
-                    height: 140px;
-                    display: inline-block;
-                    background: #fff;
-                    padding: 10px;
-                    border-radius: 5px;
-                    margin-bottom: 10px;
-                    svg {
-                        width: 100% !important;
-                        height: 100% !important;
-                    }
-                    canvas {
-                        width: 100% !important;
-                        height: 100% !important;
-                    }
-                }
+            img {
+                height: 100%;
+                width: auto;
             }
         }
     }
