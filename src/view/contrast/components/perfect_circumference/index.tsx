@@ -17,7 +17,7 @@ interface defProps {
 
 @inject('reportStore')
 @observer
-export default class PerfectCircumference extends Component<any, any> {
+export default class PerfectCircumference extends Component<defProps, any> {
     constructor(props: any) {
         super(props)
         this.state = {

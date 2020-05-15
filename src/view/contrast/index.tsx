@@ -13,7 +13,6 @@ import BodyComposition from './components/body_composition'
 import FitnessAssessment from './components/fitness_assessment'
 import StaticEvaluation from './components/static_evaluation'
 import AthleticPerformance from './components/athletic_performance'
-import { getBodyCompositionResult, getPerfectCircumferenceResult } from '@apis/report/bapp'
 
 const cbh = createBrowserHistory()
 @inject('reportStore')
@@ -51,7 +50,6 @@ export default class Contrast extends React.Component<any, any> {
     }
     componentDidMount() {
         disableBodyScroll(this.refs.reportContentBox) // 禁止body滚动
-        console.log(this.props, cbh)
         const queryParams = new URLSearchParams(this.props.history.location.search)
         const tabsId = this.props.location.pathname.split('contrast/')[1]
         const type = Number(queryParams.get('type'))
@@ -120,8 +118,9 @@ function ContrastComps(props: any) {
             return <div>动作评估</div>
         case '4':
             // 体适能评估
-            return <div>体适能评估</div>
+            return <FitnessAssessment id1={id1} id2={id2} />
         case '5':
+            // 人体成分
             return <BodyComposition id1={id1} id2={id2} />
         default:
             // 人体成分

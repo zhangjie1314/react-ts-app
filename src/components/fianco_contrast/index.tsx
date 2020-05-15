@@ -76,7 +76,7 @@ class FiancoContrast extends React.Component<any, any> {
         if (arr.length === 2) {
             this.props.history.push({
                 pathname: `/contrast/${this.props.reportStore.tabsId}`,
-                search: `${this.props.location.search}&id1=${arr[0].id}&id2=${arr[1].id}`,
+                search: `${this.props.location.search}&id1=${arr[1].id}&id2=${arr[0].id}`,
             })
         } else {
             Toast.info(`请勾选两项数据进行操作`, 1.5)
