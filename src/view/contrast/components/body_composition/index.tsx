@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { PhotoProvider, PhotoConsumer } from 'react-photo-view'
 import 'react-photo-view/dist/index.css'
 import { observer, inject } from 'mobx-react'
+import _ from 'lodash'
 import PropTypes from 'prop-types'
 import { callAppMenthd, callAppShareImgMenthd, handleHandImg } from '@utils/index'
 import { getBodyCompositionResult } from '@apis/report/bapp'
@@ -15,8 +16,8 @@ export default class BodyComposition extends Component<any, any> {
     constructor(props: any) {
         super(props)
         this.state = {
-            chartData: [],
-            fiancoData: [],
+            id1: '',
+            id2: '',
             bodyCompositionData: {},
             imgHandleing: false,
             shareBtnTxt: '分享报告图片',
@@ -27,22 +28,14 @@ export default class BodyComposition extends Component<any, any> {
         }
     }
     static defaultProps = {
-        chartData: [],
-        fiancoData: [],
-        coachInfo: {},
+        id1: '',
+        id2: '',
     }
     static propType = {
-        chartData: PropTypes.array,
-        fiancoData: PropTypes.array,
-        coachInfo: PropTypes.object,
+        id1: PropTypes.string,
+        id2: PropTypes.string,
     }
-    static getDerivedStateFromProps(nextProps: any, prevState: any) {
-        return {
-            chartData: nextProps.chartData,
-            fiancoData: nextProps.fiancoData,
-            coachInfo: nextProps.coachInfo,
-        }
-    }
+
     // 计算两天相差天数
     private dateDiff(date1: any, date2: any) {
         let firstDate = new Date(date1.replace(/-/g, '/'))
@@ -51,22 +44,51 @@ export default class BodyComposition extends Component<any, any> {
         let result = parseInt(String(diff / (1000 * 60 * 60 * 24)), 10)
         return result
     }
-    // 去体测
-    private gotoTcFun = () => {
-        const { userInfos } = this.props.reportStore
-        callAppMenthd('gotoTestTool', {
-            age: userInfos.age,
-            birthday: userInfos.birthday,
-            gender: userInfos.gender,
-            height: userInfos.height,
-            memberId: userInfos.memberId,
-            name: userInfos.name,
-            weight: userInfos.weight,
-            headPath: userInfos.headPath,
-        })
-    }
-    componentDidUpdate(prevProps: any, prevState: any) {}
 
+    static getDerivedStateFromProps(nextProps: any) {
+        return {
+            id1: nextProps.id1,
+            id2: nextProps.id2,
+        }
+    }
+    componentDidUpdate(prevProps: any, prevState: any) {
+        if (_.isEqual(prevState.id1, this.state.id1)) {
+            this.getData()
+        }
+    }
+
+    // 获取数据
+    async getData() {
+        const data1 = await getBodyCompositionResult({
+            rtcfId: this.state.id1,
+        })
+        const data2 = await getBodyCompositionResult({
+            rtcfId: this.state.id2,
+        })
+        this.handleData(data1, data2)
+
+        // getBodyCompositionResult({
+        //     rtcfId: item.id,
+        // }).then((res: any) => {
+        //     const { isFromStudio } = this.props.reportStore
+        //     res.data.url1 = handleHandImg(res.data.url1, isFromStudio)
+        //     res.data.url2 = handleHandImg(res.data.url2, isFromStudio)
+        //     res.data.url3 = handleHandImg(res.data.url3, isFromStudio)
+        //     this.setState({
+        //         bodyCompositionData: res.data,
+        //     })
+        // })
+    }
+
+    // 处理数据
+    handleData(data1: any, data2: any) {
+        console.log(data1, data2)
+        const res1 = data1.data
+        const res2 = data2.data
+        let { daysBetweenTwo } = this.state
+        daysBetweenTwo = this.dateDiff(res1.createTime, res2.createTime) // 计算天数
+        this.setState({ daysBetweenTwo })
+    }
     render() {
         const { daysBetweenTwo, weightChange, fatChange } = this.state
         return (

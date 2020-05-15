@@ -1,6 +1,8 @@
 @import '../../../../assets/fonts/index.css';
 
 .wrapper {
+    border-top: 1px solid rgba($color: #f2f2f2, $alpha: 0.2);
+    padding: 50px 32px 0;
     .headText {
         display: flex;
         align-items: center;
