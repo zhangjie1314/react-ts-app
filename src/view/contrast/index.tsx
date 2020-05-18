@@ -2,7 +2,6 @@
 import React from 'react'
 import { observer, inject } from 'mobx-react'
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
-import { createBrowserHistory } from 'history'
 import UserInfos from '../../components/user_info'
 import ContrastStyle from './index.module.scss'
 import { getUserInfos } from '../../utils/get_user_info'
@@ -14,7 +13,6 @@ import FitnessAssessment from './components/fitness_assessment'
 import StaticEvaluation from './components/static_evaluation'
 import AthleticPerformance from './components/athletic_performance'
 
-const cbh = createBrowserHistory()
 @inject('reportStore')
 @observer
 export default class Contrast extends React.Component<any, any> {
@@ -44,7 +42,7 @@ export default class Contrast extends React.Component<any, any> {
             details: `快去查看${params.name.slice(0, 1)}${params.grander === 1 ? '先生' : '女士'}的详细报告吧`, // 分享内容
             pic: `${process.env.REACT_APP_FILE_URL}/app/pos/pos_logo.png`, // 分享图片
             url: `${this.getShareContentUrl(params.urlParams)}`, // 分享链接
-        }).then(res => {
+        }).then((res) => {
             alert(JSON.stringify(res))
         })
     }
