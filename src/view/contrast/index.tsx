@@ -113,7 +113,7 @@ function ContrastComps(props: any) {
             return <div>静态评估</div>
         case '3':
             // 动作评估
-            return <div>动作评估</div>
+            return <ActionEvaluation id1={id1} id2={id2} />
         case '4':
             // 体适能评估
             return <FitnessAssessment id1={id1} id2={id2} />

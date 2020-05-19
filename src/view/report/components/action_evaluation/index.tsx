@@ -6,7 +6,7 @@ import PosCharts from '@comps/pos_charts'
 import FiancoContrast from '@comps/fianco_contrast'
 import BodyFigure from './components/body_figure'
 import BodyResult from './components/body_result'
-import { getActionEvaluationInfo } from '../../../../apis/report/bapp'
+import { getActionEvaluationInfo } from '@apis/report/bapp'
 import AeStyle from './index.module.scss'
 import { figureData } from './components/body_figure/figure_data'
 import { callAppMenthd } from '@utils/index'
@@ -192,7 +192,7 @@ export default class ActionEvaluation extends Component<any, any> {
                             <div
                                 key={idx}
                                 className={`${AeStyle.tab} ${idx === this.state.tabsIdx ? AeStyle.selectBg : ''}`}
-                                onClick={e => this.selectTabsFn(e, idx)}
+                                onClick={(e) => this.selectTabsFn(e, idx)}
                             >
                                 <p>{el.txt}</p>
                                 <p>({el.num}项)</p>
