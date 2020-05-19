@@ -246,14 +246,18 @@ export default class BodyComposition extends Component<any, any> {
                     return (
                         <div className={BCStyle.tdImgs} key={idx}>
                             <div className={BCStyle.title}>{el.title}</div>
-                            {el.img.map((itm: any, ix: number) => {
-                                return (
-                                    <div className={BCStyle.img} key={ix}>
-                                        <img src={itm.url} alt='' />
-                                        <p>{itm.time}</p>
-                                    </div>
-                                )
-                            })}
+                            <div className={BCStyle.content}>
+                                {el.img.map((itm: any, ix: number) => {
+                                    return (
+                                        <div className={BCStyle.itm}>
+                                            <div className={BCStyle.img} key={ix}>
+                                                <img src={itm.url} alt='' />
+                                            </div>
+                                            <p>{itm.time}</p>
+                                        </div>
+                                    )
+                                })}
+                            </div>
                         </div>
                     )
                 })}
