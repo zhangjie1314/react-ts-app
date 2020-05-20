@@ -28,11 +28,7 @@ export default class Contrast extends React.Component<any, any> {
     }
     // 整理微信返回url
     getShareContentUrl = (params: any) => {
-        let url = `https://${window.location.host}/#/report/${params.tabsId}?memberId=${params.memberId}&isDlCoach=${params.isDlCoach}&isshare=1`
-        let fromstudio = params.fromstudio ? `&fromstudio=${params.fromstudio}` : ''
-        let version = params.version ? `&version=${params.version}` : ''
-        let res = `${url}${fromstudio}${version}`
-        return res
+        return `https://${window.location.host}/#/report/${params.tabsId}${this.props.history.location.search}`
     }
     // 分享配置
     configRegisterShare = (params: any) => {
@@ -42,7 +38,7 @@ export default class Contrast extends React.Component<any, any> {
             details: `快去查看${params.name.slice(0, 1)}${params.grander === 1 ? '先生' : '女士'}的详细报告吧`, // 分享内容
             pic: `${process.env.REACT_APP_FILE_URL}/app/pos/pos_logo.png`, // 分享图片
             url: `${this.getShareContentUrl(params.urlParams)}`, // 分享链接
-        }).then((res) => {
+        }).then(res => {
             alert(JSON.stringify(res))
         })
     }
@@ -50,7 +46,7 @@ export default class Contrast extends React.Component<any, any> {
         disableBodyScroll(this.refs.reportContentBox) // 禁止body滚动
         const queryParams = new URLSearchParams(this.props.history.location.search)
         const tabsId = this.props.location.pathname.split('contrast/')[1]
-        const type = Number(queryParams.get('type'))
+        const type = Number(this.props.match.params.type)
         const memberId: any = queryParams.get('memberId')
         const isDlCoach = Number(queryParams.get('isDlCoach'))
         const isFromStudio = Number(queryParams.get('fromstudio'))
@@ -58,6 +54,7 @@ export default class Contrast extends React.Component<any, any> {
         const isshare = Number(queryParams.get('isshare'))
         const id1 = queryParams.get('id1')
         const id2 = queryParams.get('id2')
+        console.log(type)
         this.setState({ id1, id2 })
         if (type === 0) {
             // 从报告页面跳转进来
