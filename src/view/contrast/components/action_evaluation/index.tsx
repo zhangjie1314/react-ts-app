@@ -4,7 +4,6 @@ import _ from 'lodash'
 
 import { getActionEvaluationInfo } from '@apis/report/bapp'
 import AeStyle from './index.module.scss'
-
 import bg from '@assets/img/time_bg.png'
 
 export default class ActionEvaluation extends Component<any, any> {
@@ -76,7 +75,7 @@ export default class ActionEvaluation extends Component<any, any> {
         return (
             <div className={AeStyle.wrapper}>
                 <div className={AeStyle.head}>动作评估报告</div>
-                <div className={AeStyle.title}>数据对比</div>
+                {/* <div className={AeStyle.title}>数据对比</div> */}
                 <div className={AeStyle.time}>
                     <div className={AeStyle.tImg}>
                         <img src={bg} alt='' />
