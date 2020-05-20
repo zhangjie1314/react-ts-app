@@ -41,4 +41,77 @@
             top: 35px;
         }
     }
+    .list {
+        margin-bottom: 80px;
+        .redBg {
+            box-shadow: rgb(170, 43, 26) 0 8px 32px 0;
+            background-color: #f75944;
+        }
+        .yellowBg {
+            background: rgb(255, 199, 1);
+            box-shadow: rgb(125, 100, 9) 0 8px 32px 0;
+        }
+        .orangeBg {
+            background: rgb(250, 123, 52);
+            box-shadow: rgb(131, 48, 2) 0px 8px 32px 0px;
+        }
+        .h3 {
+            width: 104px;
+            border-radius: 6px;
+            padding: 4px 20px;
+            margin: 0 auto 30px;
+            text-align: center;
+            color: #fff;
+        }
+        .content {
+            position: relative;
+            padding: 30px 0;
+            .item {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 60px;
+                &:last-child {
+                    margin-bottom: 0;
+                }
+                .whiteLine {
+                    display: flex;
+                    align-items: center;
+                    span {
+                        display: inline-block;
+                        background-color: #fff;
+                        width: 20px;
+                        height: 2px;
+                    }
+                    &:first-child {
+                        justify-content: flex-end;
+                    }
+                }
+                div {
+                    width: 32%;
+                    color: #fff;
+                    &:first-child {
+                        text-align: right;
+                    }
+                }
+                .borderDashed {
+                    height: 2px;
+                    border-bottom: 2px dashed #3c3d4d;
+                }
+            }
+        }
+        .mLine {
+            position: absolute;
+            margin: auto;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #3c3d4d;
+            width: 12px;
+            height: 100%;
+            border-radius: 6px;
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.5);
+        }
+    }
 }

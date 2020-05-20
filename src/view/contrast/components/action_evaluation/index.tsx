@@ -1,17 +1,12 @@
 // 动作评估
 import React, { Component } from 'react'
 import _ from 'lodash'
-// import { observer, inject } from 'mobx-react'
-// import PosCharts from '@comps/pos_charts'
-// import FiancoContrast from '@comps/fianco_contrast'
 
-import { getActionEvaluationInfo } from '../../../../apis/report/bapp'
+import { getActionEvaluationInfo } from '@apis/report/bapp'
 import AeStyle from './index.module.scss'
-import { callAppMenthd } from '@utils/index'
 
 import bg from '@assets/img/time_bg.png'
-// @inject('reportStore')
-// @observer
+
 export default class ActionEvaluation extends Component<any, any> {
     constructor(props: any) {
         super(props)
@@ -92,6 +87,84 @@ export default class ActionEvaluation extends Component<any, any> {
                         <span>{time2}</span>
                     </div>
                 </div>
+                {/* 过度激活 */}
+                {gdjh.length > 0 ? (
+                    <div className={`${AeStyle.list}`}>
+                        <div className={`${AeStyle.h3} ${AeStyle.redBg}`}>过度激活</div>
+                        <div className={`${AeStyle.content}`}>
+                            <div className={AeStyle.mLine}></div>
+                            {gdjh.map((el: any, idx: number) => {
+                                return (
+                                    <div key={idx} className={AeStyle.item}>
+                                        <div className={el.t1 === '-' ? AeStyle.whiteLine : ''}>
+                                            <span></span>
+                                            {el.t1 === '-' ? '' : el.t1}
+                                        </div>
+                                        <div className={AeStyle.borderDashed}></div>
+                                        <div className={el.t2 === '-' ? AeStyle.whiteLine : ''}>
+                                            <span></span>
+                                            {el.t2 === '-' ? '' : el.t2}
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    </div>
+                ) : (
+                    ''
+                )}
+                {/* 激活不足 */}
+                {jhbz.length > 0 ? (
+                    <div className={`${AeStyle.list}`}>
+                        <div className={`${AeStyle.h3} ${AeStyle.yellowBg}`}>激活不足</div>
+                        <div className={`${AeStyle.content}`}>
+                            <div className={AeStyle.mLine}></div>
+                            {jhbz.map((el: any, idx: number) => {
+                                return (
+                                    <div key={idx} className={AeStyle.item}>
+                                        <div className={el.t1 === '-' ? AeStyle.whiteLine : ''}>
+                                            <span></span>
+                                            {el.t1 === '-' ? '' : el.t1}
+                                        </div>
+                                        <div className={AeStyle.borderDashed}></div>
+                                        <div className={el.t2 === '-' ? AeStyle.whiteLine : ''}>
+                                            <span></span>
+                                            {el.t2 === '-' ? '' : el.t2}
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    </div>
+                ) : (
+                    ''
+                )}
+                {/* 指令混乱 */}
+                {zlhl.length > 0 ? (
+                    <div className={`${AeStyle.list}`}>
+                        <div className={`${AeStyle.h3} ${AeStyle.orangeBg}`}>指令混乱</div>
+                        <div className={`${AeStyle.content}`}>
+                            <div className={AeStyle.mLine}></div>
+                            {zlhl.map((el: any, idx: number) => {
+                                return (
+                                    <div key={idx} className={AeStyle.item}>
+                                        <div className={el.t1 === '-' ? AeStyle.whiteLine : ''}>
+                                            <span></span>
+                                            {el.t1 === '-' ? '' : el.t1}
+                                        </div>
+                                        <div className={AeStyle.borderDashed}></div>
+                                        <div className={el.t2 === '-' ? AeStyle.whiteLine : ''}>
+                                            <span></span>
+                                            {el.t2 === '-' ? '' : el.t2}
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    </div>
+                ) : (
+                    ''
+                )}
             </div>
         )
     }
