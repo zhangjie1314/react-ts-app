@@ -18,7 +18,7 @@ function getWxAuthorization(params: any) {
             jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData', 'chooseWXPay'], // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
         })
         wx.error((res: any) => {
-            Toast.info(`error${res}`, 2)
+            Toast.info(`${res.errMsg}`, 3)
         })
         wx.ready(() => {
             const config = {
