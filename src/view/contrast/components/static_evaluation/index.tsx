@@ -1,7 +1,6 @@
 // 静态评估
 import React, { Component } from 'react'
 import _ from 'lodash'
-// import StaticDataJson from './data.json'
 import Dayjs from 'dayjs'
 import { getStaticEvaluationResult } from '@apis/report/bapp'
 import SeStyle from './index.module.scss'
@@ -89,8 +88,12 @@ export default class StaticEvaluation extends Component<any, any> {
         const d1 = info1
         const d2 = info2
         staticGradeObj.push(
-            { grade: d1.grade, time: Dayjs(d1.createTime).format('YYYY.MM.DD HH:mm'), tips: this.handleGrade(d1.grad) },
-            { grade: d2.grade, time: Dayjs(d2.createTime).format('YYYY.MM.DD HH:mm'), tips: this.handleGrade(d2.grad) }
+            {
+                grade: d1.grade,
+                time: Dayjs(d1.createTime).format('YYYY.MM.DD HH:mm'),
+                tips: this.handleGrade(d1.grade),
+            },
+            { grade: d2.grade, time: Dayjs(d2.createTime).format('YYYY.MM.DD HH:mm'), tips: this.handleGrade(d2.grade) }
         )
         time1 = Dayjs(d1.createTime).format('MM月DD日HH:mm')
         time2 = Dayjs(d1.createTime).format('MM月DD日HH:mm')

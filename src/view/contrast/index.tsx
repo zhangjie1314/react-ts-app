@@ -38,7 +38,7 @@ export default class Contrast extends React.Component<any, any> {
             details: `快去查看${params.name.slice(0, 1)}${params.grander === 1 ? '先生' : '女士'}的详细报告吧`, // 分享内容
             pic: `${process.env.REACT_APP_FILE_URL}/app/pos/pos_logo.png`, // 分享图片
             url: `${this.getShareContentUrl(params.urlParams)}`, // 分享链接
-        }).then(res => {
+        }).then((res) => {
             alert(JSON.stringify(res))
         })
     }
@@ -104,7 +104,7 @@ function ContrastComps(props: any) {
             return <PerfectCircumference id1={id1} id2={id2} />
         case '1':
             // 运动表现
-            return <div>运动表现</div>
+            return <AthleticPerformance id1={id1} id2={id2} />
         case '2':
             // 静态评估
             return <StaticEvaluation id1={id1} id2={id2} />
