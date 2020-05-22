@@ -69,6 +69,7 @@
     }
     .dataContrast {
         position: relative;
+        margin-bottom: 80px;
         .itmTitle {
             padding: 6px 20px;
             margin-bottom: 30px;
@@ -79,6 +80,7 @@
             position: relative;
             z-index: 2;
             width: 100%;
+            padding: 30px 0 1px;
             &:after {
                 position: absolute;
                 content: '';
@@ -97,52 +99,62 @@
                 position: relative;
                 z-index: 2;
                 width: 100%;
-                // display: flex;
-                // justify-content: space-between;
-                // align-items: center;
-                margin-bottom: 60px;
+                margin-bottom: 50px;
                 .desc {
-                    margin: auto;
-                    padding: 10px 20px;
-                    background-color: #3c3d4d;
-                    color: #fff;
-                    border-radius: 4px;
-                    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+                    position: relative;
+                    top: 0;
+                    height: 50px;
+                    margin-bottom: 40px;
                     div {
+                        position: absolute;
+                        left: 50%;
+                        top: 50%;
+                        transform: translate(-50%, -50%);
+                        padding: 10px 20px;
+                        background-color: #3c3d4d;
+                        color: #fff;
+                        border-radius: 4px;
+                        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
                     }
                 }
-                // .span {
-                //     width: 25%;
-                //     color: #fff;
-                //     .fiSpan {
-                //         display: flex;
-                //         align-items: center;
-                //     }
-                //     &:first-child {
-                //         text-align: right;
-                //     }
-                //     div {
-                //         img {
-                //             width: 28px;
-                //             height: 28px;
-                //         }
-                //     }
-                // }
-                // .desc {
-                //     position: absolute;
-                //     border-radius: 4px;
-                //     left: 50%;
-                //     top: 50%;
-                //     transform: translate(-50%, -50%);
-                //     padding: 10px 20px;
-                //     background-color: #18191d;
-                //     color: #999aa5;
-                // }
-                .borderDashed {
-                    margin: 0 20px;
-                    width: 50%;
-                    height: 2px;
-                    border-bottom: 2px dashed #3c3d4d;
+                .spans {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    position: relative;
+                    margin-bottom: 40px;
+                    .subTitle {
+                        position: absolute;
+                        left: 50%;
+                        top: 50%;
+                        transform: translate(-50%, -50%);
+                        padding: 8px 16px;
+                        background-color: #18191d;
+                        color: #999aa5;
+                    }
+                    .span {
+                        width: 25%;
+                        color: #fff;
+                        .fiSpan {
+                            display: flex;
+                            align-items: center;
+                        }
+                        &:first-child {
+                            text-align: right;
+                        }
+                        div {
+                            img {
+                                width: 28px;
+                                height: 28px;
+                            }
+                        }
+                    }
+                    .borderDashed {
+                        margin: 0 20px;
+                        width: 50%;
+                        height: 2px;
+                        border-bottom: 2px dashed #3c3d4d;
+                    }
                 }
             }
         }

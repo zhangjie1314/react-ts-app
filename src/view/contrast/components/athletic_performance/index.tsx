@@ -17,10 +17,7 @@ export default class StaticEvaluation extends Component<any, any> {
             staticGradeObj: [],
             time1: '',
             time2: '',
-            strength: {}, // 力量类
-            quick: {}, // 敏捷类
-            flexible: {}, // 柔韧类
-            balance: {}, //平衡类
+            paramsArr: [], // 包含 力量类 敏捷类 柔韧类 平衡类
         }
     }
     static getDerivedStateFromProps(nextProps: any, prevState: any) {
@@ -67,34 +64,33 @@ export default class StaticEvaluation extends Component<any, any> {
     }
     // 处理数据
     handleData(info1: any, info2: any) {
-        console.log(info1, info2)
-        let { staticGradeObj, time1, time2, strength, quick, flexible, balance } = this.state
+        let { staticGradeObj, time1, time2, paramsArr } = this.state
         const d1 = info1.ydbxVO
         const d2 = info2.ydbxVO
         staticGradeObj.push(
-            { grade: d1.grade, time: Dayjs(d1.day).format('YYYY.MM.DD') },
-            { grade: d2.grade, time: Dayjs(d2.day).format('YYYY.MM.DD') }
+            { grade: d1.grade, time: Dayjs(d1.day).format('YYYY.MM.DD HH:mm') },
+            { grade: d2.grade, time: Dayjs(d2.day).format('YYYY.MM.DD HH:mm') }
         )
-        time1 = Dayjs(d1.day).format('MM月DD日')
-        time2 = Dayjs(d1.day).format('MM月DD日')
+        time1 = Dayjs(d1.day).format('MM月DD日HH:mm')
+        time2 = Dayjs(d1.day).format('MM月DD日HH:mm')
         // 处理力量类数据
         let st = this.handleParams('力量类', d1, d2)
-        strength = st.list.length > 0 ? st : []
+        if (st.list && !_.isEmpty(st.list)) paramsArr.push(st)
         // 处理敏捷类数据
         let qu = this.handleParams('敏捷类', d1, d2)
-        quick = qu.list.length > 0 ? qu : []
+        if (qu.list && !_.isEmpty(qu.list)) paramsArr.push(qu)
         // 处理敏捷类数据
         let fl = this.handleParams('柔韧类', d1, d2)
-        flexible = fl.list.length > 0 ? fl : []
+        if (fl.list && !_.isEmpty(fl.list)) paramsArr.push(fl)
         // 处理平衡类数据
         let ba = this.handleParams('平衡类', d1, d2)
-        balance = ba.list.length > 0 ? ba : []
-        console.log(strength, quick, flexible, balance)
-        this.setState({ staticGradeObj, time1, time2, strength, quick, flexible, balance })
+        if (ba.list && !_.isEmpty(ba.list)) paramsArr.push(ba)
+
+        this.setState({ staticGradeObj, time1, time2, paramsArr })
     }
 
     render() {
-        const { staticGradeObj, time1, time2, strength } = this.state
+        const { staticGradeObj, time1, time2, paramsArr } = this.state
         return (
             <div className={SeStyle.wrapper}>
                 {/* 运动表现得分 */}
@@ -126,44 +122,56 @@ export default class StaticEvaluation extends Component<any, any> {
                         <span>{time2}</span>
                     </div>
                 </div>
-                {/* 力量类 */}
-                {strength.list && strength.list.length > 0 ? (
-                    <div className={`${SeStyle.dataContrast}`}>
-                        <div className={SeStyle.itmTitle}>— {strength.title} —</div>
-                        <div className={SeStyle.item}>
-                            {strength.list.map((itm: any, idx: number) => {
-                                return (
-                                    <div key={idx} className={SeStyle.li}>
-                                        <div className={SeStyle.desc}>{itm.desc}</div>
-                                        {itm.subList.map((im: any, i: number) => {
-                                            return (
-                                                <div key={i}>
-                                                    <div className={SeStyle.span}>
-                                                        <div>{im.t1.num}°</div>
-                                                        <div>({im.t1.txt})</div>
-                                                    </div>
-
-                                                    <div className={SeStyle.subTitle}>{im.subTitle}</div>
-
-                                                    <div className={SeStyle.borderDashed}></div>
-                                                    <div className={SeStyle.span}>
-                                                        <div className={SeStyle.fiSpan}>
-                                                            {im.t2.num}°
-                                                            <img src={im.status > 0 ? up : down} alt='' />
+                {/* 一级 */}
+                {paramsArr.map((item: any, index: number) => {
+                    return (
+                        <div key={index} className={`${SeStyle.dataContrast}`}>
+                            <div className={SeStyle.itmTitle}>— {item.title} —</div>
+                            <div className={SeStyle.item}>
+                                {/* 二级 */}
+                                {item.list.map((itm: any, idx: number) => {
+                                    return (
+                                        <div key={idx} className={SeStyle.li}>
+                                            <div className={SeStyle.desc}>
+                                                <div>{itm.desc}</div>
+                                            </div>
+                                            {/* 三级 */}
+                                            {itm.subList.map((im: any, i: number) => {
+                                                return (
+                                                    <div key={i} className={SeStyle.spans}>
+                                                        <div className={SeStyle.span}>
+                                                            <div>
+                                                                {im.t1.sufix ? im.t1.sufix : ''}
+                                                                {im.t1.num}
+                                                                {im.unit}
+                                                            </div>
+                                                            <div>({im.t1.txt})</div>
                                                         </div>
-                                                        <div>({im.t2.txt})</div>
+                                                        <div className={SeStyle.subTitle}>{im.subTitle}</div>
+                                                        <div className={SeStyle.borderDashed}></div>
+                                                        <div className={SeStyle.span}>
+                                                            <div className={SeStyle.fiSpan}>
+                                                                {im.t2.num}
+                                                                {im.unit}
+                                                                <img
+                                                                    src={
+                                                                        im.status > 0 ? up : im.status > -1 ? down : ''
+                                                                    }
+                                                                    alt=''
+                                                                />
+                                                            </div>
+                                                            <div>({im.t2.txt})</div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            )
-                                        })}
-                                    </div>
-                                )
-                            })}
+                                                )
+                                            })}
+                                        </div>
+                                    )
+                                })}
+                            </div>
                         </div>
-                    </div>
-                ) : (
-                    ''
-                )}
+                    )
+                })}
             </div>
         )
     }

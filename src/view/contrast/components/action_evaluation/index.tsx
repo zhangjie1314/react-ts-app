@@ -1,7 +1,6 @@
 // 动作评估
 import React, { Component } from 'react'
 import _ from 'lodash'
-
 import { getActionEvaluationInfo } from '@apis/report/bapp'
 import AeStyle from './index.module.scss'
 import bg from '@assets/img/time_bg.png'
