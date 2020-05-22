@@ -192,6 +192,7 @@ export default class PerfectCircumference extends Component<defProps, any> {
     }
     render() {
         const { chartData, grade, imgs, firstName } = this.state
+        console.log(imgs)
         return (
             <div className={PcStyle['wrapper']}>
                 <div className={PcStyle['title']}>完美围度得分</div>
@@ -212,22 +213,26 @@ export default class PerfectCircumference extends Component<defProps, any> {
                         <div className={PcStyle.time}>{grade.two.time}</div>
                     </div>
                 </div>
-                <div className={PcStyle['title']}>照片对比</div>
                 {/* 照片 */}
-                <div className={PcStyle['photo-box']}>
-                    <PhotoProvider photoClosable={true}>
-                        <div className={PcStyle['photo-item']}>
-                            <PhotoConsumer src={imgs[0]}>
-                                <img src={imgs[0]} alt='完美围度照片' />
-                            </PhotoConsumer>
-                        </div>
-                        <div className={PcStyle['photo-item']}>
-                            <PhotoConsumer src={imgs[1]} intro=''>
-                                <img src={imgs[1]} alt='完美围度照片' />
-                            </PhotoConsumer>
-                        </div>
-                    </PhotoProvider>
-                </div>
+                {imgs[0] ? <div className={PcStyle['title']}>照片对比</div> : ''}
+                {imgs[0] ? (
+                    <div className={PcStyle['photo-box']}>
+                        <PhotoProvider photoClosable={true}>
+                            <div className={PcStyle['photo-item']}>
+                                <PhotoConsumer src={imgs[0]}>
+                                    <img src={imgs[0]} alt='完美围度照片' />
+                                </PhotoConsumer>
+                            </div>
+                            <div className={PcStyle['photo-item']}>
+                                <PhotoConsumer src={imgs[1]} intro=''>
+                                    <img src={imgs[1]} alt='完美围度照片' />
+                                </PhotoConsumer>
+                            </div>
+                        </PhotoProvider>
+                    </div>
+                ) : (
+                    ''
+                )}
                 <div className={PcStyle['title']}>数据对比</div>
                 {/* 数据 */}
                 <div className={PcStyle['data-box']}>

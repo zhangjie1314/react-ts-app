@@ -5,11 +5,11 @@ import 'react-photo-view/dist/index.css'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
 import PropTypes from 'prop-types'
-import { callAppMenthd, callAppShareImgMenthd, handleHandImg } from '@utils/index'
+import { handleHandImg } from '@utils/index'
 import { getBodyCompositionResult } from '@apis/report/bapp'
 import up from '@assets/img/up_icon.png'
 import down from '@assets/img/dow_icon.png'
-
+import NoImg from '@assets/img/no-img.png'
 import BCStyle from './index.module.scss'
 
 @inject('reportStore')
@@ -185,22 +185,22 @@ export default class BodyComposition extends Component<any, any> {
             {
                 title: '正面照',
                 img: [
-                    { time: dt1, url: d1.url1 },
-                    { time: dt2, url: d2.url1 },
+                    { time: dt1, url: d1.url1 ? d1.url1 : NoImg },
+                    { time: dt2, url: d2.url1 ? d2.url1 : NoImg },
                 ],
             },
             {
                 title: '侧面照',
                 img: [
-                    { time: dt1, url: d1.url2 },
-                    { time: dt2, url: d2.url2 },
+                    { time: dt1, url: d1.url2 ? d1.url2 : NoImg },
+                    { time: dt2, url: d2.url2 ? d2.url2 : NoImg },
                 ],
             },
             {
                 title: '人体成分报告',
                 img: [
-                    { time: dt1, url: d1.url3 },
-                    { time: dt2, url: d2.url3 },
+                    { time: dt1, url: d1.url3 ? d1.url3 : NoImg },
+                    { time: dt2, url: d2.url3 ? d2.url3 : NoImg },
                 ],
             },
         ]
@@ -249,12 +249,16 @@ export default class BodyComposition extends Component<any, any> {
                             <div className={BCStyle.content}>
                                 {el.img.map((itm: any, ix: number) => {
                                     return (
-                                        <div className={BCStyle.itm}>
-                                            <div className={BCStyle.img} key={ix}>
-                                                <img src={itm.url} alt='' />
+                                        <PhotoProvider key={ix} photoClosable={true}>
+                                            <div className={BCStyle.itm}>
+                                                <PhotoConsumer src={itm.url}>
+                                                    <div className={BCStyle.img}>
+                                                        <img src={itm.url} alt='人体成分照片' />
+                                                    </div>
+                                                </PhotoConsumer>
+                                                <p>{itm.time}</p>
                                             </div>
-                                            <p>{itm.time}</p>
-                                        </div>
+                                        </PhotoProvider>
                                     )
                                 })}
                             </div>
