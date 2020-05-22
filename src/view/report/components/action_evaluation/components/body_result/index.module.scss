@@ -51,15 +51,8 @@
             align-items: center;
             color: #fff;
             font-size: 24px;
-            transition: 0.5s;
+            transition: 0.3s;
             overflow: hidden;
-            &.h0 {
-                height: 0;
-            }
-            &.h100 {
-                height: 40px;
-                padding: 22px 0 17px;
-            }
             .lf {
                 padding-right: 18px;
                 max-width: 192px;

@@ -47,7 +47,7 @@ export default class BodyResult extends Component<any, any> {
                                 <div className={BrStyle.title}>
                                     <div className={BrStyle.lf}>
                                         <p className={BrStyle.dot}></p>
-                                        <p>{el.tile}</p>
+                                        <p>{el.title}</p>
                                     </div>
                                     <img
                                         className={`${BrStyle.arrow} ${el.isShow === true ? BrStyle.down : BrStyle.up}`}
@@ -55,11 +55,22 @@ export default class BodyResult extends Component<any, any> {
                                         alt=''
                                     />
                                 </div>
-                                <div className={`${BrStyle.text} ${el.isShow === true ? BrStyle.h100 : BrStyle.h0}`}>
-                                    <p className={BrStyle.lf}>{el.cnetent.split('  ')[0]}</p>
-                                    <p className={BrStyle.line}></p>
-                                    <p className={BrStyle.rg}>{el.cnetent.split('  ')[1]}</p>
-                                </div>
+                                {el.content.map((im: any, ix: number) => {
+                                    return (
+                                        <div
+                                            key={ix}
+                                            className={BrStyle.text}
+                                            style={{
+                                                height: `${el.isShow === true ? el.content.length * 40 : '0'}px`,
+                                                padding: el.isShow === true ? '4px 0 ' : '0',
+                                            }}
+                                        >
+                                            <p className={BrStyle.lf}>{im.seTitle}</p>
+                                            <p className={BrStyle.line}></p>
+                                            <p className={BrStyle.rg}>{im.seContent}</p>
+                                        </div>
+                                    )
+                                })}
                             </div>
                         )
                     })}

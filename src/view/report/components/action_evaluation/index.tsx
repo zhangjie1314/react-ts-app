@@ -133,6 +133,25 @@ export default class ActionEvaluation extends Component<any, any> {
         this.getBodyFigure(obj, idx)
         this.setState({ tabsIdx: idx, bodyResultData })
     }
+    // 处理列表数据
+    private handleBodyResultData(data: any) {
+        let arr: any = []
+        data.forEach((el: any) => {
+            arr.push({
+                title: el.tile,
+                isShow: false,
+                content: el.cnetent
+                    .substring(0, el.cnetent.length - 1)
+                    .split('\n')
+                    .map((itm: any) => ({
+                        seTitle: itm.split('  ')[0],
+                        seContentArr: itm.split('  ')[1].split('、'),
+                        seContent: itm.split('  ')[1],
+                    })),
+            })
+        })
+        return arr
+    }
     // 点击图表点
     handleClickPointFunc(item: any) {
         // 获取对应人体数据
@@ -146,10 +165,10 @@ export default class ActionEvaluation extends Component<any, any> {
                 if (el.type === 'jhhl') el.num = res.data.jhhlNum
             })
             this.getBodyFigure(res.data.jhgdDate, 0)
-            res.data.jhgdDate.forEach((el: any) => {
-                el.isShow = false
-            })
-            bodyResultData = res.data.jhgdDate
+            // res.data.jhgdDate.forEach((el: any) => {
+            //     el.isShow = false
+            // })
+            bodyResultData = this.handleBodyResultData(res.data.jhgdDate)
             this.setState({
                 bodyResultData,
                 tabs,
@@ -192,7 +211,7 @@ export default class ActionEvaluation extends Component<any, any> {
                             <div
                                 key={idx}
                                 className={`${AeStyle.tab} ${idx === this.state.tabsIdx ? AeStyle.selectBg : ''}`}
-                                onClick={e => this.selectTabsFn(e, idx)}
+                                onClick={(e) => this.selectTabsFn(e, idx)}
                             >
                                 <p>{el.txt}</p>
                                 <p>({el.num}项)</p>
