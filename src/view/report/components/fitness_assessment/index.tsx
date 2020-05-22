@@ -47,13 +47,11 @@ export default class FitnessAssessment extends Component<any, any> {
         const newChartData = JSON.stringify(this.state.chartData)
         if (oldChartData !== newChartData && newChartData !== '[]') {
             const ln = this.state.chartData.length
-            console.log(ln)
             ln > 0 && this.handleClickPointFunc(this.state.chartData[ln - 1])
         }
     }
     // 点击图表点
     handleClickPointFunc(item: ChartItemRules) {
-        console.log(item)
         getfitnessAssessmentResult({
             wdId: item.id,
         }).then((res: any) => {
@@ -124,7 +122,6 @@ export default class FitnessAssessment extends Component<any, any> {
                 { txt: '优良', selected: false },
             ],
         }
-        console.log(data)
         data.map((itm: any) => {
             itm.memberSideTnViewTowList.map((item: any) => {
                 if (item.name.startsWith('体脂率')) {
@@ -312,7 +309,7 @@ export default class FitnessAssessment extends Component<any, any> {
                                             <div className={FitnessAssessmentStyle['pb-tips']}>{itm.des}</div>
                                         </div>
                                         {itm.memberSideTnViewTowList.map((item: any, index: number) =>
-                                            this.handleItemBox(item, index, itm.memberSideTnViewTowList.length > 1)
+                                            this.handleItemBox(item, index, itm.memberSideTnViewTowList.length > 1),
                                         )}
                                     </div>
                                 )
@@ -385,8 +382,8 @@ export default class FitnessAssessment extends Component<any, any> {
                                                     this.handleItemBox(
                                                         item,
                                                         index,
-                                                        itm.memberSideTnViewTowList.length > 1
-                                                    )
+                                                        itm.memberSideTnViewTowList.length > 1,
+                                                    ),
                                                 )}
                                             </div>
                                         )

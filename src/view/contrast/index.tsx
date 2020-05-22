@@ -38,7 +38,7 @@ export default class Contrast extends React.Component<any, any> {
             details: `快去查看${params.name.slice(0, 1)}${params.grander === 1 ? '先生' : '女士'}的详细报告吧`, // 分享内容
             pic: `${process.env.REACT_APP_FILE_URL}/app/pos/pos_logo.png`, // 分享图片
             url: `${this.getShareContentUrl(params.urlParams)}`, // 分享链接
-        }).then((res) => {
+        }).then(res => {
             alert(JSON.stringify(res))
         })
     }
@@ -54,28 +54,24 @@ export default class Contrast extends React.Component<any, any> {
         const isshare = Number(queryParams.get('isshare'))
         const id1 = queryParams.get('id1')
         const id2 = queryParams.get('id2')
-        console.log(type)
         this.setState({ id1, id2 })
-        if (type === 0) {
-            // 从报告页面跳转进来
-            // 获取用户信息
-            getUserInfos({
-                memberId,
-                isFromStudio,
-                isshare,
-            }).then((res: any) => {
-                // 分享设置
-                let pm = {
-                    name: res.data.name,
-                    grander: res.data.grander,
-                    urlParams: { tabsId, memberId, isDlCoach, fromstudio: isFromStudio, version, isshare },
-                }
-                this.setState({
-                    userInfos: res.data,
-                })
-                this.configRegisterShare(pm)
+        // 获取用户信息
+        getUserInfos({
+            memberId,
+            isFromStudio,
+            isshare,
+        }).then((res: any) => {
+            // 分享设置
+            let pm = {
+                name: res.data.name,
+                grander: res.data.grander,
+                urlParams: { tabsId, memberId, isDlCoach, fromstudio: isFromStudio, version, isshare },
+            }
+            this.setState({
+                userInfos: res.data,
             })
-        }
+            this.configRegisterShare(pm)
+        })
     }
     componentWillUnmount() {
         clearAllBodyScrollLocks() //释放body滚动

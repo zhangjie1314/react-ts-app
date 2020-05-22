@@ -5,6 +5,7 @@ import F2 from '@antv/f2'
 import { circleItem } from '@ctypes/components/pos_circle_charts'
 import PosCircleChartsStyle from './index.module.scss'
 import './index.scss'
+import _ from 'lodash'
 
 export default class PosCircleCharts extends React.Component<any, any> {
     constructor(props: any) {
@@ -36,6 +37,11 @@ export default class PosCircleCharts extends React.Component<any, any> {
         }
         return null
     }
+    componentDidUpdate(prevProps: any, prevState: any) {
+        if (!_.isEqual(prevState.circleData, this.state.circleData)) {
+            this.initChart(this.state.circleData)
+        }
+    }
     componentDidMount() {
         this.initChart(this.state.circleData)
     }
@@ -45,7 +51,7 @@ export default class PosCircleCharts extends React.Component<any, any> {
      */
     initChart(data: circleItem[]) {
         let { chartId } = this.props
-        let chart = null
+        let chart: any = null
         // 判断是否存在circleChart 对象 无则 创建一个
         if (!this.state.circleChart) {
             const wVal = document.body.offsetWidth
@@ -61,8 +67,13 @@ export default class PosCircleCharts extends React.Component<any, any> {
                 circleChart: chart ? chart : this.state.circleChart,
             },
             () => {
-                // 绘制圆环图表
-                this.drawChart(data)
+                if (chart) {
+                    // 绘制圆环图表
+                    this.drawChart(data)
+                } else {
+                    this.state.circleChart.clear()
+                    this.drawChart(data)
+                }
             },
         )
     }
@@ -198,7 +209,14 @@ export default class PosCircleCharts extends React.Component<any, any> {
         })
         // 图例
         circleChart.legend(false)
+        // 积分和时间
+        this.addScoreTime()
+        // 渲染
+        circleChart.render()
+    }
+    addScoreTime() {
         const { score, creatTime } = this.props
+        const { circleChart } = this.state
         // 添加中间总分数
         circleChart.guide().html({
             position: ['50%', '50%'],
@@ -209,8 +227,6 @@ export default class PosCircleCharts extends React.Component<any, any> {
             position: ['50%', '110%'],
             html: `<div class='circle-chart-time-box'>${creatTime}</div>`,
         })
-        // 渲染
-        circleChart.render()
     }
     render() {
         const { chartId } = this.props

@@ -62,7 +62,6 @@ export default class Report extends Component<any, any> {
     handleTestListData(data: any) {
         const testList: ChartItemRules[] = []
         const fiancoData: FiancoRules[] = []
-        console.log(data)
         data.forEach((itm: any, idx: number) => {
             // 图表数据
             testList.push({

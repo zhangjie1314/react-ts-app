@@ -192,7 +192,6 @@ export default class PerfectCircumference extends Component<defProps, any> {
     }
     render() {
         const { chartData, grade, imgs, firstName } = this.state
-        console.log(imgs)
         return (
             <div className={PcStyle['wrapper']}>
                 <div className={PcStyle['title']}>完美围度得分</div>

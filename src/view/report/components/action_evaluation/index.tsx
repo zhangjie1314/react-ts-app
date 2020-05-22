@@ -192,7 +192,7 @@ export default class ActionEvaluation extends Component<any, any> {
                             <div
                                 key={idx}
                                 className={`${AeStyle.tab} ${idx === this.state.tabsIdx ? AeStyle.selectBg : ''}`}
-                                onClick={(e) => this.selectTabsFn(e, idx)}
+                                onClick={e => this.selectTabsFn(e, idx)}
                             >
                                 <p>{el.txt}</p>
                                 <p>({el.num}项)</p>

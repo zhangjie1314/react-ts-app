@@ -105,7 +105,7 @@ export default class AthleticPerformance extends Component<any, any> {
                 () => {
                     // 处理类型展示数据（版本兼容）
                     this.handleTypesShowData(res.data)
-                }
+                },
             )
         })
     }
@@ -297,7 +297,7 @@ export default class AthleticPerformance extends Component<any, any> {
         return (
             <div
                 className={AthleticPerformanceStyle['wrapper']}
-                ref={(c) => (this.atchleticBox = c)}
+                ref={c => (this.atchleticBox = c)}
                 onScrollCapture={this.pageScrollFunc.bind(this)}
             >
                 <div className={AthleticPerformanceStyle['inline-wrapper']}>
@@ -362,7 +362,7 @@ export default class AthleticPerformance extends Component<any, any> {
                         })}
                     </div>
                     {/* 跳转按钮 */}
-                    <div className={AthleticPerformanceStyle['dump-box']} ref={(c) => (this.dumpRefBox = c)}>
+                    <div className={AthleticPerformanceStyle['dump-box']} ref={c => (this.dumpRefBox = c)}>
                         <div
                             className={`${AthleticPerformanceStyle['dump-inline-box']} ${
                                 dumpFixed ? AthleticPerformanceStyle['fixed-box'] : ''

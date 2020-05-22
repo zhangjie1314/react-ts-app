@@ -83,7 +83,6 @@ export default class StaticEvaluation extends Component<any, any> {
     }
     // 处理数据
     handleData(info1: any, info2: any) {
-        console.log(info1, info2)
         let { staticGradeObj, time1, time2, param } = this.state
         const d1 = info1
         const d2 = info2
@@ -93,7 +92,11 @@ export default class StaticEvaluation extends Component<any, any> {
                 time: Dayjs(d1.createTime).format('YYYY.MM.DD HH:mm'),
                 tips: this.handleGrade(d1.grade),
             },
-            { grade: d2.grade, time: Dayjs(d2.createTime).format('YYYY.MM.DD HH:mm'), tips: this.handleGrade(d2.grade) }
+            {
+                grade: d2.grade,
+                time: Dayjs(d2.createTime).format('YYYY.MM.DD HH:mm'),
+                tips: this.handleGrade(d2.grade),
+            },
         )
         time1 = Dayjs(d1.createTime).format('MM月DD日HH:mm')
         time2 = Dayjs(d1.createTime).format('MM月DD日HH:mm')
