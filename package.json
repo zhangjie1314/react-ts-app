@@ -2,7 +2,7 @@
     "name": "h5pos_ts_project",
     "version": "0.1.0",
     "private": true,
-    "dependencies": {
+    "dependencies": { 
         "@antv/f2": "^3.6.3",
         "@babel/core": "7.8.4",
         "@svgr/webpack": "4.3.3",
